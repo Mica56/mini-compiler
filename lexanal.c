@@ -26,6 +26,15 @@ bool isOperator(char ch)
     return (false);
 }
  
+// Returns 'true' if the character is an CHEMICAL OPERATOR.
+bool isChemOperator(char ch)
+{
+    if (ch == '~' || ch == '^' || ch == '[' ||
+        ch == ']')
+        return (true);
+    return (false);
+}
+
 // Returns 'true' if the string is a VALID IDENTIFIER.
 bool validIdentifier(char* str)
 {
@@ -121,6 +130,8 @@ void parse(char* str)
         if (isDelimiter(str[right]) == true && left == right) {
             if (isOperator(str[right]) == true)
                 printf("'%c' IS AN OPERATOR\n", str[right]);
+            else if(isChemOperator(str[right]) == true)
+            	printf("'%c' IS A CHEMICAL OPERATOR\n", str[right]);
  
             right++;
             left = right;
@@ -136,13 +147,18 @@ void parse(char* str)
  
             else if (isRealNumber(subStr) == true)
                 printf("'%s' IS A REAL NUMBER\n", subStr);
- 
+            
             else if (validIdentifier(subStr) == true
-                     && isDelimiter(str[right - 1]) == false)
+                     && isDelimiter(str[right - 1]) == false
+					 && isChemOperator(str[right - 1]) == false)
                 printf("'%s' IS A VALID IDENTIFIER\n", subStr);
- 
+            
+           else if (validIdentifier(subStr) == true
+					 && isChemOperator(str[right - 1]) == true)
+                printf("'%s' IS A CHEMICAL OPERATOR\n", subStr);
+
             else if (validIdentifier(subStr) == false
-                     && isDelimiter(str[right - 1]) == false)
+                	&& isDelimiter(str[right - 1]) == false)
                 printf("'%s' IS NOT A VALID IDENTIFIER\n", subStr);
             left = right;
         }
@@ -154,7 +170,7 @@ void parse(char* str)
 int main()
 {
      // maximum length of string is 100 here
-    char str[100] = "int .a_nt = 1 + m1";
+    char str[100] = "int .a_nt += 1 + m1 + ~[H^2O]";//has a bug with H^20
  
     parse(str); // calling the parse function
  
