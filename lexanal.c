@@ -46,10 +46,10 @@ bool validIdentifier(char* str)
     return (true);
 }
  
-//edit this
 // Returns 'true' if the string is a KEYWORD.
 bool isKeyword(char* str)
 {
+
     if (   !strcmp(str, "IF")           || !strcmp(str, "ELSE") 
         || !strcmp(str, "WHILE")        || !strcmp(str, "DO") 
         || !strcmp(str, "BREAK")        || !strcmp(str, "CONTINUE") 
