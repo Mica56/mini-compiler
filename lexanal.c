@@ -46,23 +46,28 @@ bool validIdentifier(char* str)
     return (true);
 }
  
-//We don't have the ff. keywords: continue, sizeof, short, typedef, void, static, and struct
 // Returns 'true' if the string is a KEYWORD.
 bool isKeyword(char* str)
 {
-    if (!strcmp(str, "IF") || !strcmp(str, "ELSE") ||
-	    !strcmp(str, "BREAK") || !strcmp(str, "CASE") ||
-	 	!strcmp(str, "CHAR") || !strcmp(str, "CONST") ||
-	 	!strcmp(str, "DEFAULT"	) || !strcmp(str, "FLOAT") ||
-	 	!strcmp(str, "DOUBLE") || !strcmp(str, "DO") ||
-	 	!strcmp(str, "FOR") || !strcmp(str, "GOTO") ||
-	 	!strcmp(str, "INT") || !strcmp(str, "LONG") ||
-	 	!strcmp(str, "PRINTF") || !strcmp(str, "RETURN") ||
-	 	!strcmp(str, "SIGNED") || !strcmp(str, "SCANF") ||
-	 	!strcmp(str, "STRING") || !strcmp(str, "SWITCH") ||
-	 	!strcmp(str, "UNSIGNED") || !strcmp(str, "WHILE") ||
-	 	!strcmp(str, "printchel") || !strcmp(str, "imcomp") ||
-	 	!strcmp(str, "pcm") || !strcmp(str, "react"))
+
+    if (   !strcmp(str, "IF")           || !strcmp(str, "ELSE") 
+        || !strcmp(str, "WHILE")        || !strcmp(str, "DO") 
+        || !strcmp(str, "BREAK")        || !strcmp(str, "CONTINUE") 
+        || !strcmp(str, "DOUBLE")       || !strcmp(str, "FLOAT")
+        || !strcmp(str, "RETURN")       || !strcmp(str, "CHAR")
+        || !strcmp(str, "CASE")         || !strcmp(str, "CHAR")
+        || !strcmp(str, "SIEZEOF")      || !strcmp(str, "LONG")
+        || !strcmp(str, "SHORT")        || !strcmp(str, "TYPEDEF")
+        || !strcmp(str, "SWITCH")       || !strcmp(str, "UNSIGNED")
+        || !strcmp(str, "VOID")         || !strcmp(str, "STATIC")
+        || !strcmp(str, "STRUCT")       || !strcmp(str, "GOTO")
+        || !strcmp(str, "CONST")        || !strcmp(str, "GOTO")
+        || !strcmp(str, "DEFAULT")      || !strcmp(str, "INT")
+        || !strcmp(str, "FOR")          || !strcmp(str, "PRINTF")
+        || !strcmp(str, "SIGNED")       || !strcmp(str, "SCANF")
+        || !strcmp(str, "STRING")       || !strcmp(str, "INT")
+        || !strcmp(str, "printchel")    || !strcmp(str, "impcomp")
+        || !strcmp(str, "pcm")          || !strcmp(str, "react"))
         return (true);
     return (false);
 }
