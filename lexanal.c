@@ -46,22 +46,23 @@ bool validIdentifier(char* str)
     return (true);
 }
  
-//edit this
+//We don't have the ff. keywords: continue, sizeof, short, typedef, void, static, and struct
 // Returns 'true' if the string is a KEYWORD.
 bool isKeyword(char* str)
 {
-    if (!strcmp(str, "if") || !strcmp(str, "else") ||
-        !strcmp(str, "while") || !strcmp(str, "do") ||
-        !strcmp(str, "break") ||
-         !strcmp(str, "continue") || !strcmp(str, "int")
-        || !strcmp(str, "double") || !strcmp(str, "float")
-        || !strcmp(str, "return") || !strcmp(str, "char")
-        || !strcmp(str, "case") || !strcmp(str, "char")
-        || !strcmp(str, "sizeof") || !strcmp(str, "long")
-        || !strcmp(str, "short") || !strcmp(str, "typedef")
-        || !strcmp(str, "switch") || !strcmp(str, "unsigned")
-        || !strcmp(str, "void") || !strcmp(str, "static")
-        || !strcmp(str, "struct") || !strcmp(str, "goto"))
+    if (!strcmp(str, "IF") || !strcmp(str, "ELSE") ||
+	    !strcmp(str, "BREAK") || !strcmp(str, "CASE") ||
+	 	!strcmp(str, "CHAR") || !strcmp(str, "CONST") ||
+	 	!strcmp(str, "DEFAULT"	) || !strcmp(str, "FLOAT") ||
+	 	!strcmp(str, "DOUBLE") || !strcmp(str, "DO") ||
+	 	!strcmp(str, "FOR") || !strcmp(str, "GOTO") ||
+	 	!strcmp(str, "INT") || !strcmp(str, "LONG") ||
+	 	!strcmp(str, "PRINTF") || !strcmp(str, "RETURN") ||
+	 	!strcmp(str, "SIGNED") || !strcmp(str, "SCANF") ||
+	 	!strcmp(str, "STRING") || !strcmp(str, "SWITCH") ||
+	 	!strcmp(str, "UNSIGNED") || !strcmp(str, "WHILE") ||
+	 	!strcmp(str, "printchel") || !strcmp(str, "imcomp") ||
+	 	!strcmp(str, "pcm") || !strcmp(str, "react"))
         return (true);
     return (false);
 }
