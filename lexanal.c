@@ -46,7 +46,7 @@ bool validIdentifier(char* str)
     return (true);
 }
  
-//edit this
+//edit this 
 //We don't have the ff. keywords: continue, sizeof, short, typedef, void, static, and struct
 // Returns 'true' if the string is a KEYWORD.
 bool isKeyword(char* str)
