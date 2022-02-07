@@ -3,16 +3,28 @@
 #include <string.h>
 #include <stdlib.h>
 
+<<<<<<< Updated upstream
 //check if this is okay @Jessie
 // Returns 'true' if the character is a DELIMITER.
 bool isDelimiter(char ch)
+=======
+//Returns a string stating what the delimiter is
+const char* isDelimiter(char ch)
+>>>>>>> Stashed changes
 {
-    if (ch == ' ' || ch == '+' || ch == '-' || ch == '*' ||
-        ch == '/' || ch == ',' || ch == ';' || ch == '>' ||
-        ch == '<' || ch == '=' || ch == '(' || ch == ')' ||
-        ch == '[' || ch == ']' || ch == '{' || ch == '}')
-        return (true);
-    return (false);
+	char intro[] = "DELIMITER IS";
+	
+	switch(ch){
+		case ',': return strncat(intro,"COMMA",5);
+		case ';': return strncat(intro,"SEMICOLON",9);
+		case '(': return strncat(intro,"PARENTHESIS_LEFT",16);
+		case ')': return strncat(intro,"PARENTHESIS_RIGHT",17);
+		case '[': return strncat(intro,"BRACKET_LEFT",12);
+		case ']': return strncat(intro,"BRACKET_RIGHT",13);
+		case '{': return strncat(intro,"CURLY_BRACKET_LEFT",18);
+		case '}': return strncat(intro,"CURLY_BRACKET_RIGHT",19);
+		default: return NULL;
+	}
 }
 
 //edit this
