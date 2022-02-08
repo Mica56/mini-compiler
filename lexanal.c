@@ -3,6 +3,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+int CURRENT_LINE = 1 ; 
+
 // Returns 'true' if the character is a DELIMITER.
 const char* isDelimiter(char ch)
 {
@@ -82,7 +85,7 @@ bool validIdentifier(char* str)
     if (str[0] == '0' || str[0] == '1' || str[0] == '2' ||
         str[0] == '3' || str[0] == '4' || str[0] == '5' ||
         str[0] == '6' || str[0] == '7' || str[0] == '8' ||
-        str[0] == '9' || isDelimiter(str[0]) == true) 
+        str[0] == '9' || isDelimiter(str[0]) != "Not a Delimiter")
         return (false);
     return (true);
 }
@@ -170,6 +173,9 @@ void parse(char* str)
     int left = 0, right = 0;
     int len = strlen(str);
     //const char* value;
+    //
+    FILE *dest_fp;
+    dest_fp = fopen("results.mul","w");
  
     while (right <= len && left <= right) {
         if (isDelimiter(str[right]) == "Not a Delimiter")
@@ -177,11 +183,16 @@ void parse(char* str)
 
         if (isDelimiter(str[right]) != "Not a Delimiter" && left == right) {
         	printf("%s\n", isDelimiter(str[right]));
+            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
           
-            if (isOperator(str[right]) != "Not an Operator")
+            if (isOperator(str[right]) != "Not an Operator") {
                 printf("%s\n", isOperator(str[right]));
-            else if(isChemOperator(str[right]) != "Not a ChemOperator")
+                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isOperator(str[right]));
+            }
+            else if(isChemOperator(str[right]) != "Not a ChemOperator") {
             	printf("%s\n", isChemOperator(str[right]));
+                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
+            }
  
             right++;
             left = right;
@@ -189,8 +200,10 @@ void parse(char* str)
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
  
-            if (isKeyword(subStr) == true)
+            if (isKeyword(subStr) == true) { 
                 printf("KEYWORD '%s'\n", subStr);
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
+            }
  
             else if (isInteger(subStr) == true)
                 printf("INTEGER '%s'\n", subStr);
@@ -200,12 +213,16 @@ void parse(char* str)
             
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "Not a Delimiter"
-					 && isChemOperator(str[right - 1]) == "Not a ChemOperator")
+					 && isChemOperator(str[right - 1]) == "Not a ChemOperator") {
                 printf("IDENTIFIER '%s'\n", subStr);
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
+            }
             
            else if (validIdentifier(subStr) == true
-					 && isChemOperator(str[right - 1]) != "Not a ChemOperator")
+					 && isChemOperator(str[right - 1]) != "Not a ChemOperator") {
                 printf("%s\n", isChemOperator(str[right - 1]));
+                fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
+           }
 
             else if (validIdentifier(subStr) == false
                 	&& isDelimiter(str[right - 1]) == "Not a Delimiter")
@@ -213,6 +230,8 @@ void parse(char* str)
             left = right;
         }
     }
+
+    CURRENT_LINE++;
     return;
 }
 
@@ -221,11 +240,11 @@ int main()
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = true ;
+    bool DEBUG = false ;
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT MAIN () {}";//has a bug with H^20
+        char str[100] = "INT a = 0 ;";//has a bug with H^20
 
         parse(str); // calling the parse function
     }
@@ -238,7 +257,7 @@ int main()
         char *val;
 
 
-        fptr = fopen("file.txt","r");
+        fptr = fopen("file.mul","r");
 
         if (fptr == NULL) {
             printf("Can't Open File");
