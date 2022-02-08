@@ -38,7 +38,7 @@ const char* isDelimiter(char ch)
 		return "Delimiter";
 	else if (ch == '=')
 		return "Delimiter";
-    return "Not a Delimiter";
+  return "Not a Delimiter";
 }
 
 //edit this
@@ -174,9 +174,10 @@ void parse(char* str)
     while (right <= len && left <= right) {
         if (isDelimiter(str[right]) == "Not a Delimiter")
             right++;
- 
+
         if (isDelimiter(str[right]) != "Not a Delimiter" && left == right) {
         	printf("%s\n", isDelimiter(str[right]));
+          
             if (isOperator(str[right]) != "Not an Operator")
                 printf("%s\n", isOperator(str[right]));
             else if(isChemOperator(str[right]) != "Not a ChemOperator")
@@ -214,14 +215,42 @@ void parse(char* str)
     }
     return;
 }
- 
+
 // DRIVER FUNCTION
 int main()
 {
      // maximum length of string is 100 here
-    char str[100] = "INT .a_nt += 1 + m1 + ~[H^2O]";//has a bug with H^20
- 
-    parse(str); // calling the parse function
- 
+     // Global Variables 
+    bool DEBUG = true ;
+
+    // DEBUG Mode: Just for minor line tests
+    if (DEBUG) {
+        char str[100] = "INT MAIN () {}";//has a bug with H^20
+
+        parse(str); // calling the parse function
+    }
+    // DEBUG-OFF Mode: Accepts an entire file and converts it all into another file containing lexeme tokens.
+    else {
+        char line[100] ;
+        size_t len = 0 ;
+        FILE *fptr;
+        ssize_t read;
+        char *val;
+
+
+        fptr = fopen("file.txt","r");
+
+        if (fptr == NULL) {
+            printf("Can't Open File");
+            return 0 ;
+        }
+
+        while (val = fgets(line,100, fptr)) {
+            parse(val);
+        }
+
+        fclose(fptr);
+    }
+
     return (0);
 }
