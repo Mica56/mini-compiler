@@ -22,6 +22,22 @@ const char* isDelimiter(char ch)
 		return "Delimiter_BracesLeft";
 	else if (ch == '}')
 		return "Delimiter_BracesRight";
+	else if (ch == '+')
+		return "Delimiter";
+	else if (ch == '-')
+		return "Delimiter";
+	else if (ch == '*')
+		return "Delimiter";
+	else if (ch == '/')
+		return "Delimiter";
+	else if (ch == ',')
+		return "Delimiter";
+	else if (ch == '>')
+		return "Delimiter";
+	else if (ch == '<')
+		return "Delimiter";
+	else if (ch == '=')
+		return "Delimiter";
     return "Not a Delimiter";
 }
 
