@@ -6,6 +6,9 @@
 //check if this is okay @Jessie
 // Returns 'true' if the character is a DELIMITER.
 bool isDelimiter(char ch)
+
+    // DELIMITER_<ENGLISHNAME-OF-SYMBOL>_<DIRECTION_OPTIONAL>
+    // example: DELIMITER_PARENTHESIS_LEFT
 {
     if (ch == ' ' || ch == '+' || ch == '-' || ch == '*' ||
         ch == '/' || ch == ',' || ch == ';' || ch == '>' ||
@@ -137,7 +140,7 @@ void parse(char* str)
             if (isOperator(str[right]) == true)
                 printf("'%c' IS AN OPERATOR\n", str[right]);
             else if(isChemOperator(str[right]) == true)
-            	printf("'%c' IS A CHEMICAL OPERATOR\n", str[right]);
+                printf("'%c' IS A CHEMICAL OPERATOR\n", str[right]);
  
             right++;
             left = right;
@@ -153,32 +156,62 @@ void parse(char* str)
  
             else if (isRealNumber(subStr) == true)
                 printf("'%s' IS A REAL NUMBER\n", subStr);
-            
+
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == false
-					 && isChemOperator(str[right - 1]) == false)
+                     && isChemOperator(str[right - 1]) == false)
                 printf("'%s' IS A VALID IDENTIFIER\n", subStr);
-            
+
            else if (validIdentifier(subStr) == true
-					 && isChemOperator(str[right - 1]) == true)
+                     && isChemOperator(str[right - 1]) == true)
                 printf("'%s' IS A CHEMICAL OPERATOR\n", subStr);
 
             else if (validIdentifier(subStr) == false
-                	&& isDelimiter(str[right - 1]) == false)
+                    && isDelimiter(str[right - 1]) == false)
                 printf("'%s' IS NOT A VALID IDENTIFIER\n", subStr);
             left = right;
         }
     }
     return;
 }
- 
+
 // DRIVER FUNCTION
 int main()
 {
      // maximum length of string is 100 here
-    char str[100] = "int .a_nt += 1 + m1 + ~[H^2O]";//has a bug with H^20
- 
-    parse(str); // calling the parse function
- 
+
+     // Global Variables 
+    bool DEBUG = true ;
+
+    // DEBUG Mode: Just for minor line tests
+    if (DEBUG) {
+        char str[100] = "INT MAIN () {}";//has a bug with H^20
+
+        parse(str); // calling the parse function
+    }
+    // DEBUG-OFF Mode: Accepts an entire file and converts it all into another file containing lexeme tokens.
+    else {
+        char line[100] ;
+        size_t len = 0 ;
+        FILE *fptr;
+        ssize_t read;
+        char *val;
+
+
+        fptr = fopen("file.txt","r");
+
+        if (fptr == NULL) {
+            printf("Can't Open File");
+            return 0 ;
+        }
+
+        while (val = fgets(line,100, fptr)) {
+            parse(val);
+        }
+
+        fclose(fptr);
+    }
+
+
     return (0);
 }
