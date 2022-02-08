@@ -2,40 +2,59 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-//check if this is okay @Jessie
-// Returns 'true' if the character is a DELIMITER.
-bool isDelimiter(char ch)
-
-    // DELIMITER_<ENGLISHNAME-OF-SYMBOL>_<DIRECTION_OPTIONAL>
-    // example: DELIMITER_PARENTHESIS_LEFT
+ 
+// DELIMITER_<ENGLISHNAME-OF-SYMBOL>_<DIRECTION_OPTIONAL>
+// example: DELIMITER_PARENTHESIS_LEFT
+const char* isDelimiter(char ch)
 {
-    if (ch == ' ' || ch == '+' || ch == '-' || ch == '*' ||
-        ch == '/' || ch == ',' || ch == ';' || ch == '>' ||
-        ch == '<' || ch == '=' || ch == '(' || ch == ')' ||
-        ch == '[' || ch == ']' || ch == '{' || ch == '}')
-        return (true);
-    return (false);
+	char intro[] = "DELIMITER IS";
+	
+	switch(ch){
+		case ',': return strncat(intro,"COMMA",5);
+		case ';': return strncat(intro,"SEMICOLON",9);
+		case '(': return strncat(intro,"PARENTHESIS_LEFT",16);
+		case ')': return strncat(intro,"PARENTHESIS_RIGHT",17);
+		case '[': return strncat(intro,"BRACKET_LEFT",12);
+		case ']': return strncat(intro,"BRACKET_RIGHT",13);
+		case '{': return strncat(intro,"CURLY_BRACKET_LEFT",18);
+		case '}': return strncat(intro,"CURLY_BRACKET_RIGHT",19);
+		default: return NULL;
+	}
 }
 
 //edit this
 // Returns 'true' if the character is an OPERATOR.
-bool isOperator(char ch)
+const char* isOperator(char ch)
 {
-    if (ch == '+' || ch == '-' || ch == '*' ||
-        ch == '/' || ch == '>' || ch == '<' ||
-        ch == '=')
-        return (true);
-    return (false);
+    if (ch == '+')
+		return "Operator_plus";
+	else if (ch == '-')
+		return "Operator_minus";
+	else if (ch == '*')
+		return "Operator_multiply";
+	else if (ch == '/')
+        return "Operator_divide";
+	else if (ch == '>')
+		return "Operator_greaterthan";
+	else if (ch == '<') 
+		return "Operator_lessthan";
+	else if (ch == '=')
+        return "Operator_equals";
+    return "Not an Operator";
 }
  
 // Returns 'true' if the character is an CHEMICAL OPERATOR.
-bool isChemOperator(char ch)
-{
-    if (ch == '~' || ch == '^' || ch == '[' ||
-        ch == ']')
-        return (true);
-    return (false);
+const char* isChemOperator(char ch){
+	
+    if (ch == '~')
+    	return "ChemOperator_tilde";	
+	else if (ch == '^')
+		return "ChemOperator_carat";
+	else if (ch == '[') 
+		return "ChemOperator_BracketLeft";
+	else if (ch ==']')
+		return "ChemOperaror_BracketRight";
+    return "Not a ChemOperator";
 }
 
 // Returns 'true' if the string is a VALID IDENTIFIER.
@@ -131,16 +150,18 @@ void parse(char* str)
 {
     int left = 0, right = 0;
     int len = strlen(str);
+    //const char* value;
  
     while (right <= len && left <= right) {
         if (isDelimiter(str[right]) == false)
             right++;
  
         if (isDelimiter(str[right]) == true && left == right) {
-            if (isOperator(str[right]) == true)
-                printf("'%c' IS AN OPERATOR\n", str[right]);
-            else if(isChemOperator(str[right]) == true)
-                printf("'%c' IS A CHEMICAL OPERATOR\n", str[right]);
+
+            if (isOperator(str[right]) != "Not an Operator")
+                printf("%s\n", isOperator(str[right]));
+            else if(isChemOperator(str[right]) != "Not a ChemOperator")
+            	printf("%s\n", isChemOperator(str[right]));
  
             right++;
             left = right;
@@ -149,22 +170,22 @@ void parse(char* str)
             char* subStr = subString(str, left, right - 1);
  
             if (isKeyword(subStr) == true)
-                printf("'%s' IS A KEYWORD\n", subStr);
+                printf("KEYWORD '%s'\n", subStr);
  
             else if (isInteger(subStr) == true)
-                printf("'%s' IS AN INTEGER\n", subStr);
+                printf("INTEGER '%s'\n", subStr);
  
             else if (isRealNumber(subStr) == true)
-                printf("'%s' IS A REAL NUMBER\n", subStr);
-
+                printf("REAL NUMBER '%s'\n", subStr);
+            
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == false
-                     && isChemOperator(str[right - 1]) == false)
-                printf("'%s' IS A VALID IDENTIFIER\n", subStr);
-
+					 && isChemOperator(str[right - 1]) == "Not a ChemOperator")
+                printf("IDENTIFIER '%s'\n", subStr);
+            
            else if (validIdentifier(subStr) == true
-                     && isChemOperator(str[right - 1]) == true)
-                printf("'%s' IS A CHEMICAL OPERATOR\n", subStr);
+					 && isChemOperator(str[right - 1]) != "Not a ChemOperator")
+                printf("%s\n", isChemOperator(str[right - 1]));
 
             else if (validIdentifier(subStr) == false
                     && isDelimiter(str[right - 1]) == false)
@@ -179,7 +200,6 @@ void parse(char* str)
 int main()
 {
      // maximum length of string is 100 here
-
      // Global Variables 
     bool DEBUG = true ;
 
@@ -211,7 +231,6 @@ int main()
 
         fclose(fptr);
     }
-
 
     return (0);
 }
