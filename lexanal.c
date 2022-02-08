@@ -2,24 +2,43 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
- 
-// DELIMITER_<ENGLISHNAME-OF-SYMBOL>_<DIRECTION_OPTIONAL>
-// example: DELIMITER_PARENTHESIS_LEFT
+
+// Returns 'true' if the character is a DELIMITER.
 const char* isDelimiter(char ch)
 {
-	char intro[] = "DELIMITER IS";
-	
-	switch(ch){
-		case ',': return strncat(intro,"COMMA",5);
-		case ';': return strncat(intro,"SEMICOLON",9);
-		case '(': return strncat(intro,"PARENTHESIS_LEFT",16);
-		case ')': return strncat(intro,"PARENTHESIS_RIGHT",17);
-		case '[': return strncat(intro,"BRACKET_LEFT",12);
-		case ']': return strncat(intro,"BRACKET_RIGHT",13);
-		case '{': return strncat(intro,"CURLY_BRACKET_LEFT",18);
-		case '}': return strncat(intro,"CURLY_BRACKET_RIGHT",19);
-		default: return NULL;
-	}
+    if (ch == ' ') 
+		return "Delimiter_Blankspace";
+	else if (ch == ';') 
+		return "Delimiter_Semicolon";
+	else if (ch == '(')
+		return "Delimiter_ParenLeft";
+	else if (ch == ')')
+		return "Delimiter_ParenRight";
+    else if (ch == '[')
+		return "Delimiter_BracketLeft";
+	else if (ch == ']')
+		return "Delimiter_BracketRight";
+	else if (ch == '{')  
+		return "Delimiter_BracesLeft";
+	else if (ch == '}')
+		return "Delimiter_BracesRight";
+	else if (ch == '+')
+		return "Delimiter";
+	else if (ch == '-')
+		return "Delimiter";
+	else if (ch == '*')
+		return "Delimiter";
+	else if (ch == '/')
+		return "Delimiter";
+	else if (ch == ',')
+		return "Delimiter";
+	else if (ch == '>')
+		return "Delimiter";
+	else if (ch == '<')
+		return "Delimiter";
+	else if (ch == '=')
+		return "Delimiter";
+  return "Not a Delimiter";
 }
 
 //edit this
@@ -153,11 +172,12 @@ void parse(char* str)
     //const char* value;
  
     while (right <= len && left <= right) {
-        if (isDelimiter(str[right]) == false)
+        if (isDelimiter(str[right]) == "Not a Delimiter")
             right++;
- 
-        if (isDelimiter(str[right]) == true && left == right) {
 
+        if (isDelimiter(str[right]) != "Not a Delimiter" && left == right) {
+        	printf("%s\n", isDelimiter(str[right]));
+          
             if (isOperator(str[right]) != "Not an Operator")
                 printf("%s\n", isOperator(str[right]));
             else if(isChemOperator(str[right]) != "Not a ChemOperator")
@@ -165,7 +185,7 @@ void parse(char* str)
  
             right++;
             left = right;
-        } else if (isDelimiter(str[right]) == true && left != right
+        } else if (isDelimiter(str[right]) != "Not a Delimiter" && left != right
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
  
@@ -179,7 +199,7 @@ void parse(char* str)
                 printf("REAL NUMBER '%s'\n", subStr);
             
             else if (validIdentifier(subStr) == true
-                     && isDelimiter(str[right - 1]) == false
+                     && isDelimiter(str[right - 1]) == "Not a Delimiter"
 					 && isChemOperator(str[right - 1]) == "Not a ChemOperator")
                 printf("IDENTIFIER '%s'\n", subStr);
             
@@ -188,7 +208,7 @@ void parse(char* str)
                 printf("%s\n", isChemOperator(str[right - 1]));
 
             else if (validIdentifier(subStr) == false
-                    && isDelimiter(str[right - 1]) == false)
+                	&& isDelimiter(str[right - 1]) == "Not a Delimiter")
                 printf("'%s' IS NOT A VALID IDENTIFIER\n", subStr);
             left = right;
         }
