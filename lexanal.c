@@ -10,21 +10,21 @@ int CURRENT_LINE = 1 ;
 const char* isDelimiter(char ch)
 {
     if (ch == ' ') 
-		return "Delimiter_Blankspace";
+		return "Delimiter";
 	else if (ch == ';') 
 		return "Delimiter_Semicolon";
 	else if (ch == '(')
 		return "Delimiter_ParenLeft";
 	else if (ch == ')')
 		return "Delimiter_ParenRight";
-    else if (ch == '[')
-		return "Delimiter_BracketLeft";
-	else if (ch == ']')
-		return "Delimiter_BracketRight";
 	else if (ch == '{')  
 		return "Delimiter_BracesLeft";
 	else if (ch == '}')
 		return "Delimiter_BracesRight";
+	else if (ch == '[')
+		return "Delimiter";
+	else if (ch == ']')
+		return "Delimiter";
 	else if (ch == '+')
 		return "Delimiter";
 	else if (ch == '-')
@@ -182,10 +182,12 @@ void parse(char* str)
             right++;
 
         if (isDelimiter(str[right]) != "Not a Delimiter" && left == right) {
-        	printf("%s\n", isDelimiter(str[right]));
-            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+        	if(isDelimiter(str[right]) != "Delimiter"){
+        		printf("%s\n", isDelimiter(str[right]));
+            	fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+			}
           
-            if (isOperator(str[right]) != "Not an Operator") {
+            else if (isOperator(str[right]) != "Not an Operator") {
                 printf("%s\n", isOperator(str[right]));
                 fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isOperator(str[right]));
             }
@@ -240,11 +242,11 @@ int main()
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = false ;
+    bool DEBUG = true ;
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT a = 0 ;";//has a bug with H^20
+        char str[100] = "INT .a_nt = ~[H^20] += .1;\n";//has a bug with H^20
 
         parse(str); // calling the parse function
     }
