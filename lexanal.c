@@ -3,7 +3,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-//Returns a string stating what the delimiter is
+
+int CURRENT_LINE = 1 ; 
+
+// Returns 'true' if the character is a DELIMITER.
 const char* isDelimiter(char ch)
 {
     if (ch == ' ') 
@@ -187,17 +190,33 @@ void parse(char* str)
     int left = 0, right = 0;
     int len = strlen(str);
     //const char* value;
+    //
+    FILE *dest_fp;
+    dest_fp = fopen("results.mul","w");
  
     while (right <= len && left <= right) {
                 
         if (isDelimiter(str[right]) == "Not a Delimiter")
             right++;
- 
-        if (isDelimiter(str[right]) == true && left == right) {
-            if (isOperator(str[right]) != "Not an Operator")
+            
+        //Takes two consecutive characters and send them to isTOExpression 
+		if (isTOExpression(str[left],str[right]) != "Not a TO Expression")
+            printf("TO EXPRESSION '%s'\n", isTOExpression(str[right-1],str[right]));
+		        
+        if (isDelimiter(str[right]) != "Not a Delimiter" && left == right) {
+        	printf("%s\n", isDelimiter(str[right]));
+            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            
+            
+          
+            if (isOperator(str[right]) != "Not an Operator") {
                 printf("%s\n", isOperator(str[right]));
-            else if(isChemOperator(str[right]) != "Not a ChemOperator")
+                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isOperator(str[right]));
+            }
+            else if(isChemOperator(str[right]) != "Not a ChemOperator") {
             	printf("%s\n", isChemOperator(str[right]));
+                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
+            }
  
             right++;
             left = right;
@@ -205,23 +224,30 @@ void parse(char* str)
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
  
-            if (isKeyword(subStr) == true)
+            if (isKeyword(subStr) == true) { 
                 printf("KEYWORD '%s'\n", subStr);
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
+            }
  
             else if (isInteger(subStr) == true)
                 printf("INTEGER '%s'\n", subStr);
  
             else if (isRealNumber(subStr) == true)
                 printf("REAL NUMBER '%s'\n", subStr);
-            
+                
+                
             else if (validIdentifier(subStr) == true
-                     && isDelimiter(str[right - 1]) == false
-					 && isChemOperator(str[right - 1]) == "Not a ChemOperator")
+                     && isDelimiter(str[right - 1]) == "Not a Delimiter"
+					 && isChemOperator(str[right - 1]) == "Not a ChemOperator") {
                 printf("IDENTIFIER '%s'\n", subStr);
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
+            }
             
            else if (validIdentifier(subStr) == true
-					 && isChemOperator(str[right - 1]) != "Not a ChemOperator")
+					 && isChemOperator(str[right - 1]) != "Not a ChemOperator") {
                 printf("%s\n", isChemOperator(str[right - 1]));
+                fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
+           }
 
             else if (validIdentifier(subStr) == false
                 	&& isDelimiter(str[right - 1]) == "Not a Delimiter")
@@ -238,9 +264,37 @@ void parse(char* str)
 int main()
 {
      // maximum length of string is 100 here
-    char str[100] = "INT .a_nt += 1 + m1 + ~[H^2O]";//has a bug with H^20
- 
-    parse(str); // calling the parse function
- 
+     // Global Variables 
+    bool DEBUG = true ;
+
+    // DEBUG Mode: Just for minor line tests
+    if (DEBUG) {
+        char str[100] = ">=";//has a bug with other delimiters and identifiers where they also appear along with the display of TO
+
+        parse(str); // calling the parse function
+    }
+    // DEBUG-OFF Mode: Accepts an entire file and converts it all into another file containing lexeme tokens.
+    else {
+        char line[100] ;
+        size_t len = 0 ;
+        FILE *fptr;
+        ssize_t read;
+        char *val;
+
+
+        fptr = fopen("file.mul","r");
+
+        if (fptr == NULL) {
+            printf("Can't Open File");
+            return 0 ;
+        }
+
+        while (val = fgets(line,100, fptr)) {
+            parse(val);
+        }
+
+        fclose(fptr);
+    }
+
     return (0);
 }
