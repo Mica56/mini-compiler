@@ -1,13 +1,13 @@
 1 3 INT KEYWORD
 1 9 .a_nt IDENTIFIER
-1 10 = Operator_equals
-1 13 ChemOperator_tilde
-1 13 [ ChemOperator_BracketLeft
-1 18 H^20 IDENTIFIER
-1 18 ] ChemOperator_BracketRight
-1 20 + Operator_plus
-1 21 = Operator_equals
-1 25 ; Delimiter_Semicolon
-1 29 ~H IDENTIFIER
-1 30 + Operator_plus
-1 37 FLOAT KEYWORD
+1 10   Operator_Equals
+1 12 ChemOperator_tilde
+1 12 [ ChemOperator_BracketLeft
+1 17 H^20 IDENTIFIER
+1 17 ] ChemOperator_BracketRight
+1 20 = Operator_GreaterEqual
+1 21   Operator_Equals
+1 24 ; Delimiter_Semicolon
+1 28 ~H IDENTIFIER
+1 30   Operator_Plus
+1 36 FLOAT KEYWORD
