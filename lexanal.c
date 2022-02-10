@@ -132,9 +132,38 @@ bool validIdentifier(char* str)
     if (str[0] == '0' || str[0] == '1' || str[0] == '2' ||
         str[0] == '3' || str[0] == '4' || str[0] == '5' ||
         str[0] == '6' || str[0] == '7' || str[0] == '8' ||
-        str[0] == '9' || isDelimiter(str[0]) != "NonDelimiter")
+        str[0] == '9' || isDelimiter(str[0]) != "NonDelimiter" ||
+		str[0] == '"' || str[0] == '\'')
         return (false);
     return (true);
+}
+
+// Returns 'true' if the string is an STRING.
+bool isString(char* str)
+{
+    int i, len = strlen(str);
+ 
+    if (len == 0)
+        return (false);
+    for (i = 0; i < len; i++) {
+        if (str[0] == '"' && str[i] == '"')
+            return (true);
+    }
+    return (false);
+}
+
+// Returns 'true' if the string is an CHARACTER.
+bool isChar(char* str)
+{
+    int i, len = strlen(str);
+ 
+    if (len == 0)
+        return (false);
+    for (i = 0; i < len; i++) {
+        if (str[0] == '\'' && str[i] == '\'')
+            return (true);
+    }
+    return (false);
 }
  
 // Returns 'true' if the string is a KEYWORD.
@@ -146,19 +175,20 @@ bool isKeyword(char* str)
         || !strcmp(str, "BREAK")        || !strcmp(str, "CONTINUE") 
         || !strcmp(str, "DOUBLE")       || !strcmp(str, "FLOAT")
         || !strcmp(str, "RETURN")       || !strcmp(str, "CHAR")
-        || !strcmp(str, "CASE")         || !strcmp(str, "CHAR")
+        || !strcmp(str, "CASE")         || !strcmp(str, "BOOL")	
         || !strcmp(str, "SIEZEOF")      || !strcmp(str, "LONG")
         || !strcmp(str, "SHORT")        || !strcmp(str, "TYPEDEF")
         || !strcmp(str, "SWITCH")       || !strcmp(str, "UNSIGNED")
         || !strcmp(str, "VOID")         || !strcmp(str, "STATIC")
         || !strcmp(str, "STRUCT")       || !strcmp(str, "GOTO")
-        || !strcmp(str, "CONST")        || !strcmp(str, "GOTO")
-        || !strcmp(str, "DEFAULT")      || !strcmp(str, "INT")
-        || !strcmp(str, "FOR")          || !strcmp(str, "PRINTF")
-        || !strcmp(str, "SIGNED")       || !strcmp(str, "SCANF")
-        || !strcmp(str, "STRING")       || !strcmp(str, "INT")
-        || !strcmp(str, "printchel")    || !strcmp(str, "impcomp")
-        || !strcmp(str, "pcm")          || !strcmp(str, "react"))
+        || !strcmp(str, "CONST")       	|| !strcmp(str, "DEFAULT")      
+		|| !strcmp(str, "INT")			|| !strcmp(str, "FOR")          
+		|| !strcmp(str, "PRINTF")		|| !strcmp(str, "SIGNED")       
+		|| !strcmp(str, "SCANF")		|| !strcmp(str, "STRING")       
+		|| !strcmp(str, "TRUE")			|| !strcmp(str, "FALSE")
+		|| !strcmp(str, "MAIN")			|| !strcmp(str, "printchel")    
+		|| !strcmp(str, "impcomp")		|| !strcmp(str, "pcm")          
+		|| !strcmp(str, "react"))
         return (true);
     return (false);
 }
@@ -269,7 +299,13 @@ void parse(char* str)
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
             
-           else if (validIdentifier(subStr) == true
+            else if (isString(subStr) == true)
+                printf("STRING '%s'\n", subStr);
+            
+            else if (isChar(subStr) == true)
+                printf("CHARACTER '%s'\n", subStr);
+            
+            else if (validIdentifier(subStr) == true
 					 && isChemOperator(str[right - 1]) != "NonChemOperator") {
                 printf("%s\n", isChemOperator(str[right - 1]));
                 fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
@@ -295,7 +331,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a";//has a bug with H^20 & two operator characters
+        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"sussy\" \'c\'";//has a bug with H^20 & two operator characters
 
         parse(str); // calling the parse function
     }
