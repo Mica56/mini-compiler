@@ -89,6 +89,15 @@ bool validIdentifier(char* str)
         return (false);
     return (true);
 }
+
+// Returns 'true' if the string is a line break.
+bool isLineBreak(char* str)
+{
+	int x = atoi(str);
+	if (x == 10)//0x0A
+        return (true);
+    return (false);
+}
  
 // Returns 'true' if the string is a KEYWORD.
 bool isKeyword(char* str)
@@ -213,6 +222,9 @@ void parse(char* str)
             else if (isRealNumber(subStr) == true)
                 printf("REAL NUMBER '%s'\n", subStr);
             
+            else if (isLineBreak(subStr) == true)//bug
+                printf("Line_Break\n");
+            
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "Not a Delimiter"
 					 && isChemOperator(str[right - 1]) == "Not a ChemOperator") {
@@ -246,7 +258,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT .a_nt = ~[H^20] += .1;\n";//has a bug with H^20
+        char str[100] = "INT .a_nt = ~[H^20] += .1;\n~H + FLOAT 2a";//has a bug with H^20 & \n
 
         parse(str); // calling the parse function
     }
