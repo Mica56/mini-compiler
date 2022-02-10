@@ -4,11 +4,10 @@
 1 13 ChemOperator_tilde
 1 13 [ ChemOperator_BracketLeft
 1 18 H^20 IDENTIFIER
-1 18 ] ChemOperaror_BracketRight
+1 18 ] ChemOperator_BracketRight
 1 20 + Operator_plus
 1 21 = Operator_equals
 1 25 ; Delimiter_Semicolon
-1 29 
-~H IDENTIFIER
+1 29 ~H IDENTIFIER
 1 30 + Operator_plus
 1 37 FLOAT KEYWORD

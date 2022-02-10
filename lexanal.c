@@ -9,9 +9,7 @@ int CURRENT_LINE = 1 ;
 // Returns 'true' if the character is a DELIMITER.
 const char* isDelimiter(char ch)
 {
-    if (ch == ' ') 
-		return "Delimiter";
-	else if (ch == ';') 
+	if (ch == ';') 
 		return "Delimiter_Semicolon";
 	else if (ch == '(')
 		return "Delimiter_ParenLeft";
@@ -21,6 +19,10 @@ const char* isDelimiter(char ch)
 		return "Delimiter_BracesLeft";
 	else if (ch == '}')
 		return "Delimiter_BracesRight";
+	else if (ch == ' ') 
+		return "Delimiter";
+	else if (ch == '\n') 
+		return "Delimiter";
 	else if (ch == '[')
 		return "Delimiter";
 	else if (ch == ']')
@@ -75,7 +77,7 @@ const char* isChemOperator(char ch){
 	else if (ch == '[') 
 		return "ChemOperator_BracketLeft";
 	else if (ch ==']')
-		return "ChemOperaror_BracketRight";
+		return "ChemOperator_BracketRight";
     return "Not a ChemOperator";
 }
 
@@ -88,15 +90,6 @@ bool validIdentifier(char* str)
         str[0] == '9' || isDelimiter(str[0]) != "Not a Delimiter")
         return (false);
     return (true);
-}
-
-// Returns 'true' if the string is a line break.
-bool isLineBreak(char* str)
-{
-	int x = atoi(str);
-	if (x == 10)//0x0A
-        return (true);
-    return (false);
 }
  
 // Returns 'true' if the string is a KEYWORD.
@@ -221,10 +214,7 @@ void parse(char* str)
  
             else if (isRealNumber(subStr) == true)
                 printf("REAL NUMBER '%s'\n", subStr);
-            
-            else if (isLineBreak(subStr) == true)//bug
-                printf("Line_Break\n");
-            
+
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "Not a Delimiter"
 					 && isChemOperator(str[right - 1]) == "Not a ChemOperator") {
