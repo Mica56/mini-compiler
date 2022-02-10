@@ -205,9 +205,7 @@ void parse(char* str)
 		        
         if (isDelimiter(str[right]) != "Not a Delimiter" && left == right) {
         	printf("%s\n", isDelimiter(str[right]));
-            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
-            
-            
+            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));            
           
             if (isOperator(str[right]) != "Not an Operator") {
                 printf("%s\n", isOperator(str[right]));
