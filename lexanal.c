@@ -44,6 +44,23 @@ const char* isDelimiter(char ch)
   return "Not a Delimiter";
 }
 
+//Returns string if two chars are TO Expressions
+ const char* isTOExpression(char left, char right){
+ 	char a = left;
+	char b = right;
+	
+	//Evaluates if a and b are TO expressions by comparing the two simultaneously
+	 if(a == '=' && b == '=')
+ 		return "Equal to Operator";
+ 	else if(a == '!' && b == '=')
+	 	return "Not equal to operator";
+	else if(a == '<' && b == '=')
+		return "Less than or equal to operator";
+	else if(a == '>' && b == '=')
+		return "Greater than or equal to operator";
+	return "Not a TO Expression";	
+} 
+
 //edit this
 // Returns 'true' if the character is an OPERATOR.
 const char* isOperator(char ch)
@@ -178,12 +195,17 @@ void parse(char* str)
     dest_fp = fopen("results.mul","w");
  
     while (right <= len && left <= right) {
+                
         if (isDelimiter(str[right]) == "Not a Delimiter")
             right++;
-
+            
+        //Takes two consecutive characters and send them to isTOExpression 
+		if (isTOExpression(str[left],str[right]) != "Not a TO Expression")
+            printf("TO EXPRESSION '%s'\n", isTOExpression(str[right-1],str[right]));
+		        
         if (isDelimiter(str[right]) != "Not a Delimiter" && left == right) {
         	printf("%s\n", isDelimiter(str[right]));
-            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));            
           
             if (isOperator(str[right]) != "Not an Operator") {
                 printf("%s\n", isOperator(str[right]));
@@ -210,7 +232,8 @@ void parse(char* str)
  
             else if (isRealNumber(subStr) == true)
                 printf("REAL NUMBER '%s'\n", subStr);
-            
+                
+                
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "Not a Delimiter"
 					 && isChemOperator(str[right - 1]) == "Not a ChemOperator") {
@@ -240,11 +263,11 @@ int main()
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = false ;
+    bool DEBUG = true ;
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT a = 0 ;";//has a bug with H^20
+        char str[100] = ">=";//has a bug with other delimiters and identifiers where they also appear along with the display of TO
 
         parse(str); // calling the parse function
     }
