@@ -152,9 +152,10 @@ bool isString(char* str)
     return (false);
 }
 
+// Returns 'true' if the string is an CPMMENT.
 bool isComment(char* str)
 {
-    int i, len = strlen(str);
+    int i,  len = strlen(str);
  
     if (len == 0)
         return (false);
