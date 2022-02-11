@@ -152,6 +152,19 @@ bool isString(char* str)
     return (false);
 }
 
+bool isComment(char* str)
+{
+    int i, len = strlen(str);
+ 
+    if (len == 0)
+        return (false);
+    for (i = 0; i < len; i++) {
+        if (str[0] == '/*' && str[i] == '*/')
+            return (true);
+    }
+    return (false);
+}
+
 // Returns 'true' if the string is an CHARACTER.
 bool isChar(char* str)
 {
@@ -301,6 +314,9 @@ void parse(char* str)
             
             else if (isString(subStr) == true)
                 printf("STRING '%s'\n", subStr);
+
+            else if (isComment(subStr) == true)
+                printf("COMMENT '%s'\n" subStr);
             
             else if (isChar(subStr) == true)
                 printf("CHARACTER '%s'\n", subStr);
