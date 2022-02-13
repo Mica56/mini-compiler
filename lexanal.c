@@ -157,8 +157,7 @@ const char* isChemOperator(char ch){
 }
 
 // Returns 'true' if the string is a VALID IDENTIFIER.
-bool validIdentifier(char* str)
-{
+bool validIdentifier(char* str){
     if (str[0] == '0' || str[0] == '1' || str[0] == '2' ||
         str[0] == '3' || str[0] == '4' || str[0] == '5' ||
         str[0] == '6' || str[0] == '7' || str[0] == '8' ||
@@ -169,25 +168,24 @@ bool validIdentifier(char* str)
 }
 
 // Returns 'true' if the string is an STRING.
-const char* isString(char* str)
-{
+const char* isString(char* str){
     int i = 0, f = 0, l = 0, x, len = strlen(str);
  	
     if (len == 0)
         return "NonString";
     for (i = 0; i < len; i++) {
         if (str[0] == '"' && str[i] == '"'){
-        	while(str[f]=='='){
+        	while(str[f]=='"'){
 				f += 1;
 			}
 			l = len - 1;
-			while(str[l]=='='){
+			while(str[l]=='"'){
 				l -= 1;
 			}
 			len = l - f;
 			char *str1 = (char*)malloc(len);
-			while(i < len-1){
-				str1[i] = str[f+1];//has bug with \n
+			while(i < len){
+				str1[i] = str[f];//has bug with \n
 				i += 1;
 				f += 1;
 			}
@@ -200,17 +198,18 @@ const char* isString(char* str)
 }
 
 // Returns 'true' if the string is an CHARACTER.
-bool isChar(char* str)
-{
+const char* isChar(char* str){
     int i, len = strlen(str);
- 	char ch;
+ 	char *ch = (char*)malloc(len);
     if (len == 0)
         return (false);
-    for (i = 0; i < len; i++) {
-        if (str[0] == '\'' && str[2] == '\'')
-            return (true);
-    }
-    return (false);
+
+    if (str[0] == '\'' && str[2] == '\''){
+    	ch[0] = str[1];
+    	ch[1] = '\0';
+        return ch;
+	}
+    return "NonCharacter";
 }
 // Returns 'true' if the string is an CPMMENT.
 //bool isComment(char* str)//have to formualte a proper logic for this
@@ -359,14 +358,15 @@ void parse(char* str)
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
             
-            else if (isString(subStr) != "NonString")
+            else if (isString(subStr) != "NonString"
+					 && isDelimiter(str[right - 1]) == "NonDelimiter")
                 printf("STRING '%s'\n", isString(subStr));
 
 //            else if (isComment(subStr) == true)//doesn't work properly
 //                printf("COMMENT '%s'\n", subStr);
             
-			else if (isChar(subStr) == true)
-                printf("CHARACTER '%s'\n", subStr);
+			else if (isChar(subStr) != "NonCharacter")
+                printf("CHARACTER '%s'\n", isChar(subStr));
             
             else if (validIdentifier(subStr) == true
 					 && isChemOperator(str[right - 1]) != "NonChemOperator") {
