@@ -211,6 +211,7 @@ const char* isChar(char* str){
 	}
     return "NonCharacter";
 }
+
 // Returns 'true' if the string is an CPMMENT.
 //bool isComment(char* str)//have to formualte a proper logic for this
 //{
@@ -224,6 +225,13 @@ const char* isChar(char* str){
 //    }
 //    return (false);
 //}
+
+bool isBoolean(char* str){
+	if (!strcmp(str, "TRUE") || !strcmp(str, "FALSE")
+		|| !strcmp(str, "true") || !strcmp(str, "false"))
+		return (true);
+	return (false);
+}
 
 // Returns 'true' if the string is a KEYWORD.
 bool isKeyword(char* str)
@@ -244,7 +252,6 @@ bool isKeyword(char* str)
 		|| !strcmp(str, "INT")			|| !strcmp(str, "FOR")          
 		|| !strcmp(str, "PRINTF")		|| !strcmp(str, "SIGNED")       
 		|| !strcmp(str, "SCANF")		|| !strcmp(str, "STRING")       
-		|| !strcmp(str, "TRUE")			|| !strcmp(str, "FALSE")
 		|| !strcmp(str, "MAIN")			|| !strcmp(str, "printchel")    
 		|| !strcmp(str, "impcomp")		|| !strcmp(str, "pcm")          
 		|| !strcmp(str, "react"))
@@ -344,6 +351,11 @@ void parse(char* str)
                 printf("KEYWORD '%s'\n", subStr);
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
             }
+            
+                        
+            else if (isBoolean(subStr) == true) { 
+                printf("BOOLEAN '%s'\n", subStr);
+            }
  
             else if (isInteger(subStr) == true)
                 printf("INTEGER '%s'\n", subStr);
@@ -358,8 +370,7 @@ void parse(char* str)
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
             
-            else if (isString(subStr) != "NonString"
-					 && isDelimiter(str[right - 1]) == "NonDelimiter")
+            else if (isString(subStr) != "NonString")
                 printf("STRING '%s'\n", isString(subStr));
 
 //            else if (isComment(subStr) == true)//doesn't work properly
@@ -394,7 +405,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\'";//has a bug with H^20 & two operator characters
+        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\' TRUE false";//has a bug with H^20 & two operator characters
 
         parse(str); // calling the parse function
     }
