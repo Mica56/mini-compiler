@@ -490,11 +490,6 @@ void FA_parse (char *string )
               /*perform_transition(string,'W',20);*/
               /*perform_transition(string,'i',21);*/
               /*perform_transition(string,'p',22);*/
-              else if (CURRENT_LETTER ==' ') {
-                  printf("WHITESPACE\n");
-                  CURRENT_RIGHT_COUNT++;
-                  CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
-              }
               else if (isalpha(CURRENT_LETTER) || (CURRENT_LETTER == '_')) {
                   // perform regex check to ensure string is a VALID Identifier
                   while(isalpha(CURRENT_LETTER) || (CURRENT_LETTER == '_')) {
@@ -502,6 +497,11 @@ void FA_parse (char *string )
                       CURRENT_RIGHT_COUNT++;
                   }
                   accept_and_print(string, "IDENTIFIER");
+              }
+              else {
+                  printf("WHITESPACE\n");
+                  CURRENT_RIGHT_COUNT++;
+                  CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
               }
 
               break;
@@ -512,8 +512,10 @@ void FA_parse (char *string )
 
               /*printf("\nEnd State for +");*/
         case 16:
-              characters_perform_transition(string, 'R',17);
-              characters_perform_transition(string,'O',21);
+              if (CURRENT_LETTER == 'R')
+                  characters_perform_transition(string, 'R',17);
+              else if (CURRENT_LETTER == 'O')
+                  characters_perform_transition(string,'O',21);
               break;
         case 17:
               characters_perform_transition(string, 'E',18);
@@ -603,7 +605,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "BREAK CASE";//has a bug with H^20 & two operator characters
+        char str[100] = "BREAK CASE a";//has a bug with H^20 & two operator characters
 
         /*CURRENT_STRING = str;*/
 
