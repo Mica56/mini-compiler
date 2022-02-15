@@ -12,3 +12,5 @@
 1 30 + Operator_Plus
 1 37 FLOAT KEYWORD
 1 38 % Operator_Modulo
+1 69 / Operator_Divide
+1 85 Thisisacomment IDENTIFIER

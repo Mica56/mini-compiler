@@ -56,89 +56,90 @@ const char* isDelimiter(char ch)
 	char b = right;
 	char *str = "NonTwoOperator";
 	
-	//Evaluates if a and b are TO expressions by comparing the two simultaneously
-	if(a == '=' && b == '='){
-		str = "Operator_EqualsTo";
-		return str;
-	}
- 	else if(a == '!' && b == '='){
-		str = "Operator_NotEqualsTo";
-		return str;
-	}
-	else if(a == '<' && b == '='){
-		str = "Operator_LessEqual";
-		return str;
-	}
-	else if(a == '>' && b == '='){
-		str = "Operator_GreaterEqual";
-		return str;
-	}
-	else if(a == '+' && b == '='){
-		str = "Operator_PlusEqual";
-		return str;
-	}
-	else if(a == '-' && b == '='){
-		str = "Operator_MinusEqual";
-		return str;
-	}
-	else if(a == '*' && b == '='){
-		str = "Operator_MultiplyEqual";
-		return str;
-	}
-	else if(a == '/' && b == '='){
-		str = "Operator_DivideEqual";
-		return str;
-	}
-	else if(a == '%' && b == '='){
-		str = "Operator_ModuleEqual";
-		return str;
-	}
-	else if(a == '~' && b == '/'){
-		str = "Operator_IntegerDivision";
-		return str;
-	}
-	else if(a == '*' && b == '*'){
-		str = "Operator_Exponent";
-		return str;
-	}
-	else if(a == '+' && b == '+'){
-		str = "Operator_Increment";
-		return str;
-	}
-	else if(a == '-' && b == '-'){
-		str = "Operator_Decrement";
-		return str;
-	}
-	else if(a == '|' && b == '|'){
-		str = "Operator_LogicalOR";
-		return str;
-	}
-	else if(a == '&' && b == '&'){
-		str = "Operator_LogicalAND";
-		return str;
-	}
-		
-	if(!strcmp(str, "NonTwoOperator")){//bug comes from here
-		if (b == '+')
-			return "Operator_Plus";
-		else if (b == '-')
-			return "Operator_Minus";
-		else if (b == '*')
-			return "Operator_Multiply";
-		else if (b == '/')
-			return "Operator_Divide";
-		else if (b == '>')
-			return "Operator_Greaterthan";
-		else if (b == '<')
-			return "Operator_Lessthan";
-		else if (b == '=')
-			return "Operator_Equals";
-		else if (b == '%')
-			return "Operator_Modulo";
-		else if (b == '!')
-			return "Operator_NotEqual";
-	}
-	
+//	if((a != '/' && b != '*')||(a != '*' && b != '/')){
+		//Evaluates if a and b are TO expressions by comparing the two simultaneously
+		if(a == '=' && b == '='){
+			str = "Operator_EqualsTo";
+			return str;
+		}
+	 	else if(a == '!' && b == '='){
+			str = "Operator_NotEqualsTo";
+			return str;
+		}
+		else if(a == '<' && b == '='){
+			str = "Operator_LessEqual";
+			return str;
+		}
+		else if(a == '>' && b == '='){
+			str = "Operator_GreaterEqual";
+			return str;
+		}
+		else if(a == '+' && b == '='){
+			str = "Operator_PlusEqual";
+			return str;
+		}
+		else if(a == '-' && b == '='){
+			str = "Operator_MinusEqual";
+			return str;
+		}
+		else if(a == '*' && b == '='){
+			str = "Operator_MultiplyEqual";
+			return str;
+		}
+		else if(a == '/' && b == '='){
+			str = "Operator_DivideEqual";
+			return str;
+		}
+		else if(a == '%' && b == '='){
+			str = "Operator_ModuleEqual";
+			return str;
+		}
+		else if(a == '~' && b == '/'){
+			str = "Operator_IntegerDivision";
+			return str;
+		}
+		else if(a == '*' && b == '*'){
+			str = "Operator_Exponent";
+			return str;
+		}
+		else if(a == '+' && b == '+'){
+			str = "Operator_Increment";
+			return str;
+		}
+		else if(a == '-' && b == '-'){
+			str = "Operator_Decrement";
+			return str;
+		}
+		else if(a == '|' && b == '|'){
+			str = "Operator_LogicalOR";
+			return str;
+		}
+		else if(a == '&' && b == '&'){
+			str = "Operator_LogicalAND";
+			return str;
+		}
+			
+		if(!strcmp(str, "NonTwoOperator")){//bug comes from here
+			if (b == '+')
+				return "Operator_Plus";
+			else if (b == '-')
+				return "Operator_Minus";
+			else if (b == '*')
+				return "Operator_Multiply";
+			else if (b == '/')
+				return "Operator_Divide";
+			else if (b == '>')
+				return "Operator_Greaterthan";
+			else if (b == '<')
+				return "Operator_Lessthan";
+			else if (b == '=')
+				return "Operator_Equals";
+			else if (b == '%')
+				return "Operator_Modulo";
+			else if (b == '!')
+				return "Operator_NotEqual";
+		}
+//	}
 	return "NonOperator";	
 } 
  
@@ -169,7 +170,7 @@ bool validIdentifier(char* str){
 
 // Returns 'true' if the string is an STRING.
 const char* isString(char* str){
-    int i = 0, f = 0, l = 0, x, len = strlen(str);
+    int i = 0, f = 0, l = 0, len = strlen(str);
  	
     if (len == 0)
         return "NonString";
@@ -184,10 +185,9 @@ const char* isString(char* str){
 			}
 			len = l - f;
 			char *str1 = (char*)malloc(len);
-			while(i < len){
-				str1[i] = str[f];//has bug with \n
+			while(i < len+1){
+				str1[i] = str[i+1];//has bug with space
 				i += 1;
-				f += 1;
 			}
 			str1[i] = '\0';
 			return str1;
@@ -213,18 +213,34 @@ const char* isChar(char* str){
 }
 
 // Returns 'true' if the string is an CPMMENT.
-//bool isComment(char* str)//have to formualte a proper logic for this
-//{
-//    int i,  len = strlen(str);
-// 
-//    if (len == 0)
-//        return (false);
-//    for (i = 0; i < len; i++) {
-//        if (str[0] == '/*' && str[i] == '*/')
-//            return (true);
-//    }
-//    return (false);
-//}
+const char* isComment(char left, char right, char* str){// revise logic
+	char a = left;
+	char b = right;
+    int i = 0, f = 0, l = 0, len = strlen(str);
+ 	
+    if (len == 0)
+        return "NonComment";
+
+    if (a == '/' && b == '/'){
+    	while(str[f]=='/'){
+			f += 1;
+		}
+		l = len - 1;
+		while(str[l]=='\n'){
+			l -= 1;
+		}
+		len = l - f;
+		char *str1 = (char*)malloc(len);
+		while(i < len){
+			str1[i] = str[i+1];//has bug with \n
+			i += 1;
+		}
+		str1[i] = '\0';
+		return str1;
+	}
+
+    return "NonComment";
+}
 
 bool isBoolean(char* str){
 	if (!strcmp(str, "TRUE") || !strcmp(str, "FALSE")
@@ -319,7 +335,8 @@ void parse(char* str)
     //
     FILE *dest_fp;
     dest_fp = fopen("results.mul","w");
- 
+    
+ 	printf("Token\tLexeme\n\n");
     while (right <= len && left <= right) {
                 
         if (isDelimiter(str[right]) == "NonDelimiter")
@@ -330,6 +347,8 @@ void parse(char* str)
         		printf("%s '%c'\n", isDelimiter(str[right]), str[right]);
             	fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
 			}
+			else if(str[right]=='/' && str[right-1]=='/')
+				printf("Start of a comment");
 				//Takes two consecutive characters and send them to isTOExpression 
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
                 printf("%s\n", isOperator(str[right-1],str[right]));
@@ -347,12 +366,14 @@ void parse(char* str)
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
  
-            if (isKeyword(subStr) == true) { 
+ 			if (isComment(str[right-2], str[right-1], subStr) != "NonComment")//doesn't work properly
+                printf("COMMENT '%s'\n", isComment(str[right-2], str[right - 1], subStr));
+                
+            else if (isKeyword(subStr) == true) { 
                 printf("KEYWORD '%s'\n", subStr);
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
             }
-            
-                        
+                               
             else if (isBoolean(subStr) == true) { 
                 printf("BOOLEAN '%s'\n", subStr);
             }
@@ -365,16 +386,14 @@ void parse(char* str)
 
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
-					 && isChemOperator(str[right - 1]) == "NonChemOperator") {
+					 && isChemOperator(str[right - 1]) == "NonChemOperator"
+					 && isComment(str[right-2], str[right - 1], subStr) == "NonComment") {
                 printf("IDENTIFIER '%s'\n", subStr);
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
             
             else if (isString(subStr) != "NonString")
                 printf("STRING '%s'\n", isString(subStr));
-
-//            else if (isComment(subStr) == true)//doesn't work properly
-//                printf("COMMENT '%s'\n", subStr);
             
 			else if (isChar(subStr) != "NonCharacter")
                 printf("CHARACTER '%s'\n", isChar(subStr));
@@ -405,7 +424,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\' TRUE false";//has a bug with H^20 & two operator characters
+        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\' TRUE false //Thisisacomment\n";//has a bug with H^20 & two operator characters
 
         parse(str); // calling the parse function
     }
