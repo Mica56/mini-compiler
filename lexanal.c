@@ -358,10 +358,11 @@ void parse(char* str)
 
 void perform_transition(char *string, char state_character, int next_state)
 {
-    printf("Run Transition : %d\n",next_state);
+    printf("Run Transition : %d %c\n",next_state, string[CURRENT_RIGHT_COUNT]);
 
     if ((state_character == string[CURRENT_RIGHT_COUNT])) {
         CURRENT_STATE_NUMBER = next_state; 
+        CURRENT_RIGHT_COUNT++;
         CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
         CURRENT_WORD_IS_IDENTIFIER = false;
     }
@@ -373,6 +374,7 @@ void characters_perform_transition(char *string, char state_character, int next_
 {
     if (state_character == string[CURRENT_RIGHT_COUNT]) {
         CURRENT_STATE_NUMBER = next_state; 
+        CURRENT_RIGHT_COUNT++;
         CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
         CURRENT_WORD_IS_IDENTIFIER = false;
 
@@ -380,7 +382,7 @@ void characters_perform_transition(char *string, char state_character, int next_
     else if (string[CURRENT_RIGHT_COUNT] == ' ')
         printf("Whitespace, ignore for now \n");
 
-    else {
+    else if (!CURRENT_WORD_IS_IDENTIFIER) {
         // Head to identifier state if not possible
         CURRENT_STATE_NUMBER = 0 ;
         CURRENT_WORD_IS_IDENTIFIER = true;
@@ -398,6 +400,7 @@ void accept_and_print( char *string, char *keyword_formed)
 
     printf("%s - %s\n",keyword_formed,otherString);
 
+    CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
     CURRENT_LEFT_COUNT = CURRENT_RIGHT_COUNT;
     CURRENT_STATE_NUMBER = 0;
 
@@ -414,44 +417,63 @@ void FA_parse (char *string )
   //const char* value;
   //
 
+  CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
+
   while(CURRENT_RIGHT_COUNT <= len && CURRENT_LEFT_COUNT <= CURRENT_RIGHT_COUNT) {
       printf("%c - %d\n",CURRENT_LETTER,CURRENT_STATE_NUMBER);
-
-
       switch(CURRENT_STATE_NUMBER) {
           case 0:
               /*perform_transition(string,'+', 1);*/
-              perform_transition(string,'-',2);
-              perform_transition(string,'*',3);
-              perform_transition(string,'/',4);
-              perform_transition(string,'%',5);
-              perform_transition(string,'~',6);
-              perform_transition(string,'*',7);
-              perform_transition(string,'B',16);
-              perform_transition(string,'C',24);
-              perform_transition(string,'D',10);
-              perform_transition(string,'E',11);
-              perform_transition(string,'F',12);
-              perform_transition(string,'G',13);
+              if (CURRENT_LETTER == '-')
+                perform_transition(string,'-',2);
+              else if (CURRENT_LETTER =='*')
+                perform_transition(string,'*',3);
+              else if (CURRENT_LETTER == '/')
+                perform_transition(string,'/',4);
+              else if (CURRENT_LETTER == '%')
+                  perform_transition(string,'%',5);
+              else if (CURRENT_LETTER == '~')
+                  perform_transition(string,'~',6);
+              else if (CURRENT_LETTER == '*')
+                  perform_transition(string,'*',7);
+              else if (CURRENT_LETTER == 'B')
+                  perform_transition(string,'B',16);
+              else if (CURRENT_LETTER == 'C')
+                  perform_transition(string,'C',24);
+              else if (CURRENT_LETTER == 'D')
+                  perform_transition(string,'D',10);
+              else if (CURRENT_LETTER == 'E')
+                  perform_transition(string,'E',11);
+              else if (CURRENT_LETTER == 'F')
+                  perform_transition(string,'F',12);
+              else if (CURRENT_LETTER == 'G')
+                  perform_transition(string,'G',13);
               /*perform_transition(string,'I',14);*/
               /*perform_transition(string,'L',15);*/
               /*perform_transition(string,'P',16);*/
               /*perform_transition(string,'R',17);*/
               /*perform_transition(string,'S',18);*/
-              /*perform_transition(string,'U',19);*/
+              /*perform_trans
+            case 30: WORD_STATE(TRANSITION('_', 31));
+            case 31: WORD_STATE(TRANSITION('d', 32));
+            case 32: WORD_STATE(TRANSITION('e', 33));ition(string,'U',19);*/
               /*perform_transition(string,'W',20);*/
               /*perform_transition(string,'i',21);*/
               /*perform_transition(string,'p',22);*/
-
-              if (CURRENT_WORD_IS_IDENTIFIER && (CURRENT_LETTER != ' ')) {
+              else if (CURRENT_LETTER ==' ') {
+                  printf("WHITESPACE\n");
+                  CURRENT_RIGHT_COUNT++;
+                  CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
+              }
+              else if (isalpha(CURRENT_LETTER) || (CURRENT_LETTER == '_')) {
                   // perform regex check to ensure string is a VALID Identifier
-                  perform_transition(string,CURRENT_LETTER,0);
-              }
-              else if (CURRENT_WORD_IS_IDENTIFIER) {
-                  perform_transition(string,CURRENT_LETTER,1);
+                  while(isalpha(CURRENT_LETTER) || (CURRENT_LETTER == '_')) {
+                      CURRENT_LETTER = string[CURRENT_RIGHT_COUNT];
+                      CURRENT_RIGHT_COUNT++;
+                  }
+                  accept_and_print(string, "IDENTIFIER");
               }
 
-              CURRENT_RIGHT_COUNT++;
               break;
         // case for identifier
         case 1:
@@ -462,61 +484,62 @@ void FA_parse (char *string )
         case 16:
               characters_perform_transition(string, 'R',17);
               characters_perform_transition(string,'O',21);
-
-              CURRENT_RIGHT_COUNT++;
               break;
         case 17:
               characters_perform_transition(string, 'E',18);
 
-              CURRENT_RIGHT_COUNT++;
               break;
         case 18:
               characters_perform_transition(string,'A',19);
-
-              CURRENT_RIGHT_COUNT++;
               break;
         case 19:
               characters_perform_transition(string,'K',20);
-
-              CURRENT_RIGHT_COUNT++;
               break;
         case 20:
               accept_and_print(string,"KEYWORD_BREAK");
-
-              CURRENT_RIGHT_COUNT++;
               break;
         case 21:
               characters_perform_transition(string,'O',22);
+              /*characters_perform_transition(string,*/
 
-              CURRENT_RIGHT_COUNT++;
+
               break;
         case 22:
               characters_perform_transition(string,'L',23);
 
-              CURRENT_RIGHT_COUNT++;
+        /*case 31: WORD_STATE(TRANSITION('d', 32));*/
+        /*case 32: WORD_STATE(TRANSITION('e', 33));*/
+
               break;
         case 23:
               accept_and_print(string,"KEYWORD_BOOL");
-
-              CURRENT_RIGHT_COUNT++;
               break;
         case 24:
-              characters_perform_transition(string,'A',25);
-              /*characters_perform_transition(*/
-              CURRENT_RIGHT_COUNT++;
+              if (CURRENT_LETTER == 'A')
+                  characters_perform_transition(string,'A',25);
+              else if (CURRENT_LETTER == 'H')
+                  characters_perform_transition(string,'H',28);
+              else if (CURRENT_LETTER == 'O')
+                  characters_perform_transition(string,'O',21);
+
               break;
         case 25:
               characters_perform_transition(string,'S',26);
-              CURRENT_RIGHT_COUNT++;
               break;
         case 26:
               characters_perform_transition(string,'E',27);
-              CURRENT_RIGHT_COUNT++;
+
               break;
         case 27:
               accept_and_print(string,"KEYWORD_CASE");
-
-
+        case 28:
+              characters_perform_transition(string,'A',29);
+              break;
+        case 29:
+              characters_perform_transition(string,'R',30);
+        case 30:
+              accept_and_print(string,"KEYWORD_CHAR");
+              break;
 
 
         /*case 2:*/
@@ -550,7 +573,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "BOOL z ";//has a bug with H^20 & two operator characters
+        char str[100] = "BREAK CASE";//has a bug with H^20 & two operator characters
 
         /*CURRENT_STRING = str;*/
 
