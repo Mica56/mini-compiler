@@ -322,6 +322,7 @@ void parse(char* str)
         		printf("%s '%c'\n", isDelimiter(str[right]), str[right]);
             	fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
 			}
+
 			else if(str[right]=='/' && str[right-1]=='/' || str[right]=='/' && str[right-1]=='*'){
 //				printf("Start of a comment\n");
 				n=1;
@@ -350,7 +351,7 @@ void parse(char* str)
                 printf("KEYWORD '%s'\n", subStr);
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
             }
-                               
+
             else if (isBoolean(subStr) == true) { 
                 printf("BOOLEAN '%s'\n", subStr);
             }
@@ -401,6 +402,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
+		
         char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\' TRUE false //Thisisacomment\n";//has a bug with H^20 & two operator characters
 
         parse(str); // calling the parse function
