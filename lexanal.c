@@ -478,6 +478,7 @@ void FA_parse (char *string )
                   perform_transition(string,'F',12);
               else if (CURRENT_LETTER == 'G')
                   perform_transition(string,'G',13);
+
               /*perform_transition(string,'I',14);*/
               /*perform_transition(string,'L',15);*/
               /*perform_transition(string,'P',16);*/
@@ -552,7 +553,7 @@ void FA_parse (char *string )
               else if (CURRENT_LETTER == 'H')
                   characters_perform_transition(string,'H',28);
               else if (CURRENT_LETTER == 'O')
-                  characters_perform_transition(string,'O',21);
+                  characters_perform_transition(string,'O',31);
 
               break;
         case 25:
@@ -572,6 +573,38 @@ void FA_parse (char *string )
         case 30:
               accept_and_print(string,"KEYWORD_CHAR");
               break;
+        case 31:
+              characters_perform_transition(string,'O',32);
+              break;
+        case 32:
+              characters_perform_transition(string,'N',33);
+              break;
+        case 33:
+              characters_perform_transition(string,'T',34);
+              break;
+        case 34:
+              characters_perform_transition(string,'I',35);
+              break;
+        case 35:
+              characters_perform_transition(string,'N',36);
+              break;
+        case 36:
+              characters_perform_transition(string,'U',37);
+              break;
+        case 37:
+              characters_perform_transition(string,'E',38);
+              break;
+        case 38:
+              accept_and_print(string,"KEYWORD_CONTINUE");
+              break;
+
+
+
+
+
+
+
+
 
 
         /*case 2:*/
@@ -599,13 +632,13 @@ int main()
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = true ;
+    bool DEBUG = false ;
 
     dest_fp = fopen("results.mul","w");
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "BREAK CASE a";//has a bug with H^20 & two operator characters
+        char str[100] = "CONTINUE";//has a bug with H^20 & two operator characters
 
         /*CURRENT_STRING = str;*/
 
@@ -613,7 +646,6 @@ int main()
     }
     // DEBUG-OFF Mode: Accepts an entire file and converts it all into another file containing lexeme tokens.
     else {
-        char line[100] ;
         size_t len = 0 ;
 
         ssize_t read;
@@ -627,8 +659,19 @@ int main()
             return 0 ;
         }
 
-        while (val = fgets(line,100, fptr)) {
-            parse(val);
+        while (val = fgets(CURRENT_STRING,100, fptr)) {
+
+            CURRENT_LINE = 1 ; 
+            CURRENT_STATE_NUMBER = 0;
+
+            CURRENT_LEFT_COUNT = 0;
+            CURRENT_RIGHT_COUNT = 0;
+
+            CURRENT_LETTER = ' ';
+
+            CURRENT_WORD_IS_IDENTIFIER = false;
+
+            FA_parse(val);
         }
 
         fclose(fptr);
