@@ -311,7 +311,7 @@ void parse(char* str)
     FILE *dest_fp;
     dest_fp = fopen("results.mul","w");
     
- 	printf("Token\tLexeme\n\n");
+// 	printf("Token\tLexeme\n\n");
     while (right <= len && left <= right) {
                 
         if (isDelimiter(str[right]) == "NonDelimiter")
@@ -337,7 +337,9 @@ void parse(char* str)
             	printf("%s '%c'\n", isChemOperator(str[right]), str[right]);
                 fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
             }
- 
+ 			else if(str[right]=='\n')
+ 				n=0;
+ 			
             right++;
             left = right;
         } else if (isDelimiter(str[right]) != "NonDelimiter" && left != right
@@ -346,7 +348,7 @@ void parse(char* str)
  
  			if (isComment(n) == true)//doesn't work properly
                 printf("COMMENT '%s'\n", subStr);
-                
+            
             else if (isKeyword(subStr) == true) { 
                 printf("KEYWORD '%s'\n", subStr);
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
@@ -398,12 +400,12 @@ int main()
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = true ;
+    bool DEBUG = false ;
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
 		
-        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\' TRUE false //Thisisacomment\n";//has a bug with H^20 & two operator characters
+        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\' TRUE false //Thisisacomment\n BREAK";//has a bug with H^20 & two operator characters
 
         parse(str); // calling the parse function
     }
