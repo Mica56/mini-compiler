@@ -354,10 +354,12 @@ void parse(char* str)
 
             else if (isBoolean(subStr) == true) { 
                 printf("BOOLEAN '%s'\n", subStr);
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
             }
  
             else if (isInteger(subStr) == true)
                 printf("INTEGER '%s'\n", subStr);
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "INTEGER");
  
             else if (isRealNumber(subStr) == true)
                 printf("REAL NUMBER '%s'\n", subStr);
@@ -372,6 +374,8 @@ void parse(char* str)
             
             else if (isString(subStr) != "NonString")
                 printf("STRING '%s'\n", isString(subStr));
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "String");
+
             
 			else if (isChar(subStr) != "NonCharacter")
                 printf("CHARACTER '%s'\n", isChar(subStr));
@@ -385,6 +389,7 @@ void parse(char* str)
             else if (validIdentifier(subStr) == false
                 	&& isDelimiter(str[right - 1]) == "NonDelimiter")
                 printf("'%s' IS INVALID\n", subStr);
+                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], subStr, "INVALID");
             left = right;
         }
     }
@@ -402,7 +407,7 @@ int main()
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-		
+
         char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"longsussy\" \'c\' TRUE false //Thisisacomment\n";//has a bug with H^20 & two operator characters
 
         parse(str); // calling the parse function
