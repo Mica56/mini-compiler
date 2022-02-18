@@ -360,11 +360,11 @@ void parse(char* str)
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "Identifier");
             }
 
-           else if (isString(subStr) != "NonString")
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
-
-            else if (isChar(subStr) != "NonCharacter")
+			else if (isChar(subStr) != "NonCharacter")
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+                
+            else if (isString(subStr) != "NonString")
+                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
 
             else if (validIdentifier(subStr) == true
            			&& isChemOperator(str[right - 1]) != "NonChemOperator") {
