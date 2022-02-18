@@ -1,8 +1,11 @@
-7 0 } Delimiter_BracesRight
-AT KEYWORD
-4 12 % Operator_Modulo
-4 15 ; Delimiter_Semicolon
-Operator_BracketRight
-3 21 > Operator_Greaterthan
-3 22 = Operator_GreaterEqual
-3 26 ; Delimiter_Semicolon
+10 4 line IDENTIFIER
+10 4 * Operator_Multiply
+10 5 / Operator_Divide
+10 8  IDENTIFIER
+ Delimiter_Semicolon
+ketLeft
+4 18 H^20 IDENTIFIER
+4 18 ] ChemOperator_BracketRight
+4 20 > Operator_Greaterthan
+4 21 = Operator_GreaterEqual
+4 25 ; Delimiter_Semicolon

@@ -1,7 +1,10 @@
-//This is a comment
+//single line
+
 INT MAIN () {
-	INT .a_nt = ~[H^20] >= .1;
-	~H + FLOAT %2a;
-	STRING "longsussy";
-	CHAR 'c';
+INT .a_nt = ~[H^20] >= .1;
+~H + FLOAT %2a;
+STRING "longsussy";
+CHAR 'c';
 }
+/*multi 
+line*/

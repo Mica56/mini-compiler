@@ -211,8 +211,14 @@ const char* isChar(char* str){
     return "NonCharacter";
 }
 
-bool isComment(int n){
+bool isSingleComment(int n){
 	if(n == 1)
+		return (true);
+	return false;
+}
+
+bool isMultiComment(int m){
+	if(m == 1)
 		return (true);
 	return false;
 }
@@ -304,7 +310,7 @@ char* subString(char* str, int left, int right)
 // Parsing the input STRING.
 void parse(char* str)
 {
-    int left = 0, right = 0, n=0;
+    int left = 0, right = 0, n=0, m=0;
     int len = strlen(str);
     //const char* value;
     //
@@ -323,10 +329,12 @@ void parse(char* str)
             	fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
 			}
 
-			else if(str[right]=='/' && str[right-1]=='/' || str[right]=='/' && str[right-1]=='*'){
-//				printf("Start of a comment\n");
+			else if(str[right]=='/' && str[right-1]=='/')
 				n=1;
-			}
+			
+			else if(str[right]=='*' && str[right-1]=='/')
+				m=1;
+				
 				//Takes two consecutive characters and send them to isTOExpression 
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
                 printf("%s\n", isOperator(str[right-1],str[right]));
@@ -339,6 +347,11 @@ void parse(char* str)
             }
  			else if(str[right]=='\n')
  				n=0;
+ 			else if(str[right]=='/' && str[right-1]=='*'){
+ 					printf("End of a comment\n");
+ 					m=0;
+			 }
+ 				
  			
             right++;
             left = right;
@@ -346,7 +359,11 @@ void parse(char* str)
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
  
- 			if (isComment(n) == true)//doesn't work properly
+ 			if (isSingleComment(n) == true)
+                printf("COMMENT '%s'\n", subStr);
+            
+            else if (isMultiComment(m) == true
+					&& isDelimiter(str[right - 1]) == "NonDelimiter")
                 printf("COMMENT '%s'\n", subStr);
             
             else if (isKeyword(subStr) == true) { 
@@ -367,7 +384,7 @@ void parse(char* str)
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
 					 && isChemOperator(str[right - 1]) == "NonChemOperator"
-					 && isComment(n) == true) {
+					 && isMultiComment(m) == false) {
                 printf("IDENTIFIER '%s'\n", subStr);
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
