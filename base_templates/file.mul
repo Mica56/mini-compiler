@@ -1,9 +1,8 @@
 INT MAIN () {
-  FLOAT a = 0 ; 
+  FLOAT a = 0 ;
   INT b = 0;
   STRING c = "a";
   INT a = 1;
-
   LONG temp = num;
 
   a+=1;
@@ -45,7 +44,7 @@ INT MAIN () {
     }
 
     DO {
-      
+
     }
     WHILE (TRUE)
     FOR ()
@@ -59,8 +58,6 @@ INT MAIN () {
     PRINTF(pcm(~H, ~[H^2O]);
     PRINTF(react(~2C, ~O^2));
 
-
-
   }
   ELSE {
     PRINTF("PRINT ME 2");
@@ -69,12 +66,11 @@ INT MAIN () {
   }
   WHILE (TRUE) {
     BREAK;
-
     GOTO;
     CONTINUE;
     // SINGLE LINE COMMENT
     /* MULTIPLE LINE COMMENT */
 
-
   }
   RETURN 0 ; 
+}
