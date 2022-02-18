@@ -268,8 +268,8 @@ void parse(char* str)
     right = 0;
     int len = strlen(str);
     //const char* value;
-    dest_fp = fopen("results.mul","w");
- 
+
+
     while (right <= len && left <= right) {
 
         if (isDelimiter(str[right]) == "NonDelimiter")
@@ -285,7 +285,7 @@ void parse(char* str)
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
                 /*printf("%s\n", isOperator(str[right-1],str[right]));*/
                 fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isOperator(str[right-1],str[right]));
-                printf("%d %d %c %s\n",CURRENT_LINE,right,str[right], isOperator(str[right-1],str[right]));
+                printf("%d %d %s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
             }
 
             else if(isChemOperator(str[right]) != "NonChemOperator") {
@@ -300,7 +300,7 @@ void parse(char* str)
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
 
-            if (isKeyword(subStr) == true) { 
+            if (isKeyword(subStr) == true) {
                 /*printf("KEYWORD '%s'\n", subStr);*/
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
                 printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
@@ -319,7 +319,7 @@ void parse(char* str)
            && isChemOperator(str[right - 1]) == "NonChemOperator") {
                 /*printf("IDENTIFIER '%s'\n", subStr);*/
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "Identifier");
-                printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "Identifier");
+                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "Identifier");
             }
 
             else if (isString(subStr) == true)
@@ -372,6 +372,7 @@ int main()
 
 
         fptr = fopen("file.mul","r");
+        dest_fp = fopen("output.mul","w");
 
         if (fptr == NULL) {
             printf("Can't Open File");

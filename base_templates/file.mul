@@ -1,0 +1,76 @@
+INT MAIN () {
+  FLOAT a = 0 ;
+  INT b = 0;
+  STRING c = "a";
+  INT a = 1;
+  LONG temp = num;
+
+  a+=1;
+  a-=1;
+  a*=1;
+  a/=1;
+  a%=1;
+
+  INT f = a + b - a * a / b % a ~/ b **a ;
+  +b;
+  -b;
+  ++b;
+  b++;
+  --b;
+  b--;
+
+
+  DOUBLE c = 9 /9 ; 
+
+  DOUBLE d = 9 /9 ;
+
+  BOOL e = TRUE;
+
+  IF (e == TRUE && e != TRUE e || !e) {
+    PRINTF("PRINT ME");
+
+    PRINTF(pcm(~H, ~[H^2O]);
+
+    PRINTF(react(~2C, ~O^2));
+
+    SWITCH(TRUE) 
+    {
+      CASE 1:
+        PRINTF("END");
+      CASE 2:
+        PRINTF("END");
+      DEFAULT:
+        PRINTF("END");
+    }
+
+    DO {
+
+    }
+    WHILE (TRUE)
+    FOR ()
+
+    INT SIGNED g = 0 ;
+    STRING v = '';
+    SCANF("text",v);
+    INT UNSIGNED h = 0;
+    PRINTF(printchel(~H));
+    PRINTF(imcomp(~Mg, ~Cl);
+    PRINTF(pcm(~H, ~[H^2O]);
+    PRINTF(react(~2C, ~O^2));
+
+  }
+  ELSE {
+    PRINTF("PRINT ME 2");
+
+    PRINTF(imcomp(~Mg, ~Cl);
+  }
+  WHILE (TRUE) {
+    BREAK;
+    GOTO;
+    CONTINUE;
+    // SINGLE LINE COMMENT
+    /* MULTIPLE LINE COMMENT */
+
+  }
+  RETURN 0 ; 
+}
