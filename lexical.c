@@ -421,6 +421,7 @@ void parse(char* str)
     CURRENT_LINE++;
     return;
 }
+
 int endsWith (char *str, char *end) {
     size_t slen = strlen (str);
     size_t elen = strlen (end);
@@ -428,7 +429,6 @@ int endsWith (char *str, char *end) {
         return 0;
     return (strcmp (&(str[slen-elen]), end) == 0);
 }
-
 
 // DRIVER FUNCTION
 int main(int argc, char *argv[])
@@ -455,8 +455,11 @@ int main(int argc, char *argv[])
         }
 
         while (val = fgets(line,100, fptr)) {
-            if (strcmp(line," ") != 0) {
+            if (val[0] != '\n') {
                 parse(val);
+            }
+            else {
+                CURRENT_LINE++;
             }
         }
 
@@ -487,7 +490,7 @@ int main(int argc, char *argv[])
         fptr = fopen(argv[1],"r");
         dest_fp = fopen("output.mul","w");
 
-        
+
         if (fptr == NULL) {
             printf("Failed to Open File. Terminating Program.");
             return 0 ;
