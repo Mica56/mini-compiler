@@ -21,12 +21,14 @@
 5 9   Operator_Equals
 5 11 1 INTEGER
 5 11 ; Delimiter_Semicolon
-6 11 	identifier Identifier
+6 11 identifier Identifier
 7 6 LONG KEYWORD
 7 11 temp Identifier
 7 13   Operator_Equals
 7 17 num Identifier
 7 17 ; Delimiter_Semicolon
+8 7 nUm Identifier
+8 12 .A_1 Identifier
 9 3 a Identifier
 9 4 = Operator_PlusEqual
 9 6 1 INTEGER
@@ -61,6 +63,7 @@
 15 27 b Identifier
 15 29   Operator_Modulo
 15 31 a Identifier
+15 33 ChemOperator_tilde
 15 33 / Operator_IntegerDivision
 15 34   Operator_Divide
 15 36 b Identifier
@@ -69,26 +72,20 @@
 15 41 ; Delimiter_Semicolon
 16 4 b Identifier
 16 4 ; Delimiter_Semicolon
-16 7  Identifier
 17 4 b Identifier
 17 4 ; Delimiter_Semicolon
-17 7  Identifier
 18 3 + Operator_Increment
 18 5 b Identifier
 18 5 ; Delimiter_Semicolon
-18 8  Identifier
 19 3 b Identifier
 19 4 + Operator_Increment
 19 5 ; Delimiter_Semicolon
-19 8  Identifier
 20 3 - Operator_Decrement
 20 5 b Identifier
 20 5 ; Delimiter_Semicolon
-20 8  Identifier
 21 3 b Identifier
 21 4 - Operator_Decrement
 21 5 ; Delimiter_Semicolon
-21 8  Identifier
 24 8 DOUBLE KEYWORD
 24 10 c Identifier
 24 12   Operator_Equals
@@ -105,7 +102,6 @@
 28 8 e Identifier
 28 10   Operator_Equals
 28 15 ; Delimiter_Semicolon
-28 18  Identifier
 30 4 IF KEYWORD
 30 5 ( Delimiter_ParenLeft
 30 7 e Identifier
@@ -116,29 +112,24 @@
 30 22 = Operator_NotEqualsTo
 30 23   Operator_Equals
 30 30 e Identifier
-30 33 || Identifier
+30 32 | Operator_LogicalOR
 30 36 e Identifier
 30 36 ) Delimiter_ParenRight
 30 38 { Delimiter_BracesLeft
-30 41  Identifier
 31 10 PRINTF KEYWORD
 31 10 ( Delimiter_ParenLeft
-31 21 ME" Identifier
 31 21 ) Delimiter_ParenRight
 31 22 ; Delimiter_Semicolon
-32 2  Identifier
 33 10 PRINTF KEYWORD
 33 10 ( Delimiter_ParenLeft
 33 14 pcm KEYWORD
 33 14 ( Delimiter_ParenLeft
 33 17 ~H Identifier
+33 20 ChemOperator_tilde
 33 20 [ ChemOperator_BracketLeft
-33 25 H^2O Identifier
 33 25 ] ChemOperator_BracketRight
 33 26 ) Delimiter_ParenRight
 33 27 ; Delimiter_Semicolon
-33 30  Identifier
-34 2  Identifier
 35 10 PRINTF KEYWORD
 35 10 ( Delimiter_ParenLeft
 35 16 react KEYWORD
@@ -148,13 +139,11 @@
 35 26 ) Delimiter_ParenRight
 35 27 ) Delimiter_ParenRight
 35 28 ; Delimiter_Semicolon
-36 2  Identifier
 37 10 SWITCH KEYWORD
 37 10 ( Delimiter_ParenLeft
 37 15 ) Delimiter_ParenRight
 38 4 { Delimiter_BracesLeft
 39 10 CASE KEYWORD
-39 15  Identifier
 40 14 PRINTF KEYWORD
 40 14 ( Delimiter_ParenLeft
 40 20 ) Delimiter_ParenRight
@@ -164,17 +153,13 @@
 42 14 ( Delimiter_ParenLeft
 42 20 ) Delimiter_ParenRight
 42 21 ; Delimiter_Semicolon
-43 14 DEFAULT: Identifier
 44 14 PRINTF KEYWORD
 44 14 ( Delimiter_ParenLeft
 44 20 ) Delimiter_ParenRight
 44 21 ; Delimiter_Semicolon
 45 4 } Delimiter_BracesRight
-45 7  Identifier
-46 2  Identifier
 47 6 DO KEYWORD
 47 7 { Delimiter_BracesLeft
-48 8  Identifier
 49 4 } Delimiter_BracesRight
 50 9 WHILE KEYWORD
 50 10 ( Delimiter_ParenLeft
@@ -182,7 +167,6 @@
 51 7 FOR KEYWORD
 51 8 ( Delimiter_ParenLeft
 51 9 ) Delimiter_ParenRight
-52 2  Identifier
 53 7 INT KEYWORD
 53 14 SIGNED KEYWORD
 53 16 g Identifier
@@ -196,7 +180,6 @@
 55 18 v Identifier
 55 18 ) Delimiter_ParenRight
 55 19 ; Delimiter_Semicolon
-55 22  Identifier
 56 7 INT KEYWORD
 56 16 UNSIGNED KEYWORD
 56 18 h Identifier
@@ -211,7 +194,6 @@
 57 23 ) Delimiter_ParenRight
 57 24 ) Delimiter_ParenRight
 57 25 ; Delimiter_Semicolon
-57 28  Identifier
 58 10 PRINTF KEYWORD
 58 10 ( Delimiter_ParenLeft
 58 17 imcomp Identifier
@@ -225,8 +207,8 @@
 59 14 pcm KEYWORD
 59 14 ( Delimiter_ParenLeft
 59 17 ~H Identifier
+59 20 ChemOperator_tilde
 59 20 [ ChemOperator_BracketLeft
-59 25 H^2O Identifier
 59 25 ] ChemOperator_BracketRight
 59 26 ) Delimiter_ParenRight
 59 27 ; Delimiter_Semicolon
@@ -239,20 +221,13 @@
 60 26 ) Delimiter_ParenRight
 60 27 ) Delimiter_ParenRight
 60 28 ; Delimiter_Semicolon
-61 2  Identifier
-62 2  Identifier
-63 2  Identifier
 64 2 } Delimiter_BracesRight
 65 6 ELSE KEYWORD
 65 7 { Delimiter_BracesLeft
-65 10  Identifier
 66 10 PRINTF KEYWORD
 66 10 ( Delimiter_ParenLeft
-66 20 ME Identifier
 66 23 ) Delimiter_ParenRight
 66 24 ; Delimiter_Semicolon
-66 27  Identifier
-67 2  Identifier
 68 10 PRINTF KEYWORD
 68 10 ( Delimiter_ParenLeft
 68 17 imcomp Identifier
@@ -268,22 +243,14 @@
 70 15 { Delimiter_BracesLeft
 71 9 BREAK KEYWORD
 71 9 ; Delimiter_Semicolon
-72 2  Identifier
 73 8 GOTO KEYWORD
 73 8 ; Delimiter_Semicolon
 74 12 CONTINUE KEYWORD
 74 12 ; Delimiter_Semicolon
-74 15  Identifier
-75 1 	 Identifier
 76 6   Operator_Multiply
 76 31 
  Operator_Divide
-76 33  Identifier
-77 2  Identifier
-78 2  Identifier
 79 2 } Delimiter_BracesRight
-79 5  Identifier
 80 8 RETURN KEYWORD
 80 10 0 INTEGER
 80 11 ; Delimiter_Semicolon
-80 15  Identifier
