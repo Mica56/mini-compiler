@@ -1,0 +1,21 @@
+1 3 INT KEYWORD
+1 8 MAIN KEYWORD
+1 9 ( Delimiter_ParenLeft
+1 10 ) Delimiter_ParenRight
+1 12 { Delimiter_BracesLeft
+er
+15 17   Operator_Minus
+15 19 a Identifier
+15 21   Operator_Multiply
+15 23 a Identifier
+15 25   Operator_Divide
+15 27 b Identifier
+15 29   Operator_Modulo
+15 31 a Identifier
+15 33 ChemOperator_tilde
+15 33 / Operator_IntegerDivision
+15 34   Operator_Divide
+15 36 b Identifier
+15 38 * Operator_Exponent
+15 40 a Identifier
+15 41 ; Delimiter_Semicolon

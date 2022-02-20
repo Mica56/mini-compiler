@@ -1,9 +1,10 @@
 INT MAIN () {
-  FLOAT a = 0 ;
+  FLOAT a = 0;
   INT b = 0;
   STRING c = "a";
   INT a = 1;
   LONG temp = num;
+  DOUBLE b = 2.0;
 
   a+=1;
   a-=1;
@@ -35,11 +36,11 @@ INT MAIN () {
 
     SWITCH(TRUE) 
     {
-      CASE 1:
+      CASE 1
         PRINTF("END");
-      CASE 2:
+      CASE 2
         PRINTF("END");
-      DEFAULT:
+      DEFAULT
         PRINTF("END");
     }
 
@@ -50,7 +51,7 @@ INT MAIN () {
     FOR ()
 
     INT SIGNED g = 0 ;
-    STRING v = '';
+    STRING v = "";
     SCANF("text",v);
     INT UNSIGNED h = 0;
     PRINTF(printchel(~H));
@@ -60,7 +61,7 @@ INT MAIN () {
 
   }
   ELSE {
-    PRINTF("PRINT ME 2");
+    PRINTF("PRINTME2");
 
     PRINTF(imcomp(~Mg, ~Cl);
   }
