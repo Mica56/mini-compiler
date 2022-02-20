@@ -65,7 +65,7 @@
 15       27        b IDENTIFIER
 15       29          Operator_Modulo
 15       31        a IDENTIFIER
-15       32          NonOperator
+15       32          ChemOperator_tilde
 15       33          Operator_IntegerDivision
 15       34          Operator_Divide
 15       36        b IDENTIFIER
@@ -148,28 +148,28 @@
 33       10        ( Delimiter_ParenLeft
 33       14      pcm  KEYWORD
 33       14        ( Delimiter_ParenLeft
-33       15          NonOperator
-33       17 ChemElem_Hydrogen CHEMICAL ELEMENT
+33       15          ChemOperator_tilde
+33       17 ChemElem_Hydrogen
 33       17        , Delimiter_Comma
-33       19          NonOperator
-33       20          NonOperator
-33       22 ChemElem_Hydrogen CHEMICAL ELEMENT
-33       22          NonOperator
+33       19          ChemOperator_tilde
+33       20          ChemOperator_BracketLeft
+33       22 ChemElem_Hydrogen
+33       22          ChemOperator_carat
 33       24        2  INTEGER
 33       24        , Delimiter_Comma
-33       26 ChemElem_Oxygen CHEMICAL ELEMENT
-33       26          NonOperator
+33       26 ChemElem_Oxygen
+33       26          ChemOperator_BracketRight
 33       27        ) Delimiter_ParenRight
 33       28        ; Delimiter_Semicolon
 35       10   PRINTF  KEYWORD
 35       10        ( Delimiter_ParenLeft
 35       16    react  KEYWORD
 35       16        ( Delimiter_ParenLeft
-35       17          NonOperator
+35       17          ChemOperator_tilde
 35       20        , Delimiter_Comma
-35       22          NonOperator
-35       24 ChemElem_Oxygen CHEMICAL ELEMENT
-35       24          NonOperator
+35       22          ChemOperator_tilde
+35       24 ChemElem_Oxygen
+35       24          ChemOperator_carat
 35       26        2  INTEGER
 35       26        ) Delimiter_ParenRight
 35       27        ) Delimiter_ParenRight
@@ -239,8 +239,8 @@
 57       10        ( Delimiter_ParenLeft
 57       20 printchel  KEYWORD
 57       20        ( Delimiter_ParenLeft
-57       21          NonOperator
-57       23 ChemElem_Hydrogen CHEMICAL ELEMENT
+57       21          ChemOperator_tilde
+57       23 ChemElem_Hydrogen
 57       23        ) Delimiter_ParenRight
 57       24        ) Delimiter_ParenRight
 57       25        ; Delimiter_Semicolon
@@ -248,39 +248,39 @@
 58       10        ( Delimiter_ParenLeft
 58       17   imcomp  KEYWORD
 58       17        ( Delimiter_ParenLeft
-58       18          NonOperator
-58       21 ChemElem_Magnesium CHEMICAL ELEMENT
+58       18          ChemOperator_tilde
+58       21 ChemElem_Magnesium
 58       21        , Delimiter_Comma
-58       23          NonOperator
-58       26 ChemElem_Chlorine CHEMICAL ELEMENT
+58       23          ChemOperator_tilde
+58       26 ChemElem_Chlorine
 58       26        ) Delimiter_ParenRight
 58       27        ; Delimiter_Semicolon
 59       10   PRINTF  KEYWORD
 59       10        ( Delimiter_ParenLeft
 59       14      pcm  KEYWORD
 59       14        ( Delimiter_ParenLeft
-59       15          NonOperator
-59       17 ChemElem_Hydrogen CHEMICAL ELEMENT
+59       15          ChemOperator_tilde
+59       17 ChemElem_Hydrogen
 59       17        , Delimiter_Comma
-59       19          NonOperator
-59       20          NonOperator
-59       22 ChemElem_Hydrogen CHEMICAL ELEMENT
-59       22          NonOperator
+59       19          ChemOperator_tilde
+59       20          ChemOperator_BracketLeft
+59       22 ChemElem_Hydrogen
+59       22          ChemOperator_carat
 59       24        2  INTEGER
 59       24        , Delimiter_Comma
-59       26 ChemElem_Oxygen CHEMICAL ELEMENT
-59       26          NonOperator
+59       26 ChemElem_Oxygen
+59       26          ChemOperator_BracketRight
 59       27        ) Delimiter_ParenRight
 59       28        ; Delimiter_Semicolon
 60       10   PRINTF  KEYWORD
 60       10        ( Delimiter_ParenLeft
 60       16    react  KEYWORD
 60       16        ( Delimiter_ParenLeft
-60       17          NonOperator
+60       17          ChemOperator_tilde
 60       20        , Delimiter_Comma
-60       22          NonOperator
-60       24 ChemElem_Oxygen CHEMICAL ELEMENT
-60       24          NonOperator
+60       22          ChemOperator_tilde
+60       24 ChemElem_Oxygen
+60       24          ChemOperator_carat
 60       26        2  INTEGER
 60       26        ) Delimiter_ParenRight
 60       27        ) Delimiter_ParenRight
@@ -297,11 +297,11 @@
 68       10        ( Delimiter_ParenLeft
 68       17   imcomp  KEYWORD
 68       17        ( Delimiter_ParenLeft
-68       18          NonOperator
-68       21 ChemElem_Magnesium CHEMICAL ELEMENT
+68       18          ChemOperator_tilde
+68       21 ChemElem_Magnesium
 68       21        , Delimiter_Comma
-68       23          NonOperator
-68       26 ChemElem_Chlorine CHEMICAL ELEMENT
+68       23          ChemOperator_tilde
+68       26 ChemElem_Chlorine
 68       26        ) Delimiter_ParenRight
 68       27        ; Delimiter_Semicolon
 69        2        } Delimiter_BracesRight
