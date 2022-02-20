@@ -278,20 +278,20 @@ void parse(char* str)
         if (isDelimiter(str[right]) != "NonDelimiter" && left == right) {
           if(isDelimiter(str[right]) != "OtherSymbol"){
             /*printf("%s\n", isDelimiter(str[right]));*/
-            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
-            printf("%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            printf("%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
           }
         //Takes two consecutive characters and send them to isTOExpression 
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
                 /*printf("%s\n", isOperator(str[right-1],str[right]));*/
-                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isOperator(str[right-1],str[right]));
-                printf("%d %d %s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
+                fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,' ', isOperator(str[right-1],str[right]));
+                printf("%d %8d %8s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
             }
 
             else if(isChemOperator(str[right]) != "NonChemOperator") {
                 /*printf("%s\n", isChemOperator(str[right]));*/
-                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
-                printf("%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
+                fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
+                printf("%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
             }
 
             right++;
@@ -302,31 +302,37 @@ void parse(char* str)
 
             if (isKeyword(subStr) == true) {
                 /*printf("KEYWORD '%s'\n", subStr);*/
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
-                printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "KEYWORD");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "KEYWORD");
             }
 
             else if (isInteger(subStr) == true) {
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "INTEGER");
-                printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "INTEGER");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "INTEGER");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "INTEGER");
             }
 
-            else if (isRealNumber(subStr) == true)
+            else if (isRealNumber(subStr) == true) {
                 printf("REAL NUMBER '%s'\n", subStr);
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+            }
 
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
            && isChemOperator(str[right - 1]) == "NonChemOperator") {
                 /*printf("IDENTIFIER '%s'\n", subStr);*/
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "Identifier");
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "Identifier");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "Identifier");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "Identifier");
             }
 
-            else if (isString(subStr) == true)
+            else if (isString(subStr) == true) {
                 printf("STRING '%s'\n", subStr);
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "STRING");
+            }
 
-            else if (isComment(subStr) == true)
+            else if (isComment(subStr) == true) {
                 printf("COMMENT '%s'\n", subStr);
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
+            }
 
             else if (isChar(subStr) == true)
                 printf("CHARACTER '%s'\n", subStr);
@@ -334,13 +340,15 @@ void parse(char* str)
             else if (validIdentifier(subStr) == true
            && isChemOperator(str[right - 1]) != "NonChemOperator") {
                 /*printf("%s\n", isChemOperator(str[right - 1]));*/
-                fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
-                printf("%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
+                fprintf(dest_fp,"%d %8d %8s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
+                printf("%d %8d %8s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
            }
 
             else if (validIdentifier(subStr) == false
-                  && isDelimiter(str[right - 1]) == "NonDelimiter")
+                  && isDelimiter(str[right - 1]) == "NonDelimiter") {
                 printf("'%s' IS NOT A VALID IDENTIFIER\n", subStr);
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right,subStr, "INVALID IDENTIFIER");
+            }
             left = right;
         }
     }
@@ -349,8 +357,15 @@ void parse(char* str)
     return;
 }
 
+int endsWith (char *str, char *end) {
+    size_t slen = strlen (str);
+    size_t elen = strlen (end);
+    if (slen < elen)
+        return 0;
+    return (strcmp (&(str[slen-elen]), end) == 0);
+}
 // DRIVER FUNCTION
-int main()
+int main(int argc, char *argv[])
 {
      // maximum length of string is 100 here
      // Global Variables 
@@ -370,18 +385,32 @@ int main()
         ssize_t read;
         char *val;
 
+        if (argc < 2) {
+            printf("Error: no given files.\n");
+            printf("Usage is: gcc lexical.out filename.mul\n");
+            exit(EXIT_FAILURE);
+        }
 
-        fptr = fopen("file.mul","r");
-        dest_fp = fopen("output.mul","w");
+        if(!endsWith(argv[1],".mul")) {
+            printf("Error: invalid file with name %s. It must have a"
+                " format of name.mul\n", argv[1]);
+            exit(EXIT_FAILURE);
+        }
+
+        fptr = fopen(argv[1],"r");
+        dest_fp = fopen("output_table.mul","w");
 
         if (fptr == NULL) {
-            printf("Can't Open File");
+            printf("Failed to Open File. Terminating Program.");
             return 0 ;
         }
 
         while (val = fgets(line,100, fptr)) {
-            if (strcmp(line," ") != 0) {
+            if (val[0] != '\n') {
                 parse(val);
+            }
+            else {
+                CURRENT_LINE++;
             }
         }
 
