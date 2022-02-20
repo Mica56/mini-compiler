@@ -421,34 +421,31 @@ void parse(char* str)
             right++;
 
         if (isDelimiter(str[right]) != "NonDelimiter" && left == right) {
-          if(isDelimiter(str[right]) != "OtherSymbol"){
-            /*printf("%s\n", isDelimiter(str[right]));*/
-            fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
-            printf("%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
-          }
+        	if(isDelimiter(str[right]) != "OtherSymbol"){
+            	fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            	printf("%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+          	}
           
-          else if(str[right]=='/' && str[right-1]=='/')
-				    FoundSingleLineComment=1;
+          	else if(str[right]=='/' && str[right-1]=='/')
+				FoundSingleLineComment=1;
 				
-			    else if(str[right]=='*' && str[right-1]=='/')
-				    FoundMultiLineComment=1;
+			else if(str[right]=='*' && str[right-1]=='/')
+				FoundMultiLineComment=1;
           
           //Takes two consecutive characters and send them to isOperator
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
-                /*printf("%s\n", isOperator(str[right-1],str[right]));*/
                 fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,' ', isOperator(str[right-1],str[right]));
                 printf("%d %8d %8s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
             }
 
             else if(isChemOperator(str[right]) != "NonChemOperator") {
-                /*printf("%s\n", isChemOperator(str[right]));*/
-                fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,' ', isOperator(str[right-1],str[right]));
-                printf("%d %8d %8s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
+                fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,' ', isChemOperator(str[right]));
+                printf("%d %8d %8s\n",CURRENT_LINE,right, isChemOperator(str[right]));
             }
             else if(str[right]=='\n')
- 				      FoundSingleLineComment=0;
- 			      else if(str[right]=='/' && str[right-1]=='*')
-				      FoundMultiLineComment=0;
+ 				FoundSingleLineComment=0;
+		    else if(str[right]=='/' && str[right-1]=='*')
+			    FoundMultiLineComment=0;
 				
             right++;
             left = right;
@@ -504,8 +501,8 @@ void parse(char* str)
             }
 
             else if (isChemElem(subStr) != "NonChemElem") {
-                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
-                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
+                fprintf(dest_fp,"%d %8d %8s\n",CURRENT_LINE,right, isChemElem(subStr));
+                printf("%d %8d %8s\n",CURRENT_LINE,right, isChemElem(subStr));
 
            }
 
