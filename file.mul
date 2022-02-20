@@ -19,7 +19,7 @@ Num nUm .A_1 _ant
   b++;
   --b;
   b--;
-
+  a > b, a < b, a >= b, a <= b;
 
   DOUBLE c = 9 /9 ; 
 
@@ -30,7 +30,7 @@ Num nUm .A_1 _ant
   IF (e == TRUE && e != TRUE e || !e) {
     PRINTF("PRINT ME");
 
-    PRINTF(pcm(~H, ~[H^2O]);
+    PRINTF(pcm(~H, ~[H^2,O]);
 
     PRINTF(react(~2C, ~O^2));
 
@@ -56,7 +56,7 @@ Num nUm .A_1 _ant
     INT UNSIGNED h = 0;
     PRINTF(printchel(~H));
     PRINTF(imcomp(~Mg, ~Cl);
-    PRINTF(pcm(~H, ~[H^2O]);
+    PRINTF(pcm(~H, ~[H^2,O]);
     PRINTF(react(~2C, ~O^2));
 
 

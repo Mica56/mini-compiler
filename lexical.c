@@ -9,7 +9,7 @@ int right = 0 ;
 
 FILE *dest_fp;
 
-// Returns 'true' if the character is a DELIMITER.
+// Returns string if the character is a DELIMITER.
 const char* isDelimiter(char ch)
 {
   if (ch == ';') 
@@ -131,7 +131,7 @@ const char* isDelimiter(char ch)
   return "NonOperator"; 
 } 
  
-// Returns 'true' if the character is an CHEMICAL OPERATOR.
+// Returns string if a character is a CHEMICAL OPERATOR.
 const char* isChemOperator(char ch){
   
     if (ch == '~')
@@ -177,7 +177,7 @@ bool validIdentifier(char* str)
 	return (true);
 }
 
-// Returns 'true' if the string is an STRING.
+// Returns string if it is a STRING.
 const char* isString(char* str){
     int i = 0, f = 0, l = 0, len = strlen(str);
  
@@ -205,21 +205,7 @@ const char* isString(char* str){
     return "NonString";
 }
 
-// Returns 'true' if the string is an CPMMENT.
-bool isSingleComment(int n)
-{
-   if(n==1)
-        return (true);
-    return (false);
-}
-
-bool isMultiComment(int m)
-{
-   if(m==1)
-        return (true);
-    return (false);
-}
-// Returns 'true' if the string is an CHARACTER.
+// Returns string if it is a CHARACTER.
 const char* isChar(char* str){
 	int i, len = strlen(str);
  	char *ch = (char*)malloc(len);
@@ -234,6 +220,22 @@ const char* isChar(char* str){
     return "NonCharacter";
 }
 
+// Returns 'true' if the string is an CPMMENT.
+bool isSingleComment(int n)
+{
+   if(n==1)
+        return (true);
+    return (false);
+}
+
+bool isMultiComment(int m)
+{
+   if(m==1)
+        return (true);
+    return (false);
+}
+
+//Returns 'true' if string is a Boolean value.
 bool isBoolean(char* str){
 	if (!strcmp(str, "TRUE") || !strcmp(str, "FALSE")
 		|| !strcmp(str, "true") || !strcmp(str, "false"))
@@ -304,7 +306,94 @@ bool isRealNumber(char* str)
     }
     return (hasDecimal);
 }
- 
+
+//Returns string if it is a CHEMICAL ELEMENT
+const char* isChemElem(char* str)
+{
+    if (!strcmp(str, "H"))
+        return "ChemElem_Hydrogen";
+    else if (!strcmp(str, "He"))
+    	return "ChemElem_Helium";
+    else if (!strcmp(str, "Li"))
+    	return "ChemElem_Lithium";
+    else if (!strcmp(str, "Be"))
+    	return "ChemElem_Beryllium";
+    else if (!strcmp(str, "B"))
+    	return "ChemElem_Boron";
+    else if (!strcmp(str, "C"))
+    	return "ChemElem_Carbon";
+    else if (!strcmp(str, "N"))
+    	return "ChemElem_Nitrogen";
+    else if (!strcmp(str, "O"))
+    	return "ChemElem_Oxygen";
+    else if (!strcmp(str, "F"))
+    	return "ChemElem_Fluorine";
+    else if (!strcmp(str, "Ne"))
+    	return "ChemElem_Neon";
+    else if (!strcmp(str, "Na"))
+    	return "ChemElem_Sodium";
+    else if (!strcmp(str, "Mg"))
+    	return "ChemElem_Magnesium";
+    else if (!strcmp(str, "Al"))
+    	return "ChemElem_Aluminum";
+    else if (!strcmp(str, "Si"))
+    	return "ChemElem_Silicon";
+    else if (!strcmp(str, "P"))
+    	return "ChemElem_Phosphorous";
+    else if (!strcmp(str, "S"))
+    	return "ChemElem_Sulfur";
+    else if (!strcmp(str, "Cl"))
+    	return "ChemElem_Chlorine";
+    else if (!strcmp(str, "Ar"))
+    	return "ChemElem_Argon";
+    else if (!strcmp(str, "K"))
+    	return "ChemElem_Potassium";
+    else if (!strcmp(str, "Ca"))
+    	return "ChemElem_Calcium";
+    else if (!strcmp(str, "Sc"))
+    	return "ChemElem_Scandium";
+    else if (!strcmp(str, "Ti"))
+    	return "ChemElem_Titanium";
+    else if (!strcmp(str, "V"))
+    	return "ChemElem_Vanadium";
+    else if (!strcmp(str, "Cr"))
+    	return "ChemElem_Chromium";
+    else if (!strcmp(str, "Mn"))
+    	return "ChemElem_Manganese";
+    else if (!strcmp(str, "Fe"))
+    	return "ChemElem_Iron";
+    else if (!strcmp(str, "Co"))
+    	return "ChemElem_Cobalt";
+    else if (!strcmp(str, "Ni"))
+    	return "ChemElem_Nickel";
+    else if (!strcmp(str, "Cu"))
+    	return "ChemElem_Copper";
+    else if (!strcmp(str, "Zn"))
+    	return "ChemElem_Zinc";
+    else if (!strcmp(str, "Ga"))
+    	return "ChemElem_Gallium";
+    else if (!strcmp(str, "Ge"))
+    	return "ChemElem_Germanium";
+    else if (!strcmp(str, "As"))
+    	return "ChemElem_Arsenic";
+    else if (!strcmp(str, "Se"))
+    	return "ChemElem_Selenium";
+    else if (!strcmp(str, "Br"))
+    	return "ChemElem_Bromine";
+    else if (!strcmp(str, "Kr"))
+    	return "ChemElem_Krypton";
+    else if (!strcmp(str, "Rb"))
+    	return "ChemElem_Rubidium";
+    else if (!strcmp(str, "Sr"))
+    	return "ChemElem_Strontium";
+    else if (!strcmp(str, "Y"))
+    	return "ChemElem_Yttrium";
+    else if (!strcmp(str, "Zr"))
+    	return "ChemElem_Zirconium";
+    
+    return "NonChemElem";
+}
+
 // Extracts the SUBSTRING.
 char* subString(char* str, int left, int right)
 {
@@ -321,7 +410,7 @@ char* subString(char* str, int left, int right)
 // Parsing the input STRING.
 void parse(char* str)
 {
-    int left = 0, n=0, m=0;
+    int left = 0, FoundSingleLineComment=0, FoundMultiLineComment=0;
     right = 0;
     int len = strlen(str);
     //const char* value;
@@ -339,10 +428,10 @@ void parse(char* str)
             printf("%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
           }
           	else if(str[right]=='/' && str[right-1]=='/')
-				n=1;
+				FoundSingleLineComment=1;
 				
 			else if(str[right]=='*' && str[right-1]=='/')
-				m=1;
+				FoundMultiLineComment=1;
         	//Takes two consecutive characters and send them to isTOExpression 
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
                 /*printf("%s\n", isOperator(str[right-1],str[right]));*/
@@ -356,9 +445,9 @@ void parse(char* str)
                 printf("%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
             }
             else if(str[right]=='\n')
- 				n=0;
+ 				FoundSingleLineComment=0;
  			else if(str[right]=='/' && str[right-1]=='*')
-				m=0;
+				FoundMultiLineComment=0;
 				
             right++;
             left = right;
@@ -366,11 +455,15 @@ void parse(char* str)
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
 
-			if (isSingleComment(n) == true)
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+			if (isSingleComment(FoundSingleLineComment) == true){
+				fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+				printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+			}
             
-            else if (isMultiComment(m) == true)
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+            else if (isMultiComment(FoundMultiLineComment) == true){
+            	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+            	printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+			}
                 
             else if (isKeyword(subStr) == true) {
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
@@ -378,6 +471,7 @@ void parse(char* str)
             }
 			
 			else if (isBoolean(subStr) == true) { 
+				fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
             }
 
@@ -386,26 +480,31 @@ void parse(char* str)
                 printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "INTEGER");
             }
 
-            else if (isRealNumber(subStr) == true)
-                printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+            else if (isRealNumber(subStr) == true){
+            	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+            	printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+			}
 
-			else if (isChar(subStr) != "NonCharacter")
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+			else if (isChar(subStr) != "NonCharacter"){
+				fprintf(dest_fp,"%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+				printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+			}
                 
-            else if (isString(subStr) != "NonString")
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+            else if (isString(subStr) != "NonString"){
+            	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+            	printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+			}
             
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
            			 && isChemOperator(str[right - 1]) == "NonChemOperator") {
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "Identifier");
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "Identifier");
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
+                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
 
-            else if (validIdentifier(subStr) == false
-           			&& isChemOperator(str[right - 1]) != "NonChemOperator") {
-                fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
-                printf("%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
+            else if (isChemElem(subStr) != "NonChemElem") {
+                fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
+                printf("%d %d %s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
            }
 
             else
