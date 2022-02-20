@@ -64,8 +64,6 @@ const char* isDelimiter(char ch)
     return "OtherSymbol";
   else if (ch == '~')
     return "OtherSymbol";
-  else if (ch == '^')
-    return "OtherSymbol";
   return "NonDelimiter";
 }
 
@@ -306,91 +304,11 @@ bool isRealNumber(char* str)
     return (hasDecimal);
 }
 
-//Returns string if it is a CHEMICAL ELEMENT
-const char* isChemElem(char* str)
-{
-    if (!strcmp(str, "H"))
-        return "ChemElem_Hydrogen";
-    else if (!strcmp(str, "He"))
-    	return "ChemElem_Helium";
-    else if (!strcmp(str, "Li"))
-    	return "ChemElem_Lithium";
-    else if (!strcmp(str, "Be"))
-    	return "ChemElem_Beryllium";
-    else if (!strcmp(str, "B"))
-    	return "ChemElem_Boron";
-    else if (!strcmp(str, "C"))
-    	return "ChemElem_Carbon";
-    else if (!strcmp(str, "N"))
-    	return "ChemElem_Nitrogen";
-    else if (!strcmp(str, "O"))
-    	return "ChemElem_Oxygen";
-    else if (!strcmp(str, "F"))
-    	return "ChemElem_Fluorine";
-    else if (!strcmp(str, "Ne"))
-    	return "ChemElem_Neon";
-    else if (!strcmp(str, "Na"))
-    	return "ChemElem_Sodium";
-    else if (!strcmp(str, "Mg"))
-    	return "ChemElem_Magnesium";
-    else if (!strcmp(str, "Al"))
-    	return "ChemElem_Aluminum";
-    else if (!strcmp(str, "Si"))
-    	return "ChemElem_Silicon";
-    else if (!strcmp(str, "P"))
-    	return "ChemElem_Phosphorous";
-    else if (!strcmp(str, "S"))
-    	return "ChemElem_Sulfur";
-    else if (!strcmp(str, "Cl"))
-    	return "ChemElem_Chlorine";
-    else if (!strcmp(str, "Ar"))
-    	return "ChemElem_Argon";
-    else if (!strcmp(str, "K"))
-    	return "ChemElem_Potassium";
-    else if (!strcmp(str, "Ca"))
-    	return "ChemElem_Calcium";
-    else if (!strcmp(str, "Sc"))
-    	return "ChemElem_Scandium";
-    else if (!strcmp(str, "Ti"))
-    	return "ChemElem_Titanium";
-    else if (!strcmp(str, "V"))
-    	return "ChemElem_Vanadium";
-    else if (!strcmp(str, "Cr"))
-    	return "ChemElem_Chromium";
-    else if (!strcmp(str, "Mn"))
-    	return "ChemElem_Manganese";
-    else if (!strcmp(str, "Fe"))
-    	return "ChemElem_Iron";
-    else if (!strcmp(str, "Co"))
-    	return "ChemElem_Cobalt";
-    else if (!strcmp(str, "Ni"))
-    	return "ChemElem_Nickel";
-    else if (!strcmp(str, "Cu"))
-    	return "ChemElem_Copper";
-    else if (!strcmp(str, "Zn"))
-    	return "ChemElem_Zinc";
-    else if (!strcmp(str, "Ga"))
-    	return "ChemElem_Gallium";
-    else if (!strcmp(str, "Ge"))
-    	return "ChemElem_Germanium";
-    else if (!strcmp(str, "As"))
-    	return "ChemElem_Arsenic";
-    else if (!strcmp(str, "Se"))
-    	return "ChemElem_Selenium";
-    else if (!strcmp(str, "Br"))
-    	return "ChemElem_Bromine";
-    else if (!strcmp(str, "Kr"))
-    	return "ChemElem_Krypton";
-    else if (!strcmp(str, "Rb"))
-    	return "ChemElem_Rubidium";
-    else if (!strcmp(str, "Sr"))
-    	return "ChemElem_Strontium";
-    else if (!strcmp(str, "Y"))
-    	return "ChemElem_Yttrium";
-    else if (!strcmp(str, "Zr"))
-    	return "ChemElem_Zirconium";
-    
-    return "NonChemElem";
+//Returns 'true' if the string is a CHEMICAL EXPRESSION
+bool isChemExpression(int num){
+	if(num==1)
+        return (true);
+    return (false);	
 }
 
 // Extracts the SUBSTRING.
@@ -409,7 +327,7 @@ char* subString(char* str, int left, int right)
 // Parsing the input STRING.
 void parse(char* str)
 {
-    int left = 0, FoundSingleLineComment=0, FoundMultiLineComment=0;
+    int left = 0, FoundSingleLineComment=0, FoundMultiLineComment=0, ChemOperatorFound=0;
     right = 0;
     int len = strlen(str);
     //const char* value;
@@ -441,11 +359,14 @@ void parse(char* str)
             else if(isChemOperator(str[right]) != "NonChemOperator") {
                 fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,' ', isChemOperator(str[right]));
                 printf("%d %8d %8s\n",CURRENT_LINE,right, isChemOperator(str[right]));
+                ChemOperatorFound=1;
             }
             else if(str[right]=='\n')
  				FoundSingleLineComment=0;
 		    else if(str[right]=='/' && str[right-1]=='*')
 			    FoundMultiLineComment=0;
+			else if(str[right]==' ' || str[right]=='\n')
+				ChemOperatorFound=0;
 				
             right++;
             left = right;
@@ -499,15 +420,13 @@ void parse(char* str)
                 fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
                 printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
-
-            else if (isChemElem(subStr) != "NonChemElem") {
-                fprintf(dest_fp,"%d %8d %8s\n",CURRENT_LINE,right, isChemElem(subStr));
-                printf("%d %8d %8s\n",CURRENT_LINE,right, isChemElem(subStr));
-
-           }
+           
+           	else if(isChemExpression(ChemOperatorFound) == true)
+           		printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "CHEMICAL EXPRESSION");
 
             else
                 printf("'%s' IS INVALID\n", subStr);
+
             left = right;
         }
     }
