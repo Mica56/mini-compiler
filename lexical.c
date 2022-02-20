@@ -452,7 +452,7 @@ int main(int argc, char *argv[])
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = false ;
+    bool DEBUG = true ;
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
