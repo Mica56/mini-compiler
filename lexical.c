@@ -26,6 +26,12 @@ const char* isDelimiter(char ch)
     return "OtherSymbol";
   else if (ch == '\n') 
     return "OtherSymbol";
+  else if (ch == '\t') 
+    return "OtherSymbol";
+  else if (ch == '\v') 
+    return "OtherSymbol";
+  else if (ch == '|') 
+    return "OtherSymbol";
   else if (ch == '[')
     return "OtherSymbol";
   else if (ch == ']')
@@ -132,13 +138,32 @@ const char* isChemOperator(char ch){
 // Returns 'true' if the string is a VALID IDENTIFIER.
 bool validIdentifier(char* str)
 {
+	int i, len = strlen(str);
+	if (len == 0)
+        return (false);
     if (str[0] == '0' || str[0] == '1' || str[0] == '2' ||
         str[0] == '3' || str[0] == '4' || str[0] == '5' ||
         str[0] == '6' || str[0] == '7' || str[0] == '8' ||
         str[0] == '9' || isDelimiter(str[0]) != "NonDelimiter" ||
+        str[0] == 'A' || str[0] == 'B' || str[0] == 'C' ||
+        str[0] == 'D' || str[0] == 'E' || str[0] == 'F' ||
+        str[0] == 'G' || str[0] == 'H' || str[0] == 'I' ||
+        str[0] == 'J' || str[0] == 'K' || str[0] == 'L' ||
+        str[0] == 'M' || str[0] == 'N' || str[0] == 'O' ||
+        str[0] == 'P' || str[0] == 'Q' || str[0] == 'R' ||
+        str[0] == 'S' || str[0] == 'T' || str[0] == 'U' ||
+        str[0] == 'V' || str[0] == 'W' || str[0] == 'X' ||
+        str[0] == 'Y' || str[0] == 'Z' ||
     	str[0] == '"' || str[0] == '\'')
         return (false);
-    return (true);
+    for (i = 1; i <= len; i++) {
+    	if(str[i] == ' ')
+    		return (false);
+	}
+	if(str[len-1] == '"' || str[len-1] == '\'')
+		return (false);
+		
+	return (true);
 }
 
 // Returns 'true' if the string is an STRING.
@@ -146,7 +171,7 @@ const char* isString(char* str){
     int i = 0, f = 0, l = 0, len = strlen(str);
  
     if (len == 0)
-        return (false);
+        return "NonString";
     for (i = 0; i < len; i++) {
         if (str[0] == '"' && str[i] == '"'){
         	 while(str[f]=='"'){
@@ -166,7 +191,7 @@ const char* isString(char* str){
 			return str1;
     	}
 	}
-    return (false);
+    return "NonString";
 }
 
 // Returns 'true' if the string is an CPMMENT.
@@ -189,7 +214,7 @@ const char* isChar(char* str){
  	char *ch = (char*)malloc(len);
  	
     if (len == 0)
-        return (false);
+        return "NonCharacter";
     if (str[0] == '\'' && str[2] == '\''){
     	ch[0] = str[1];
     	ch[1] = '\0';
@@ -353,18 +378,18 @@ void parse(char* str)
             else if (isRealNumber(subStr) == true)
                 printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
 
+			else if (isChar(subStr) != "NonCharacter")
+                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+                
+            else if (isString(subStr) != "NonString")
+                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+            
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
            			 && isChemOperator(str[right - 1]) == "NonChemOperator") {
                 fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "Identifier");
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "Identifier");
             }
-
-			else if (isChar(subStr) != "NonCharacter")
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
-                
-            else if (isString(subStr) != "NonString")
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
 
             else if (validIdentifier(subStr) == true
            			&& isChemOperator(str[right - 1]) != "NonChemOperator") {
