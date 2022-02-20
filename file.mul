@@ -5,7 +5,7 @@ INT MAIN () {
   INT a = 1;
 	identifier
   LONG temp = num;
-Num nUm .A_1 
+Num nUm .A_1 _ant
   a+=1;
   a-=1;
   a*=1;

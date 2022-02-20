@@ -22,6 +22,10 @@ const char* isDelimiter(char ch)
     return "Delimiter_BracesLeft";
   else if (ch == '}')
     return "Delimiter_BracesRight";
+    else if (ch == ':') 
+    return "Delimiter_Colon";
+  else if (ch == ',') 
+    return "Delimiter_Comma";
   else if (ch == ' ') 
     return "OtherSymbol";
   else if (ch == '\n') 
@@ -55,6 +59,12 @@ const char* isDelimiter(char ch)
   else if (ch == '!')
     return "OtherSymbol";
   else if (ch == '%')
+    return "OtherSymbol";
+  else if (ch == '&')
+    return "OtherSymbol";
+  else if (ch == '~')
+    return "OtherSymbol";
+  else if (ch == '^')
     return "OtherSymbol";
   return "NonDelimiter";
 }
@@ -153,11 +163,12 @@ bool validIdentifier(char* str)
         str[0] == 'P' || str[0] == 'Q' || str[0] == 'R' ||
         str[0] == 'S' || str[0] == 'T' || str[0] == 'U' ||
         str[0] == 'V' || str[0] == 'W' || str[0] == 'X' ||
-        str[0] == 'Y' || str[0] == 'Z' ||
-    	str[0] == '"' || str[0] == '\'')
+        str[0] == 'Y' || str[0] == 'Z' || str[0] == '~' ||
+    	str[0] == '"' || str[0] == '\'' || str[0] == '_')
         return (false);
     for (i = 1; i <= len; i++) {
-    	if(str[i] == ' ')
+    	if(str[i] == ' ' || str[i] == '~' || str[i] == '^' ||
+		str[i] == '&' || str[i] == '|')
     		return (false);
 	}
 	if(str[len-1] == '"' || str[len-1] == '\'')
@@ -250,7 +261,7 @@ bool isKeyword(char* str)
     || !strcmp(str, "PRINTF")   || !strcmp(str, "SIGNED")       
     || !strcmp(str, "SCANF")    || !strcmp(str, "STRING")       
     || !strcmp(str, "MAIN")     || !strcmp(str, "printchel")    
-    || !strcmp(str, "impcomp")    || !strcmp(str, "pcm")          
+    || !strcmp(str, "imcomp")    || !strcmp(str, "pcm")          
     || !strcmp(str, "react"))
         return (true);
     return (false);
@@ -391,14 +402,13 @@ void parse(char* str)
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "Identifier");
             }
 
-            else if (validIdentifier(subStr) == true
+            else if (validIdentifier(subStr) == false
            			&& isChemOperator(str[right - 1]) != "NonChemOperator") {
                 fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
                 printf("%d %d %s\n",CURRENT_LINE,right, isChemOperator(str[right-1]));
            }
 
-            else if (validIdentifier(subStr) == false
-                  && isDelimiter(str[right - 1]) == "NonDelimiter")
+            else
                 printf("'%s' IS INVALID\n", subStr);
             left = right;
         }
