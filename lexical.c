@@ -235,21 +235,6 @@ bool isMultiComment(int m)
     return (false);
 }
 
-// Returns 'true' if the string is an CHARACTER.
-const char* isChar(char* str){
-    int i, len = strlen(str);
-    char *ch = (char*)malloc(len);
-    if (len == 0)
-        return "NonCharacter";
-    if (str[0] == '\'' && str[2] == '\''){
-        ch[0] = str[1];
-        ch[1] = '\0';
-
-        return ch;
-    }
-    return "NonCharacter";
-}
-
 //Returns 'true' if string is a Boolean value.
 bool isBoolean(char* str){
     if (!strcmp(str, "TRUE") || !strcmp(str, "FALSE")
@@ -472,13 +457,13 @@ void parse(char* str)
             char* subStr = subString(str, left, right - 1);
 
             if (isSingleComment(FoundSingleLineComment) == true){
-              fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "COMMENT");
-              printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+              fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
+              printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
             }
             
             else if (isMultiComment(FoundMultiLineComment) == true){
-            	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "COMMENT");
-            	printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+            	fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
+            	printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
 			      }
 
             else if (isKeyword(subStr) == true) {
@@ -487,8 +472,8 @@ void parse(char* str)
             }
 			
             else if (isBoolean(subStr) == true) { 
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
             }
 
             else if (isInteger(subStr) == true) {
@@ -496,36 +481,31 @@ void parse(char* str)
                 printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "INTEGER");
             }
 
-            else if (isRealNumber(subStr) == true) {
-                printf("REAL NUMBER '%s'\n", subStr);
-                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
-            }
-
             else if (isRealNumber(subStr) == true){
-            	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
-            	printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
-			      }
+            	fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+            	printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+			}
 
             else if (isChar(subStr) != "NonCharacter"){
-              fprintf(dest_fp,"%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
-              printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+              fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+              printf("%d %8d %8s %8s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
             }
                 
             else if (isString(subStr) != "NonString"){
-            	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
-            	printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
-			      }
+            	fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+            	printf("%d %8d %8s %8s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+			}
             
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
            			 && isChemOperator(str[right - 1]) == "NonChemOperator") {
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
 
             else if (isChemElem(subStr) != "NonChemElem") {
-                fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
-                printf("%d %d %s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
 
            }
 

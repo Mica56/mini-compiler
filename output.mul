@@ -1,331 +1,330 @@
-1 3 INT KEYWORD
-1 8 MAIN KEYWORD
-1 9 ( Delimiter_ParenLeft
-1 10 ) Delimiter_ParenRight
-1 12 { Delimiter_BracesLeft
-2 7 FLOAT KEYWORD
-2 9 a IDENTIFIER
-2 11   Operator_Equals
-2 15 0.1 REAL NUMBER
-2 16 ; Delimiter_Semicolon
-3 5 INT KEYWORD
-3 7 b IDENTIFIER
-3 9   Operator_Equals
-3 11 0 INTEGER
-3 11 ; Delimiter_Semicolon
-4 8 STRING KEYWORD
-4 10 c IDENTIFIER
-4 12   Operator_Equals
-4 16 a STRING
-4 16 ; Delimiter_Semicolon
-5 5 INT KEYWORD
-5 7 a IDENTIFIER
-5 9   Operator_Equals
-5 11 1 INTEGER
-5 11 ; Delimiter_Semicolon
-6 11 identifier IDENTIFIER
-7 6 LONG KEYWORD
-7 11 temp IDENTIFIER
-7 13   Operator_Equals
-7 17 num IDENTIFIER
-7 17 ; Delimiter_Semicolon
-8 7 nUm IDENTIFIER
-8 12 .A_1 IDENTIFIER
-9 3 a IDENTIFIER
-9 4 = Operator_PlusEqual
-9 6 1 INTEGER
-9 6 ; Delimiter_Semicolon
-10 3 a IDENTIFIER
-10 4 = Operator_MinusEqual
-10 6 1 INTEGER
-10 6 ; Delimiter_Semicolon
-11 3 a IDENTIFIER
-11 4 = Operator_MultiplyEqual
-11 6 1 INTEGER
-11 6 ; Delimiter_Semicolon
-12 3 a IDENTIFIER
-12 4 = Operator_DivideEqual
-12 6 1 INTEGER
-12 6 ; Delimiter_Semicolon
-13 3 a IDENTIFIER
-13 4 = Operator_ModuleEqual
-13 6 1 INTEGER
-13 6 ; Delimiter_Semicolon
-15 5 INT KEYWORD
-15 7 f IDENTIFIER
-15 9   Operator_Equals
-15 11 a IDENTIFIER
-15 13   Operator_Plus
-15 15 b IDENTIFIER
-15 17   Operator_Minus
-15 19 a IDENTIFIER
-15 21   Operator_Multiply
-15 23 a IDENTIFIER
-15 25   Operator_Divide
-15 27 b IDENTIFIER
-15 29   Operator_Modulo
-15 31 a IDENTIFIER
-15 32 ~ ChemOperator_tilde
-15 33 / Operator_IntegerDivision
-15 34   Operator_Divide
-15 36 b IDENTIFIER
-15 38 * Operator_Exponent
-15 40 a IDENTIFIER
-15 41 ; Delimiter_Semicolon
-16 4 b IDENTIFIER
-16 4 ; Delimiter_Semicolon
-17 4 b IDENTIFIER
-17 4 ; Delimiter_Semicolon
-18 3 + Operator_Increment
-18 5 b IDENTIFIER
-18 5 ; Delimiter_Semicolon
-19 3 b IDENTIFIER
-19 4 + Operator_Increment
-19 5 ; Delimiter_Semicolon
-20 3 - Operator_Decrement
-20 5 b IDENTIFIER
-20 5 ; Delimiter_Semicolon
-21 3 b IDENTIFIER
-21 4 - Operator_Decrement
-21 5 ; Delimiter_Semicolon
-22 3 a IDENTIFIER
-22 5   Operator_Greaterthan
-22 7 b IDENTIFIER
-22 7 , Delimiter_Comma
-22 10 a IDENTIFIER
-22 12   Operator_Lessthan
-22 14 b IDENTIFIER
-22 14 , Delimiter_Comma
-22 17 a IDENTIFIER
-22 19 = Operator_GreaterEqual
-22 20   Operator_Equals
-22 22 b IDENTIFIER
-22 22 , Delimiter_Comma
-22 25 a IDENTIFIER
-22 27 = Operator_LessEqual
-22 28   Operator_Equals
-22 30 b IDENTIFIER
-22 30 ; Delimiter_Semicolon
-24 8 DOUBLE KEYWORD
-24 10 c IDENTIFIER
-24 12   Operator_Equals
-24 14 9 INTEGER
-24 17 9 INTEGER
-24 18 ; Delimiter_Semicolon
-26 8 DOUBLE KEYWORD
-26 10 d IDENTIFIER
-26 12   Operator_Equals
-26 14 9 INTEGER
-26 17 9 INTEGER
-26 18 ; Delimiter_Semicolon
-28 6 BOOL KEYWORD
-28 8 e IDENTIFIER
-28 10   Operator_Equals
-28 15 TRUE BOOLEAN
-28 15 ; Delimiter_Semicolon
-30 4 IF KEYWORD
-30 5 ( Delimiter_ParenLeft
-30 7 e IDENTIFIER
-30 9 = Operator_EqualsTo
-30 10   Operator_Equals
-30 15 TRUE BOOLEAN
-30 17 & Operator_LogicalAND
-30 20 e IDENTIFIER
-30 22 = Operator_NotEqualsTo
-30 23   Operator_Equals
-30 28 TRUE BOOLEAN
-30 30 e IDENTIFIER
-30 32 | Operator_LogicalOR
-30 36 e IDENTIFIER
-30 36 ) Delimiter_ParenRight
-30 38 { Delimiter_BracesLeft
-31 10 PRINTF KEYWORD
-31 10 ( Delimiter_ParenLeft
-31 17 PRINT STRING
-31 21 ) Delimiter_ParenRight
-31 22 ; Delimiter_Semicolon
-33 10 PRINTF KEYWORD
-33 10 ( Delimiter_ParenLeft
-33 14 pcm KEYWORD
-33 14 ( Delimiter_ParenLeft
-33 15 ~ ChemOperator_tilde
-33 17 ChemElem_Hydrogen
-33 17 , Delimiter_Comma
-33 19 ~ ChemOperator_tilde
-33 20 [ ChemOperator_BracketLeft
-33 22 ChemElem_Hydrogen
-33 22 ^ ChemOperator_carat
-33 24 2 INTEGER
-33 24 , Delimiter_Comma
-33 26 ChemElem_Oxygen
-33 26 ] ChemOperator_BracketRight
-33 27 ) Delimiter_ParenRight
-33 28 ; Delimiter_Semicolon
-35 10 PRINTF KEYWORD
-35 10 ( Delimiter_ParenLeft
-35 16 react KEYWORD
-35 16 ( Delimiter_ParenLeft
-35 17 ~ ChemOperator_tilde
-35 20 , Delimiter_Comma
-35 22 ~ ChemOperator_tilde
-35 24 ChemElem_Oxygen
-35 24 ^ ChemOperator_carat
-35 26 2 INTEGER
-35 26 ) Delimiter_ParenRight
-35 27 ) Delimiter_ParenRight
-35 28 ; Delimiter_Semicolon
-37 10 SWITCH KEYWORD
-37 10 ( Delimiter_ParenLeft
-37 15 TRUE BOOLEAN
-37 15 ) Delimiter_ParenRight
-38 4 { Delimiter_BracesLeft
-39 10 CASE KEYWORD
-39 12 1 INTEGER
-39 12 : Delimiter_Colon
-40 14 PRINTF KEYWORD
-40 14 ( Delimiter_ParenLeft
-40 20 END STRING
-40 20 ) Delimiter_ParenRight
-40 21 ; Delimiter_Semicolon
-41 10 CASE KEYWORD
-41 12 2 INTEGER
-41 12 : Delimiter_Colon
-42 14 PRINTF KEYWORD
-42 14 ( Delimiter_ParenLeft
-42 20 END STRING
-42 20 ) Delimiter_ParenRight
-42 21 ; Delimiter_Semicolon
-43 13 DEFAULT KEYWORD
-43 13 : Delimiter_Colon
-44 14 PRINTF KEYWORD
-44 14 ( Delimiter_ParenLeft
-44 20 END STRING
-44 20 ) Delimiter_ParenRight
-44 21 ; Delimiter_Semicolon
-45 4 } Delimiter_BracesRight
-47 6 DO KEYWORD
-47 7 { Delimiter_BracesLeft
-49 4 } Delimiter_BracesRight
-50 9 WHILE KEYWORD
-50 10 ( Delimiter_ParenLeft
-50 15 TRUE BOOLEAN
-50 15 ) Delimiter_ParenRight
-51 7 FOR KEYWORD
-51 8 ( Delimiter_ParenLeft
-51 9 ) Delimiter_ParenRight
-53 7 INT KEYWORD
-53 14 SIGNED KEYWORD
-53 16 g IDENTIFIER
-53 18   Operator_Equals
-53 20 0 INTEGER
-53 21 ; Delimiter_Semicolon
-54 8 CHAR KEYWORD
-54 12 'c' CHARACTER
-54 12 ; Delimiter_Semicolon
-55 9 SCANF KEYWORD
-55 9 ( Delimiter_ParenLeft
-55 16 text STRING
-55 16 , Delimiter_Comma
-55 18 v IDENTIFIER
-55 18 ) Delimiter_ParenRight
-55 19 ; Delimiter_Semicolon
-56 7 INT KEYWORD
-56 16 UNSIGNED KEYWORD
-56 18 h IDENTIFIER
-56 20   Operator_Equals
-56 22 0 INTEGER
-56 22 ; Delimiter_Semicolon
-57 10 PRINTF KEYWORD
-57 10 ( Delimiter_ParenLeft
-57 20 printchel KEYWORD
-57 20 ( Delimiter_ParenLeft
-57 21 ~ ChemOperator_tilde
-57 23 ChemElem_Hydrogen
-57 23 ) Delimiter_ParenRight
-57 24 ) Delimiter_ParenRight
-57 25 ; Delimiter_Semicolon
-58 10 PRINTF KEYWORD
-58 10 ( Delimiter_ParenLeft
-58 17 imcomp KEYWORD
-58 17 ( Delimiter_ParenLeft
-58 18 ~ ChemOperator_tilde
-58 21 ChemElem_Magnesium
-58 21 , Delimiter_Comma
-58 23 ~ ChemOperator_tilde
-58 26 ChemElem_Chlorine
-58 26 ) Delimiter_ParenRight
-58 27 ; Delimiter_Semicolon
-59 10 PRINTF KEYWORD
-59 10 ( Delimiter_ParenLeft
-59 14 pcm KEYWORD
-59 14 ( Delimiter_ParenLeft
-59 15 ~ ChemOperator_tilde
-59 17 ChemElem_Hydrogen
-59 17 , Delimiter_Comma
-59 19 ~ ChemOperator_tilde
-59 20 [ ChemOperator_BracketLeft
-59 22 ChemElem_Hydrogen
-59 22 ^ ChemOperator_carat
-59 24 2 INTEGER
-59 24 , Delimiter_Comma
-59 26 ChemElem_Oxygen
-59 26 ] ChemOperator_BracketRight
-59 27 ) Delimiter_ParenRight
-59 28 ; Delimiter_Semicolon
-60 10 PRINTF KEYWORD
-60 10 ( Delimiter_ParenLeft
-60 16 react KEYWORD
-60 16 ( Delimiter_ParenLeft
-60 17 ~ ChemOperator_tilde
-60 20 , Delimiter_Comma
-60 22 ~ ChemOperator_tilde
-60 24 ChemElem_Oxygen
-60 24 ^ ChemOperator_carat
-60 26 2 INTEGER
-60 26 ) Delimiter_ParenRight
-60 27 ) Delimiter_ParenRight
-60 28 ; Delimiter_Semicolon
-64 2 } Delimiter_BracesRight
-65 6 ELSE KEYWORD
-65 7 { Delimiter_BracesLeft
-66 10 PRINTF KEYWORD
-66 10 ( Delimiter_ParenLeft
-66 17 PRINT STRING
-66 23 ) Delimiter_ParenRight
-66 24 ; Delimiter_Semicolon
-68 10 PRINTF KEYWORD
-68 10 ( Delimiter_ParenLeft
-68 17 imcomp KEYWORD
-68 17 ( Delimiter_ParenLeft
-68 18 ~ ChemOperator_tilde
-68 21 ChemElem_Magnesium
-68 21 , Delimiter_Comma
-68 23 ~ ChemOperator_tilde
-68 26 ChemElem_Chlorine
-68 26 ) Delimiter_ParenRight
-68 27 ; Delimiter_Semicolon
-69 2 } Delimiter_BracesRight
-70 7 WHILE KEYWORD
-70 8 ( Delimiter_ParenLeft
-70 13 TRUE BOOLEAN
-70 13 ) Delimiter_ParenRight
-70 15 { Delimiter_BracesLeft
-71 9 BREAK KEYWORD
-71 9 ; Delimiter_Semicolon
-73 8 GOTO KEYWORD
-73 8 ; Delimiter_Semicolon
-74 12 CONTINUE KEYWORD
-74 12 ; Delimiter_Semicolon
-75 9 SINGLE COMMENT
-75 14 LINE COMMENT
-75 22 COMMENT COMMENT
-76 6   Operator_Multiply
-76 15 MULTIPLE COMMENT
-76 20 LINE COMMENT
-76 28 COMMENT COMMENT
-76 31 
- Operator_Divide
-79 2 } Delimiter_BracesRight
-80 8 RETURN KEYWORD
-80 10 0 INTEGER
-80 11 ; Delimiter_Semicolon
+1        3      INT  KEYWORD
+1        8     MAIN  KEYWORD
+1        9        ( Delimiter_ParenLeft
+1       10        ) Delimiter_ParenRight
+1       12        { Delimiter_BracesLeft
+2        7    FLOAT  KEYWORD
+2        9        a IDENTIFIER
+2       11          Operator_Equals
+2       15      0.1 REAL NUMBER
+2       16        ; Delimiter_Semicolon
+3        5      INT  KEYWORD
+3        7        b IDENTIFIER
+3        9          Operator_Equals
+3       11        0  INTEGER
+3       11        ; Delimiter_Semicolon
+4        8   STRING  KEYWORD
+4       10        c IDENTIFIER
+4       12          Operator_Equals
+4       16        a   STRING
+4       16        ; Delimiter_Semicolon
+5        5      INT  KEYWORD
+5        7        a IDENTIFIER
+5        9          Operator_Equals
+5       11        1  INTEGER
+5       11        ; Delimiter_Semicolon
+6       11 identifier IDENTIFIER
+7        6     LONG  KEYWORD
+7       11     temp IDENTIFIER
+7       13          Operator_Equals
+7       17      num IDENTIFIER
+7       17        ; Delimiter_Semicolon
+8        7      nUm IDENTIFIER
+8       12     .A_1 IDENTIFIER
+9        3        a IDENTIFIER
+9        4          Operator_PlusEqual
+9        6        1  INTEGER
+9        6        ; Delimiter_Semicolon
+10        3        a IDENTIFIER
+10        4          Operator_MinusEqual
+10        6        1  INTEGER
+10        6        ; Delimiter_Semicolon
+11        3        a IDENTIFIER
+11        4          Operator_MultiplyEqual
+11        6        1  INTEGER
+11        6        ; Delimiter_Semicolon
+12        3        a IDENTIFIER
+12        4          Operator_DivideEqual
+12        6        1  INTEGER
+12        6        ; Delimiter_Semicolon
+13        3        a IDENTIFIER
+13        4          Operator_ModuleEqual
+13        6        1  INTEGER
+13        6        ; Delimiter_Semicolon
+15        5      INT  KEYWORD
+15        7        f IDENTIFIER
+15        9          Operator_Equals
+15       11        a IDENTIFIER
+15       13          Operator_Plus
+15       15        b IDENTIFIER
+15       17          Operator_Minus
+15       19        a IDENTIFIER
+15       21          Operator_Multiply
+15       23        a IDENTIFIER
+15       25          Operator_Divide
+15       27        b IDENTIFIER
+15       29          Operator_Modulo
+15       31        a IDENTIFIER
+15       32          NonOperator
+15       33          Operator_IntegerDivision
+15       34          Operator_Divide
+15       36        b IDENTIFIER
+15       38          Operator_Exponent
+15       40        a IDENTIFIER
+15       41        ; Delimiter_Semicolon
+16        4        b IDENTIFIER
+16        4        ; Delimiter_Semicolon
+17        4        b IDENTIFIER
+17        4        ; Delimiter_Semicolon
+18        3          Operator_Increment
+18        5        b IDENTIFIER
+18        5        ; Delimiter_Semicolon
+19        3        b IDENTIFIER
+19        4          Operator_Increment
+19        5        ; Delimiter_Semicolon
+20        3          Operator_Decrement
+20        5        b IDENTIFIER
+20        5        ; Delimiter_Semicolon
+21        3        b IDENTIFIER
+21        4          Operator_Decrement
+21        5        ; Delimiter_Semicolon
+22        3        a IDENTIFIER
+22        5          Operator_Greaterthan
+22        7        b IDENTIFIER
+22        7        , Delimiter_Comma
+22       10        a IDENTIFIER
+22       12          Operator_Lessthan
+22       14        b IDENTIFIER
+22       14        , Delimiter_Comma
+22       17        a IDENTIFIER
+22       19          Operator_GreaterEqual
+22       20          Operator_Equals
+22       22        b IDENTIFIER
+22       22        , Delimiter_Comma
+22       25        a IDENTIFIER
+22       27          Operator_LessEqual
+22       28          Operator_Equals
+22       30        b IDENTIFIER
+22       30        ; Delimiter_Semicolon
+24        8   DOUBLE  KEYWORD
+24       10        c IDENTIFIER
+24       12          Operator_Equals
+24       14        9  INTEGER
+24       17        9  INTEGER
+24       18        ; Delimiter_Semicolon
+26        8   DOUBLE  KEYWORD
+26       10        d IDENTIFIER
+26       12          Operator_Equals
+26       14        9  INTEGER
+26       17        9  INTEGER
+26       18        ; Delimiter_Semicolon
+28        6     BOOL  KEYWORD
+28        8        e IDENTIFIER
+28       10          Operator_Equals
+28       15     TRUE  BOOLEAN
+28       15        ; Delimiter_Semicolon
+30        4       IF  KEYWORD
+30        5        ( Delimiter_ParenLeft
+30        7        e IDENTIFIER
+30        9          Operator_EqualsTo
+30       10          Operator_Equals
+30       15     TRUE  BOOLEAN
+30       17          Operator_LogicalAND
+30       20        e IDENTIFIER
+30       22          Operator_NotEqualsTo
+30       23          Operator_Equals
+30       28     TRUE  BOOLEAN
+30       30        e IDENTIFIER
+30       32          Operator_LogicalOR
+30       36        e IDENTIFIER
+30       36        ) Delimiter_ParenRight
+30       38        { Delimiter_BracesLeft
+31       10   PRINTF  KEYWORD
+31       10        ( Delimiter_ParenLeft
+31       17    PRINT   STRING
+31       21        ) Delimiter_ParenRight
+31       22        ; Delimiter_Semicolon
+33       10   PRINTF  KEYWORD
+33       10        ( Delimiter_ParenLeft
+33       14      pcm  KEYWORD
+33       14        ( Delimiter_ParenLeft
+33       15          NonOperator
+33       17 ChemElem_Hydrogen CHEMICAL ELEMENT
+33       17        , Delimiter_Comma
+33       19          NonOperator
+33       20          NonOperator
+33       22 ChemElem_Hydrogen CHEMICAL ELEMENT
+33       22          NonOperator
+33       24        2  INTEGER
+33       24        , Delimiter_Comma
+33       26 ChemElem_Oxygen CHEMICAL ELEMENT
+33       26          NonOperator
+33       27        ) Delimiter_ParenRight
+33       28        ; Delimiter_Semicolon
+35       10   PRINTF  KEYWORD
+35       10        ( Delimiter_ParenLeft
+35       16    react  KEYWORD
+35       16        ( Delimiter_ParenLeft
+35       17          NonOperator
+35       20        , Delimiter_Comma
+35       22          NonOperator
+35       24 ChemElem_Oxygen CHEMICAL ELEMENT
+35       24          NonOperator
+35       26        2  INTEGER
+35       26        ) Delimiter_ParenRight
+35       27        ) Delimiter_ParenRight
+35       28        ; Delimiter_Semicolon
+37       10   SWITCH  KEYWORD
+37       10        ( Delimiter_ParenLeft
+37       15     TRUE  BOOLEAN
+37       15        ) Delimiter_ParenRight
+38        4        { Delimiter_BracesLeft
+39       10     CASE  KEYWORD
+39       12        1  INTEGER
+39       12        : Delimiter_Colon
+40       14   PRINTF  KEYWORD
+40       14        ( Delimiter_ParenLeft
+40       20      END   STRING
+40       20        ) Delimiter_ParenRight
+40       21        ; Delimiter_Semicolon
+41       10     CASE  KEYWORD
+41       12        2  INTEGER
+41       12        : Delimiter_Colon
+42       14   PRINTF  KEYWORD
+42       14        ( Delimiter_ParenLeft
+42       20      END   STRING
+42       20        ) Delimiter_ParenRight
+42       21        ; Delimiter_Semicolon
+43       13  DEFAULT  KEYWORD
+43       13        : Delimiter_Colon
+44       14   PRINTF  KEYWORD
+44       14        ( Delimiter_ParenLeft
+44       20      END   STRING
+44       20        ) Delimiter_ParenRight
+44       21        ; Delimiter_Semicolon
+45        4        } Delimiter_BracesRight
+47        6       DO  KEYWORD
+47        7        { Delimiter_BracesLeft
+49        4        } Delimiter_BracesRight
+50        9    WHILE  KEYWORD
+50       10        ( Delimiter_ParenLeft
+50       15     TRUE  BOOLEAN
+50       15        ) Delimiter_ParenRight
+51        7      FOR  KEYWORD
+51        8        ( Delimiter_ParenLeft
+51        9        ) Delimiter_ParenRight
+53        7      INT  KEYWORD
+53       14   SIGNED  KEYWORD
+53       16        g IDENTIFIER
+53       18          Operator_Equals
+53       20        0  INTEGER
+53       21        ; Delimiter_Semicolon
+54        8     CHAR  KEYWORD
+54       12        c CHARACTER
+54       12        ; Delimiter_Semicolon
+55        9    SCANF  KEYWORD
+55        9        ( Delimiter_ParenLeft
+55       16     text   STRING
+55       16        , Delimiter_Comma
+55       18        v IDENTIFIER
+55       18        ) Delimiter_ParenRight
+55       19        ; Delimiter_Semicolon
+56        7      INT  KEYWORD
+56       16 UNSIGNED  KEYWORD
+56       18        h IDENTIFIER
+56       20          Operator_Equals
+56       22        0  INTEGER
+56       22        ; Delimiter_Semicolon
+57       10   PRINTF  KEYWORD
+57       10        ( Delimiter_ParenLeft
+57       20 printchel  KEYWORD
+57       20        ( Delimiter_ParenLeft
+57       21          NonOperator
+57       23 ChemElem_Hydrogen CHEMICAL ELEMENT
+57       23        ) Delimiter_ParenRight
+57       24        ) Delimiter_ParenRight
+57       25        ; Delimiter_Semicolon
+58       10   PRINTF  KEYWORD
+58       10        ( Delimiter_ParenLeft
+58       17   imcomp  KEYWORD
+58       17        ( Delimiter_ParenLeft
+58       18          NonOperator
+58       21 ChemElem_Magnesium CHEMICAL ELEMENT
+58       21        , Delimiter_Comma
+58       23          NonOperator
+58       26 ChemElem_Chlorine CHEMICAL ELEMENT
+58       26        ) Delimiter_ParenRight
+58       27        ; Delimiter_Semicolon
+59       10   PRINTF  KEYWORD
+59       10        ( Delimiter_ParenLeft
+59       14      pcm  KEYWORD
+59       14        ( Delimiter_ParenLeft
+59       15          NonOperator
+59       17 ChemElem_Hydrogen CHEMICAL ELEMENT
+59       17        , Delimiter_Comma
+59       19          NonOperator
+59       20          NonOperator
+59       22 ChemElem_Hydrogen CHEMICAL ELEMENT
+59       22          NonOperator
+59       24        2  INTEGER
+59       24        , Delimiter_Comma
+59       26 ChemElem_Oxygen CHEMICAL ELEMENT
+59       26          NonOperator
+59       27        ) Delimiter_ParenRight
+59       28        ; Delimiter_Semicolon
+60       10   PRINTF  KEYWORD
+60       10        ( Delimiter_ParenLeft
+60       16    react  KEYWORD
+60       16        ( Delimiter_ParenLeft
+60       17          NonOperator
+60       20        , Delimiter_Comma
+60       22          NonOperator
+60       24 ChemElem_Oxygen CHEMICAL ELEMENT
+60       24          NonOperator
+60       26        2  INTEGER
+60       26        ) Delimiter_ParenRight
+60       27        ) Delimiter_ParenRight
+60       28        ; Delimiter_Semicolon
+64        2        } Delimiter_BracesRight
+65        6     ELSE  KEYWORD
+65        7        { Delimiter_BracesLeft
+66       10   PRINTF  KEYWORD
+66       10        ( Delimiter_ParenLeft
+66       17    PRINT   STRING
+66       23        ) Delimiter_ParenRight
+66       24        ; Delimiter_Semicolon
+68       10   PRINTF  KEYWORD
+68       10        ( Delimiter_ParenLeft
+68       17   imcomp  KEYWORD
+68       17        ( Delimiter_ParenLeft
+68       18          NonOperator
+68       21 ChemElem_Magnesium CHEMICAL ELEMENT
+68       21        , Delimiter_Comma
+68       23          NonOperator
+68       26 ChemElem_Chlorine CHEMICAL ELEMENT
+68       26        ) Delimiter_ParenRight
+68       27        ; Delimiter_Semicolon
+69        2        } Delimiter_BracesRight
+70        7    WHILE  KEYWORD
+70        8        ( Delimiter_ParenLeft
+70       13     TRUE  BOOLEAN
+70       13        ) Delimiter_ParenRight
+70       15        { Delimiter_BracesLeft
+71        9    BREAK  KEYWORD
+71        9        ; Delimiter_Semicolon
+73        8     GOTO  KEYWORD
+73        8        ; Delimiter_Semicolon
+74       12 CONTINUE  KEYWORD
+74       12        ; Delimiter_Semicolon
+75        9   SINGLE  COMMENT
+75       14     LINE  COMMENT
+75       22  COMMENT  COMMENT
+76        6          Operator_Multiply
+76       15 MULTIPLE  COMMENT
+76       20     LINE  COMMENT
+76       28  COMMENT  COMMENT
+76       31          Operator_Divide
+79        2        } Delimiter_BracesRight
+80        8   RETURN  KEYWORD
+80       10        0  INTEGER
+80       11        ; Delimiter_Semicolon
