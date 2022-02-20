@@ -64,8 +64,6 @@ const char* isDelimiter(char ch)
     return "OtherSymbol";
   else if (ch == '~')
     return "OtherSymbol";
-//  else if (ch == '^')
-//    return "OtherSymbol";
   return "NonDelimiter";
 }
 
