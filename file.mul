@@ -1,11 +1,11 @@
 INT MAIN () {
-  FLOAT a = 0 ; 
+  FLOAT a = 0.1 ; 
   INT b = 0;
   STRING c = "a";
   INT a = 1;
-
+	identifier
   LONG temp = num;
-
+Num nUm .A_1 _ant
   a+=1;
   a-=1;
   a*=1;
@@ -51,7 +51,7 @@ INT MAIN () {
     FOR ()
 
     INT SIGNED g = 0 ;
-    STRING v = '';
+    CHAR 'c';
     SCANF("text",v);
     INT UNSIGNED h = 0;
     PRINTF(printchel(~H));
@@ -72,10 +72,9 @@ INT MAIN () {
 
     GOTO;
     CONTINUE;
-    // SINGLE LINE COMMENT
+	//SINGLE LINE COMMENT
     /* MULTIPLE LINE COMMENT */
 
 
   }
   RETURN 0 ; 
-}
