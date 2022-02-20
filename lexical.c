@@ -205,16 +205,16 @@ const char* isString(char* str){
 
 // Returns string if it is a CHARACTER.
 const char* isChar(char* str){
-	int i, len = strlen(str);
- 	char *ch = (char*)malloc(len);
- 	
+    int i, len = strlen(str);
+    char *ch = (char*)malloc(len);
+    
     if (len == 0)
         return "NonCharacter";
     if (str[0] == '\'' && str[2] == '\''){
-    	ch[0] = str[1];
-    	ch[1] = '\0';
+        ch[0] = str[1];
+        ch[1] = '\0';
         return ch;
-	}
+    }
     return "NonCharacter";
 }
 
@@ -306,9 +306,9 @@ bool isRealNumber(char* str)
 
 //Returns 'true' if the string is a CHEMICAL EXPRESSION
 bool isChemExpression(int num){
-	if(num==1)
+    if(num==1)
         return (true);
-    return (false);	
+    return (false); 
 }
 
 // Extracts the SUBSTRING.
@@ -339,16 +339,16 @@ void parse(char* str)
             right++;
 
         if (isDelimiter(str[right]) != "NonDelimiter" && left == right) {
-        	if(isDelimiter(str[right]) != "OtherSymbol"){
-            	fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
-            	printf("%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
-          	}
+            if(isDelimiter(str[right]) != "OtherSymbol"){
+                fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+                printf("%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            }
           
-          	else if(str[right]=='/' && str[right-1]=='/')
-				FoundSingleLineComment=1;
-				
-			else if(str[right]=='*' && str[right-1]=='/')
-				FoundMultiLineComment=1;
+            else if(str[right]=='/' && str[right-1]=='/')
+                FoundSingleLineComment=1;
+                
+            else if(str[right]=='*' && str[right-1]=='/')
+                FoundMultiLineComment=1;
           
           //Takes two consecutive characters and send them to isOperator
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
@@ -362,12 +362,12 @@ void parse(char* str)
                 ChemOperatorFound=1;
             }
             else if(str[right]=='\n')
- 				FoundSingleLineComment=0;
-		    else if(str[right]=='/' && str[right-1]=='*')
-			    FoundMultiLineComment=0;
-			else if(str[right]==' ' || str[right]=='\n')
-				ChemOperatorFound=0;
-				
+                FoundSingleLineComment=0;
+            else if(str[right]=='/' && str[right-1]=='*')
+                FoundMultiLineComment=0;
+            else if(str[right]==' ' || str[right]=='\n')
+                ChemOperatorFound=0;
+                
             right++;
             left = right;
         } else if (isDelimiter(str[right]) != "NonDelimiter" && left != right
@@ -380,15 +380,15 @@ void parse(char* str)
             }
             
             else if (isMultiComment(FoundMultiLineComment) == true){
-            	fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
-            	printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
-			      }
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "COMMENT");
+                  }
 
             else if (isKeyword(subStr) == true) {
                 fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "KEYWORD");
                 printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "KEYWORD");
             }
-			
+            
             else if (isBoolean(subStr) == true) { 
                 fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
                 printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
@@ -400,9 +400,9 @@ void parse(char* str)
             }
 
             else if (isRealNumber(subStr) == true){
-            	fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
-            	printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
-			}
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+            }
 
             else if (isChar(subStr) != "NonCharacter"){
               fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
@@ -410,22 +410,26 @@ void parse(char* str)
             }
                 
             else if (isString(subStr) != "NonString"){
-            	fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, isString(subStr), "STRING");
-            	printf("%d %8d %8s %8s\n",CURRENT_LINE,right, isString(subStr), "STRING");
-			}
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, isString(subStr), "STRING");
+            }
             
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
-           			 && isChemOperator(str[right - 1]) == "NonChemOperator") {
+                     && isChemOperator(str[right - 1]) == "NonChemOperator") {
                 fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
                 printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "IDENTIFIER");
             }
            
-           	else if(isChemExpression(ChemOperatorFound) == true)
-           		printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "CHEMICAL EXPRESSION");
+            else if(isChemExpression(ChemOperatorFound) == true) {
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "CHEMICAL EXPRESSION");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "CHEMICAL EXPRESSION");
+            }
 
-            else
+            else {
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "INVALID IDENTIFIER");
                 printf("'%s' IS INVALID\n", subStr);
+            }
 
             left = right;
         }
