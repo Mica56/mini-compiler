@@ -375,7 +375,8 @@ void parse(char* str)
                 printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "KEYWORD");
             }
 
-      else if (isBoolean(subStr) == true) { 
+
+            else if (isBoolean(subStr) == true) { 
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
             }
 
@@ -384,16 +385,19 @@ void parse(char* str)
                 printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "INTEGER");
             }
 
-            else if (isRealNumber(subStr) == true)
+            else if (isRealNumber(subStr) == true) {
                 printf("REAL NUMBER '%s'\n", subStr);
                 fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
+            }
 
-      else if (isChar(subStr) != "NonCharacter")
+
+            else if (isChar(subStr) != "NonCharacter")
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
 
-            else if (isString(subStr) != "NonString")
+            else if (isString(subStr) != "NonString") {
                 printf("STRING '%s'\n", subStr);
                 fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "STRING");
+            }
 
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
@@ -417,9 +421,17 @@ void parse(char* str)
     CURRENT_LINE++;
     return;
 }
+int endsWith (char *str, char *end) {
+    size_t slen = strlen (str);
+    size_t elen = strlen (end);
+    if (slen < elen)
+        return 0;
+    return (strcmp (&(str[slen-elen]), end) == 0);
+}
+
 
 // DRIVER FUNCTION
-int main()
+int main(int argc, char *argv[])
 {
      // maximum length of string is 100 here
      // Global Variables 
