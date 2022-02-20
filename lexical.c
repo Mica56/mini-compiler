@@ -205,6 +205,21 @@ const char* isString(char* str){
     return "NonString";
 }
 
+// Returns string if it is a CHARACTER.
+const char* isChar(char* str){
+	int i, len = strlen(str);
+ 	char *ch = (char*)malloc(len);
+ 	
+    if (len == 0)
+        return "NonCharacter";
+    if (str[0] == '\'' && str[2] == '\''){
+    	ch[0] = str[1];
+    	ch[1] = '\0';
+        return ch;
+	}
+    return "NonCharacter";
+}
+
 // Returns 'true' if the string is an CPMMENT.
 bool isSingleComment(int n)
 {
