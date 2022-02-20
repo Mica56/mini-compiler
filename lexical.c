@@ -148,8 +148,8 @@ const char* isChemOperator(char ch){
 // Returns 'true' if the string is a VALID IDENTIFIER.
 bool validIdentifier(char* str)
 {
-	int i, len = strlen(str);
-	if (len == 0)
+    int i, len = strlen(str);
+    if (len == 0)
         return (false);
     if (str[0] == '0' || str[0] == '1' || str[0] == '2' ||
         str[0] == '3' || str[0] == '4' || str[0] == '5' ||
@@ -164,44 +164,44 @@ bool validIdentifier(char* str)
         str[0] == 'S' || str[0] == 'T' || str[0] == 'U' ||
         str[0] == 'V' || str[0] == 'W' || str[0] == 'X' ||
         str[0] == 'Y' || str[0] == 'Z' || str[0] == '~' ||
-    	str[0] == '"' || str[0] == '\'' || str[0] == '_')
+        str[0] == '"' || str[0] == '\'' || str[0] == '_')
         return (false);
     for (i = 1; i <= len; i++) {
-    	if(str[i] == ' ' || str[i] == '~' || str[i] == '^' ||
-		str[i] == '&' || str[i] == '|')
-    		return (false);
-	}
-	if(str[len-1] == '"' || str[len-1] == '\'')
-		return (false);
-		
-	return (true);
+      if(str[i] == ' ' || str[i] == '~' || str[i] == '^' ||
+        str[i] == '&' || str[i] == '|')
+        return (false);
+    }
+    if(str[len-1] == '"' || str[len-1] == '\'')
+        return (false);
+
+  return (true);
 }
 
 // Returns string if it is a STRING.
 const char* isString(char* str){
     int i = 0, f = 0, l = 0, len = strlen(str);
- 
+
     if (len == 0)
         return "NonString";
     for (i = 0; i < len; i++) {
         if (str[0] == '"' && str[i] == '"'){
-        	 while(str[f]=='"'){
-				f += 1;
-			}
-			l = len - 1;
-			while(str[l]=='"'){
-				l -= 1;
-			}
-			len = l - f;
-			char *str1 = (char*)malloc(len);
-			while(i < len+1){
-				str1[i] = str[i+1];//has bug with ' '
-				i += 1;
-			}
-			str1[i]='\0';
-			return str1;
-    	}
-	}
+            while(str[f]=='"'){
+                f += 1;
+            }
+            l = len - 1;
+            while(str[l]=='"'){
+                l -= 1;
+            }
+            len = l - f;
+            char *str1 = (char*)malloc(len);
+            while(i < len+1){
+                str1[i] = str[i+1];//has bug with ' '
+                i += 1;
+            }
+            str1[i]='\0';
+            return str1;
+        }
+    }
     return "NonString";
 }
 
@@ -224,7 +224,7 @@ const char* isChar(char* str){
 bool isSingleComment(int n)
 {
    if(n==1)
-        return (true);
+       return (true);
     return (false);
 }
 
@@ -235,18 +235,32 @@ bool isMultiComment(int m)
     return (false);
 }
 
+// Returns 'true' if the string is an CHARACTER.
+const char* isChar(char* str){
+    int i, len = strlen(str);
+    char *ch = (char*)malloc(len);
+    if (len == 0)
+        return "NonCharacter";
+    if (str[0] == '\'' && str[2] == '\''){
+        ch[0] = str[1];
+        ch[1] = '\0';
+
+        return ch;
+    }
+    return "NonCharacter";
+}
+
 //Returns 'true' if string is a Boolean value.
 bool isBoolean(char* str){
-	if (!strcmp(str, "TRUE") || !strcmp(str, "FALSE")
-		|| !strcmp(str, "true") || !strcmp(str, "false"))
-		return (true);
-	return (false);
+    if (!strcmp(str, "TRUE") || !strcmp(str, "FALSE")
+            || !strcmp(str, "true") || !strcmp(str, "false"))
+    return (true);
+  return (false);
 }
 
 // Returns 'true' if the string is a KEYWORD.
 bool isKeyword(char* str)
 {
-
     if (   !strcmp(str, "IF")           || !strcmp(str, "ELSE") 
         || !strcmp(str, "WHILE")        || !strcmp(str, "DO") 
         || !strcmp(str, "BREAK")        || !strcmp(str, "CONTINUE") 
@@ -259,12 +273,12 @@ bool isKeyword(char* str)
         || !strcmp(str, "VOID")         || !strcmp(str, "STATIC")
         || !strcmp(str, "STRUCT")       || !strcmp(str, "GOTO")
         || !strcmp(str, "CONST")        || !strcmp(str, "DEFAULT")      
-    || !strcmp(str, "INT")      || !strcmp(str, "FOR")          
-    || !strcmp(str, "PRINTF")   || !strcmp(str, "SIGNED")       
-    || !strcmp(str, "SCANF")    || !strcmp(str, "STRING")       
-    || !strcmp(str, "MAIN")     || !strcmp(str, "printchel")    
-    || !strcmp(str, "imcomp")    || !strcmp(str, "pcm")          
-    || !strcmp(str, "react"))
+        || !strcmp(str, "INT")      || !strcmp(str, "FOR")          
+        || !strcmp(str, "PRINTF")   || !strcmp(str, "SIGNED")       
+        || !strcmp(str, "SCANF")    || !strcmp(str, "STRING")       
+        || !strcmp(str, "MAIN")     || !strcmp(str, "printchel")    
+        || !strcmp(str, "imcomp")    || !strcmp(str, "pcm")          
+        || !strcmp(str, "react"))
         return (true);
     return (false);
 }
@@ -424,30 +438,32 @@ void parse(char* str)
         if (isDelimiter(str[right]) != "NonDelimiter" && left == right) {
           if(isDelimiter(str[right]) != "OtherSymbol"){
             /*printf("%s\n", isDelimiter(str[right]));*/
-            fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
-            printf("%d %d %c %s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
+            printf("%d %8d %8c %8s\n",CURRENT_LINE,right,str[right], isDelimiter(str[right]));
           }
-          	else if(str[right]=='/' && str[right-1]=='/')
-				FoundSingleLineComment=1;
+          
+          else if(str[right]=='/' && str[right-1]=='/')
+				    FoundSingleLineComment=1;
 				
-			else if(str[right]=='*' && str[right-1]=='/')
-				FoundMultiLineComment=1;
-        	//Takes two consecutive characters and send them to isTOExpression 
+			    else if(str[right]=='*' && str[right-1]=='/')
+				    FoundMultiLineComment=1;
+          
+          //Takes two consecutive characters and send them to isOperator
             else if (isOperator(str[right-1],str[right]) != "NonOperator") {
                 /*printf("%s\n", isOperator(str[right-1],str[right]));*/
-                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isOperator(str[right-1],str[right]));
-                printf("%d %d %s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
+                fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,' ', isOperator(str[right-1],str[right]));
+                printf("%d %8d %8s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
             }
 
             else if(isChemOperator(str[right]) != "NonChemOperator") {
                 /*printf("%s\n", isChemOperator(str[right]));*/
-                fprintf(dest_fp,"%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
-                printf("%d %d %c %s\n",CURRENT_LINE,right,str[right], isChemOperator(str[right]));
+                fprintf(dest_fp,"%d %8d %8c %8s\n",CURRENT_LINE,right,' ', isOperator(str[right-1],str[right]));
+                printf("%d %8d %8s\n",CURRENT_LINE,right, isOperator(str[right-1],str[right]));
             }
             else if(str[right]=='\n')
- 				FoundSingleLineComment=0;
- 			else if(str[right]=='/' && str[right-1]=='*')
-				FoundMultiLineComment=0;
+ 				      FoundSingleLineComment=0;
+ 			      else if(str[right]=='/' && str[right-1]=='*')
+				      FoundMultiLineComment=0;
 				
             right++;
             left = right;
@@ -455,45 +471,50 @@ void parse(char* str)
                    || (right == len && left != right)) {
             char* subStr = subString(str, left, right - 1);
 
-			if (isSingleComment(FoundSingleLineComment) == true){
-				fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "COMMENT");
-				printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
-			}
+            if (isSingleComment(FoundSingleLineComment) == true){
+              fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+              printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
+            }
             
             else if (isMultiComment(FoundMultiLineComment) == true){
             	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "COMMENT");
             	printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "COMMENT");
-			}
-                
+			      }
+
             else if (isKeyword(subStr) == true) {
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
-                printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "KEYWORD");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "KEYWORD");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "KEYWORD");
             }
 			
-			else if (isBoolean(subStr) == true) { 
-				fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
+            else if (isBoolean(subStr) == true) { 
+                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
                 printf("%d %d '%s' %s\n",CURRENT_LINE,right, subStr, "BOOLEAN");
             }
 
             else if (isInteger(subStr) == true) {
-                fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "INTEGER");
-                printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "INTEGER");
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "INTEGER");
+                printf("%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "INTEGER");
+            }
+
+            else if (isRealNumber(subStr) == true) {
+                printf("REAL NUMBER '%s'\n", subStr);
+                fprintf(dest_fp,"%d %8d %8s %8s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
             }
 
             else if (isRealNumber(subStr) == true){
             	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
             	printf("%d %d %s %s\n",CURRENT_LINE,right, subStr, "REAL NUMBER");
-			}
+			      }
 
-			else if (isChar(subStr) != "NonCharacter"){
-				fprintf(dest_fp,"%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
-				printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
-			}
+            else if (isChar(subStr) != "NonCharacter"){
+              fprintf(dest_fp,"%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+              printf("%d %d '%s' %s\n",CURRENT_LINE,right, isChar(subStr), "CHARACTER");
+            }
                 
             else if (isString(subStr) != "NonString"){
             	fprintf(dest_fp,"%d %d %s %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
             	printf("%d %d '%s' %s\n",CURRENT_LINE,right, isString(subStr), "STRING");
-			}
+			      }
             
             else if (validIdentifier(subStr) == true
                      && isDelimiter(str[right - 1]) == "NonDelimiter"
@@ -505,6 +526,7 @@ void parse(char* str)
             else if (isChemElem(subStr) != "NonChemElem") {
                 fprintf(dest_fp,"%d %d %s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
                 printf("%d %d %s\n",CURRENT_LINE,right, isChemElem(subStr), "CHEMICAL ELEMENT");
+
            }
 
             else
@@ -517,21 +539,23 @@ void parse(char* str)
     return;
 }
 
+int endsWith (char *str, char *end) {
+    size_t slen = strlen (str);
+    size_t elen = strlen (end);
+    if (slen < elen)
+        return 0;
+    return (strcmp (&(str[slen-elen]), end) == 0);
+}
+
 // DRIVER FUNCTION
-int main()
+int main(int argc, char *argv[])
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = false ;
+    bool DEBUG = true ;
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
-        char str[100] = "INT .a_nt = ~[H^20] >= .1;\n~H + FLOAT %2a \"sussy\" \'c\'";//has a bug with H^20 & two operator characters
-
-        parse(str); // calling the parse function
-    }
-    // DEBUG-OFF Mode: Accepts an entire file and converts it all into another file containing lexeme tokens.
-    else {
         char line[100] ;
         size_t len = 0 ;
         FILE *fptr;
@@ -548,8 +572,53 @@ int main()
         }
 
         while (val = fgets(line,100, fptr)) {
-            if (strcmp(line," ") != 0) {
+            if (val[0] != '\n') {
                 parse(val);
+            }
+            else {
+                CURRENT_LINE++;
+            }
+        }
+
+        fclose(fptr);
+    }
+    // DEBUG-OFF Mode: Accepts an entire file and converts it all into another file containing lexeme tokens.
+    else {
+        char line[100] ;
+        size_t len = 0 ;
+        FILE *fptr;
+        ssize_t read;
+        char *val;
+
+        if (argc < 2) {
+            printf("Error: no given files.\n");
+            printf("Usage is: gcc lexical.out filename.mul\n");
+            exit(EXIT_FAILURE);
+        }
+
+        if(!endsWith(argv[1],".mul")) {
+            printf("Error: invalid file with name %s. It must have a"
+                " format of name.mul\n", argv[1]);
+            exit(EXIT_FAILURE);
+        }
+
+
+
+        fptr = fopen(argv[1],"r");
+        dest_fp = fopen("output.mul","w");
+
+
+        if (fptr == NULL) {
+            printf("Failed to Open File. Terminating Program.");
+            return 0 ;
+        }
+
+        while (val = fgets(line,100, fptr)) {
+            if (val[0] != '\n') {
+                parse(val);
+            }
+            else {
+                CURRENT_LINE++;
             }
         }
 
