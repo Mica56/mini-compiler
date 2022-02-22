@@ -124,7 +124,7 @@ const char* isSingleOperator(char right) {
     else if (a == '<')
       return "Operator_Lessthan";
     else if (a == '=')
-      return "Operator_Equals";
+      return "Operator_Assignment";
     else if (a == '%')
       return "Operator_Modulo";
     else if (a == '!')
@@ -470,7 +470,7 @@ int main(int argc, char *argv[])
 {
      // maximum length of string is 100 here
      // Global Variables 
-    bool DEBUG = true ;
+    bool DEBUG = false ;
 
     // DEBUG Mode: Just for minor line tests
     if (DEBUG) {
