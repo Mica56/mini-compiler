@@ -519,7 +519,7 @@ void parse(char *str)
     {
       if (isDelimiter(str[right]) != OTHER_SYMBOL)
       {
-        fprintf(dest_fp, "%d:%d:%c:%d\n", CURRENT_LINE, right, str[right], isDelimiter(str[right]));
+        fprintf(dest_fp, "%d@%d@%c@%d\n", CURRENT_LINE, right, str[right], isDelimiter(str[right]));
         printf("%d %8d %8c %8d\n", CURRENT_LINE, right, str[right], isDelimiter(str[right]));
       }
 
@@ -536,19 +536,19 @@ void parse(char *str)
         lexeme[0] = str[right];
         lexeme[1] = str[right + 1];
 
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, lexeme, isDoubleOperator(str[right], str[right + 1]));
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, lexeme, isDoubleOperator(str[right], str[right + 1]));
         printf("%d %8d %8d\n", CURRENT_LINE, right, isDoubleOperator(str[right], str[right + 1]));
         right++; // extra skip since two operators were taken
       }
       else if (isChemOperator(str[right]) != NON_CHEM_OPERATOR)
       {
-        fprintf(dest_fp, "%d:%d:%c:%d\n", CURRENT_LINE, right, str[right], isChemOperator(str[right]));
+        fprintf(dest_fp, "%d@%d@%c@%d\n", CURRENT_LINE, right, str[right], isChemOperator(str[right]));
         printf("%d %8d %8d\n", CURRENT_LINE, right, isChemOperator(str[right]));
         ChemOperatorFound = 1;
       }
       else if (isSingleOperator(str[right]) != NON_OPERATOR)
       {
-        fprintf(dest_fp, "%d:%d:%c:%d\n", CURRENT_LINE, right, str[right], isSingleOperator(str[right]));
+        fprintf(dest_fp, "%d@%d@%c@%d\n", CURRENT_LINE, right, str[right], isSingleOperator(str[right]));
         printf("%d %8d %8d\n", CURRENT_LINE, right, isSingleOperator(str[right]));
       }
 
@@ -578,68 +578,69 @@ void parse(char *str)
 
       if (isSingleComment(FoundSingleLineComment) == true)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, COMMENT);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, COMMENT);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, COMMENT);
       }
 
       else if (isMultiComment(FoundMultiLineComment) == true)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, COMMENT);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, COMMENT);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, COMMENT);
       }
 
       else if (isKeyword(subStr) != NON_KEYWORD)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, isKeyword(subStr));
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, isKeyword(subStr));
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, isKeyword(subStr));
       }
 
       else if (isBoolean(subStr) != NON_BOOLEAN)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, isBoolean(subStr));
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, isBoolean(subStr));
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, isBoolean(subStr));
       }
 
       else if (isInteger(subStr) == true)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, INTEGER_LITERAL);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, INTEGER_LITERAL);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, INTEGER_LITERAL);
       }
 
       else if (isRealNumber(subStr) == true)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, REAL_NUMBER_LITERAL);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, REAL_NUMBER_LITERAL);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, REAL_NUMBER_LITERAL);
       }
 
       else if (isChar(subStr) != "NonCharacter")
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, isChar(subStr), CHARACTER_LITERAL);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, isChar(subStr), CHARACTER_LITERAL);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, isChar(subStr), CHARACTER_LITERAL);
       }
 
       else if (isString(subStr) != "NonString")
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, isString(subStr), STRING_LITERAL);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, isString(subStr), STRING_LITERAL);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, isString(subStr), STRING_LITERAL);
       }
 
       else if (validIdentifier(subStr) == true && isDelimiter(str[right - 1]) == NON_DELIMITER && isChemOperator(str[right - 1]) == NON_CHEM_OPERATOR)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, IDENTIFIER);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, IDENTIFIER);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, IDENTIFIER);
       }
 
       else if (isChemExpression(ChemOperatorFound) == true)
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, CHEMICAL_EXPRESSION);
+        fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, CHEMICAL_EXPRESSION);
         printf("%d %8d %8s %8d\n", CURRENT_LINE, right, subStr, CHEMICAL_EXPRESSION);
       }
-
       else
       {
-        fprintf(dest_fp, "%d:%d:%s:%d\n", CURRENT_LINE, right, subStr, INVALID);
-        printf("'%s' IS INVALID\n", subStr);
+        if (subStr[0] != '\0') {
+            fprintf(dest_fp, "%d@%d@%s@%d\n", CURRENT_LINE, right, subStr, INVALID);
+            printf("'%i' IS INVALID\n", subStr[0]);
+        }
       }
 
       left = right;
@@ -669,7 +670,7 @@ int main(int argc, char *argv[])
   // DEBUG Mode: Just for minor line tests
   if (DEBUG)
   {
-    char line[100];
+    char line[200];
     size_t len = 0;
     FILE *fptr;
     ssize_t read;
