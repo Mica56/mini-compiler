@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * A syntax tree node. A node is modeled with
@@ -37,29 +38,16 @@ public class TreeNode {
         children.add(node);
     }
 
-    @Override
-    public String toString() {
-        return recursiveStringify(this, 0);
-    }
-
-    private static String recursiveStringify(
-            TreeNode current, int noOfIndents) {
+    public static String recursiveStringify(
+            TreeNode current, int noOfIndents, boolean shouldIndent) {
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 0; i < noOfIndents; i++)
+        for(int i = 0; i < noOfIndents && shouldIndent; i++)
             stringBuilder.append("\t");
 
         // Special cases (NODE_TYPE VALUE) as output
-        if(current.type == Type.DATA_TYPE ||
-                current.type == Type.IDENTIFIER ||
-                current.type == Type.CHARACTER_LITERAL ||
-                current.type == Type.STRING_LITERAL ||
-                current.type == Type.INTEGER_LITERAL ||
-                current.type == Type.REAL_NUMBER_LITERAL ||
-                current.type == Type.TRUE_LITERAL ||
-                current.type == Type.FALSE_LITERAL)
-            return stringBuilder.append(current.type)
-                    .append(" ")
-                    .append(current.value)
+        if(current.type == Type.EXPR)
+            return stringBuilder.append("EXPRESSION ")
+                    .append(flattenExpr(current.children.get(0)))
                     .append("\n")
                     .toString();
 
@@ -69,9 +57,41 @@ public class TreeNode {
 
         // Output each child recursively
         for(TreeNode child : current.children)
-            stringBuilder.append(recursiveStringify(child, noOfIndents + 1));
+            stringBuilder.append(recursiveStringify(child, noOfIndents + 1, shouldIndent));
 
         return stringBuilder.toString();
+    }
+
+    private static String flattenExpr(TreeNode current) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if(current.type == Type.DATA_TYPE ||
+                current.type == Type.IDENTIFIER ||
+                current.type == Type.CHARACTER_LITERAL ||
+                current.type == Type.STRING_LITERAL ||
+                current.type == Type.INTEGER_LITERAL ||
+                current.type == Type.REAL_NUMBER_LITERAL ||
+                current.type == Type.TRUE_LITERAL ||
+                current.type == Type.FALSE_LITERAL)
+            return stringBuilder.append(current.type.toString())
+                    .append(" ")
+                    .append(current.value)
+                    .toString();
+
+        // Output the value
+        stringBuilder.append(current.value).append("(");
+        // Output each child
+        if(!current.children.isEmpty()) {
+            // Output first child
+            ListIterator<TreeNode> childrenIterator = current.children.listIterator();
+            TreeNode currentNode = childrenIterator.next();
+            stringBuilder.append(flattenExpr(currentNode));
+            while(childrenIterator.hasNext()) {
+                currentNode = childrenIterator.next();
+                stringBuilder.append(",").append(flattenExpr(currentNode));
+            }
+        }
+        return stringBuilder.append(")").toString();
     }
 
     public enum Type {

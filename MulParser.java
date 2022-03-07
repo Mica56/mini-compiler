@@ -95,7 +95,14 @@ public class MulParser {
     public void parse() {
         mulProg();
 
-        System.out.println(root);
+        // Output to console TODO: temp
+        System.out.println(TreeNode.recursiveStringify(root, 0, true));
+        // Output to syntax tree file
+        printerSyntaxTree.print(TreeNode.recursiveStringify(root, 0, false));
+
+        // Close stuff
+        scannerSymbolTable.close();
+        printerSyntaxTree.close();
     }
 
     /* START OF PRODUCTION RULES */
@@ -698,7 +705,7 @@ public class MulParser {
         // File instance for symbol table file
         fileSymbolTable = new File(symbolTableFilename);
         // File instance for syntax tree file
-        fileSyntaxTree = new File(symbolTableFilename.split("\\.")[0]);
+        fileSyntaxTree = new File(symbolTableFilename.split("\\.")[0] + ".multree");
 
         // Create parser
         MulParser mulParser = new MulParser(fileSymbolTable, fileSyntaxTree);
