@@ -16,33 +16,33 @@ public record Token(int lineNumber, int columnNumber, String lexeme, Type type) 
         NON_DELIMITER, // Extra flags for lexer
 
         // Operators
-        EQUALS_TO("=="),
-        NOT_EQUALS_TO("!="),
-        LESS_EQUAL("<="),
-        GREATER_EQUAL(">="),
-        PLUS_EQUAL("+="),
-        MINUS_EQUAL("-="),
-        MULTIPLY_EQUAL("*="),
-        DIVIDE_EQUAL("/="),
-        MODULE_EQUAL("%="),
-        INTEGER_DIVISION("//"),
-        EXPONENT("**"),
-        INCREMENT("++"),
-        DECREMENT("--"),
-        LOGICAL_OR("||"),
-        LOGICAL_AND("&&"),
+        EQUALS_TO("==", false, true),
+        NOT_EQUALS_TO("!=", false, true),
+        LESS_EQUAL("<=", false, true),
+        GREATER_EQUAL(">=", false, true),
+        PLUS_EQUAL("+=", false, true),
+        MINUS_EQUAL("-=", false, true),
+        MULTIPLY_EQUAL("*=", false, true),
+        DIVIDE_EQUAL("/=", false, true),
+        MODULE_EQUAL("%=", false, true),
+        INTEGER_DIVISION("//", false, true),
+        EXPONENT("**", false, true),
+        INCREMENT("++", true, false),
+        DECREMENT("--", true, false),
+        LOGICAL_OR("||", false, true),
+        LOGICAL_AND("&&", false, true),
         NON_OPERATOR, // Extra flags for lexer
 
         // Single Operators
-        PLUS("+"),
-        MINUS("-"),
-        MULTIPLY("*"),
-        DIVIDE("/"),
-        GREATER_THAN(">"),
-        LESS_THAN("<"),
-        ASSIGNMENT("="),
-        MODULO("%"),
-        NOT_EQUAL("!"),
+        PLUS("+", false, true),
+        MINUS("-", false, true),
+        MULTIPLY("*", false, true),
+        DIVIDE("/", false, true),
+        GREATER_THAN(">", false, true),
+        LESS_THAN("<", false, true),
+        ASSIGNMENT("=", false, true),
+        MODULO("%", false, true),
+        NOT_EQUAL("!", true, false),
 
         // Chemical Operators
         TILDE("~"),
@@ -115,8 +115,17 @@ public record Token(int lineNumber, int columnNumber, String lexeme, Type type) 
         INVALID;
 
         private String lexeme;
-        Type() { this(null); }
-        Type(String lexeme) { this.lexeme = lexeme; }
+        private boolean unary;
+        private boolean binary;
+        Type() { this(null, false, false); }
+        Type(String lexeme) { this(lexeme, false, false); }
+        Type(String lexeme, boolean unary, boolean binary) {
+            this.lexeme = lexeme;
+            this.unary = unary;
+            this.binary = binary;
+        }
         public String lexeme() { return lexeme; }
+        public boolean isUnary() { return unary; }
+        public boolean isBinary() { return binary; }
     }
 }
