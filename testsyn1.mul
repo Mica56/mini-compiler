@@ -1,0 +1,32 @@
+INT MAIN () {
+    FLOAT d;
+    STRING t = d;
+    INT a, b, c = s;
+
+    a = SCANF();
+    b = SCANF();
+    c = SCANF();
+
+    PRINTF(a);
+    PRINTF(b);
+
+    a = b;
+    b = a;
+
+    IF(a) {
+        PRINTF(a);
+    } ELSE IF(b) {
+        PRINTF(b);
+    } ELSE {
+        PRINTF(c);
+    }
+
+    WHILE(a) {
+        PRINTF(a);
+        a = b;
+
+        WHILE(b) {
+            PRINTF(b);
+        }
+    }
+} RETURN;

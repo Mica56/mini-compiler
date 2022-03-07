@@ -7,20 +7,11 @@ import java.util.Scanner;
 
 /**
  * A parser for the MUL programming language.
- * Modeled as a Backtracking Recursive Descent parser.
  */
 public class MulParser {
 
-    // File manipulators
-    // Scanner for the symbol table file
-    private Scanner scannerSymbolTable;
-    // PrintWriter for the syntax tree file
-    private PrintWriter printerSyntaxTree;
-
-    // List of Tokens
-    private LinkedList<Token> tokenLinkedList;
-    // Pointer to the current token
-    private ListIterator<Token> tokenListIterator;
+    // Root of the syntax tree
+    private TreeNode root;
 
     /**
      * Creates a parser, with the given files to operate on.
@@ -53,6 +44,13 @@ public class MulParser {
         tokenLinkedList = new LinkedList<>();
     }
 
+    LinkedList<Token> tokenLinkedList;
+    ListIterator<Token> tokenListIterator;
+    // Scanner for the symbol table file
+    Scanner scannerSymbolTable;
+    // PrintWriter for the syntax tree file
+    PrintWriter printerSyntaxTree;
+
     /**
      * Reads the specified symbol table file line by line, and extracts
      * the tokens into a linked list.
@@ -65,7 +63,7 @@ public class MulParser {
 
         // Read each line of the symbol table file
         while(scannerSymbolTable.hasNextLine()) {
-            String[] line = scannerSymbolTable.nextLine().split(":");
+            String[] line = scannerSymbolTable.nextLine().split("@");
 
             // Read the line and column number
             int lineNumber = Integer.parseInt(line[0]);
@@ -81,56 +79,386 @@ public class MulParser {
                     columnNumber,
                     lexeme,
                     tokenTypeValues[type]);
-            // Add the token to the list
-            tokenLinkedList.add(token);
+
+            // If invalid, disregard
+            if(token.type() != Token.Type.INVALID)
+                tokenLinkedList.add(token);
         }
 
-        System.out.println("read");
+        // Start iterator at first symbol
+        tokenListIterator = tokenLinkedList.listIterator();
+    }
+
+    public void parse() {
+        mulProg();
+
+        System.out.println(root);
     }
 
     /* START OF PRODUCTION RULES */
-    private boolean mulProg(TreeNode parent) {
+    private boolean mulProg() {
+        root = new TreeNode(TreeNode.Type.MUL_PROG, "MUL_PROG");
+
+        assertMatch(Token.Type.INT);
+        assertMatch(Token.Type.MAIN);
+        assertMatch(Token.Type.PAREN_LEFT);
+        assertMatch(Token.Type.PAREN_RIGHT);
+        assertMatch(Token.Type.BRACES_LEFT);
+        body(root);
+        assertMatch(Token.Type.BRACES_RIGHT);
+        assertMatch(Token.Type.RETURN);
+        assertMatch(Token.Type.SEMICOLON);
+
         return true;
     }
 
     private boolean body(TreeNode parent) {
-        return true;
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode bodyNode = new TreeNode(TreeNode.Type.BODY, "BODY");
+
+        // Attempt to parse a statement
+        if(statements(bodyNode)) {
+            parent.addChild(bodyNode);
+            return true;
+        }
+
+        // If parsing a statement failed, backtrack then return false
+        else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
     }
 
-    private boolean statement(TreeNode parent) {
-        return true;
+    private boolean statements(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode statementsNode = new TreeNode(TreeNode.Type.STATEMENTS, "STATEMENTS");
+
+        if(decStatement(statementsNode) ||
+                inStatement(statementsNode) ||
+                assStatement(statementsNode, true) ||
+                outStatement(statementsNode) ||
+                conStatement(statementsNode) ||
+                iteStatement(statementsNode)) {
+            while(decStatement(statementsNode) ||
+                    inStatement(statementsNode) ||
+                    assStatement(statementsNode, true) ||
+                    outStatement(statementsNode) ||
+                    conStatement(statementsNode) ||
+                    iteStatement(statementsNode));
+            parent.addChild(statementsNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
     }
 
-    private boolean inputStatement(TreeNode parent) {
-        return true;
+    private boolean decStatement(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode decStatementNode = new TreeNode(TreeNode.Type.DEC_STATEMENT, "DEC_STATEMENT");
+
+        if(dataType(decStatementNode) &&
+                (assStatement(decStatementNode, false) ||
+                        identifier(decStatementNode))) {
+            while(match(Token.Type.COMMA) &&
+                    (assStatement(decStatementNode, false) ||
+                        identifier(decStatementNode)));
+            assertMatch(Token.Type.SEMICOLON);
+
+            parent.addChild(decStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
     }
 
-    private boolean outputStatement(TreeNode parent) {
-        return true;
+    private boolean assStatement(TreeNode parent, boolean hasSemicolon) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode assStatementNode = new TreeNode(TreeNode.Type.ASS_STATEMENT, "ASS_STATEMENT");
+
+        if(identifier(assStatementNode) &&
+           match(Token.Type.ASSIGNMENT)) {
+            boolean proceed = identifier(assStatementNode);
+
+            if(hasSemicolon)
+                assertMatch(Token.Type.SEMICOLON);
+
+            if(proceed) {
+                parent.addChild(assStatementNode);
+                return true;
+            } else {
+                // Get the token
+                Token currentToken = tokenListIterator.next();
+                // Output syntax error message
+                System.out.printf(
+                        "In line %d:%d: syntax error, expected identifier but encountered %s.\n",
+                        currentToken.lineNumber(),
+                        currentToken.columnNumber(),
+                        currentToken.lexeme());
+                // TODO: transform into non-panic mode
+                System.exit(1);
+            }
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+
+        return false;
     }
 
-    private boolean assignmentStatement(TreeNode parent) {
-        return true;
+    private boolean inStatement(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode inStatementNode = new TreeNode(TreeNode.Type.IN_STATEMENT, null);
+
+        // Attempt to match input statement
+        if(identifier(inStatementNode) &&
+           match(Token.Type.ASSIGNMENT) &&
+           match(Token.Type.SCANF)) {
+            assertMatch(Token.Type.PAREN_LEFT);
+            assertMatch(Token.Type.PAREN_RIGHT);
+            assertMatch(Token.Type.SEMICOLON);
+            parent.addChild(inStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
     }
 
-    private boolean conditionalStatement(TreeNode parent) {
-        return true;
+    private boolean outStatement(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode outStatementNode = new TreeNode(TreeNode.Type.OUT_STATEMENT, null);
+
+        // Attempt to match input statement
+        if(match(Token.Type.PRINTF)) {
+            assertMatch(Token.Type.PAREN_LEFT);
+            // TODO: handle errors when out() fails
+            out(outStatementNode);
+            assertMatch(Token.Type.PAREN_RIGHT);
+            assertMatch(Token.Type.SEMICOLON);
+            parent.addChild(outStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+    }
+
+    private boolean out(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode outNode = new TreeNode(TreeNode.Type.OUT, null);
+
+        // Attempt to match input statement
+        if(identifier(outNode)) {
+            while(match(Token.Type.COMMA) && identifier(outNode));
+            parent.addChild(outNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+    }
+
+    private boolean conStatement(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode conStatementNode = new TreeNode(TreeNode.Type.CON_STATEMENT, null);
+
+        if(ifStatement(conStatementNode) && elseIfStatements(conStatementNode) &&
+           elseStatement(conStatementNode)) {
+            parent.addChild(conStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
     }
 
     private boolean ifStatement(TreeNode parent) {
-        return true;
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode ifStatementNode = new TreeNode(TreeNode.Type.IF_STATEMENT, null);
+
+        if(match(Token.Type.IF)) {
+            assertMatch(Token.Type.PAREN_LEFT);
+            // TODO: Change to expression
+            identifier(ifStatementNode);
+            assertMatch(Token.Type.PAREN_RIGHT);
+            assertMatch(Token.Type.BRACES_LEFT);
+            // TODO: Handle errors for statements inside if
+            statements(ifStatementNode);
+            assertMatch(Token.Type.BRACES_RIGHT);
+            parent.addChild(ifStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+    }
+
+    private boolean elseIfStatements(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode elseIfStatementsNode = new TreeNode(TreeNode.Type.ELSEIF_STATEMENTS, null);
+
+        if(elseIfStatement(elseIfStatementsNode)) {
+            while(elseIfStatement(elseIfStatementsNode));
+            parent.addChild(elseIfStatementsNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return true;
+        }
     }
 
     private boolean elseIfStatement(TreeNode parent) {
-        return true;
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode elseIfStatementNode = new TreeNode(TreeNode.Type.ELSEIF_STATEMENT, null);
+
+        if(match(Token.Type.ELSE) && match(Token.Type.IF)) {
+            assertMatch(Token.Type.PAREN_LEFT);
+            // TODO: Change to expression
+            identifier(elseIfStatementNode);
+            assertMatch(Token.Type.PAREN_RIGHT);
+            assertMatch(Token.Type.BRACES_LEFT);
+            // TODO: Handle errors for statements inside else if
+            statements(elseIfStatementNode);
+            assertMatch(Token.Type.BRACES_RIGHT);
+            parent.addChild(elseIfStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
     }
 
     private boolean elseStatement(TreeNode parent) {
-        return true;
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode elseStatementNode = new TreeNode(TreeNode.Type.ELSE_STATEMENT, null);
+
+        if(match(Token.Type.ELSE)) {
+            assertMatch(Token.Type.BRACES_LEFT);
+            // TODO: Handle errors for statements inside else
+            statements(elseStatementNode);
+            assertMatch(Token.Type.BRACES_RIGHT);
+            parent.addChild(elseStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return true;
+        }
     }
 
-    private boolean iterativeStatement(TreeNode parent) {
-        return true;
+    private boolean iteStatement(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode iteStatementNode = new TreeNode(TreeNode.Type.ITE_STATEMENT, null);
+
+        if(doWhileStatement(iteStatementNode) || whileStatement(iteStatementNode)) {
+            parent.addChild(iteStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+    }
+
+    private boolean doWhileStatement(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode doWhileStatementNode = new TreeNode(TreeNode.Type.DO_WHILE_STATEMENT, null);
+
+        if(match(Token.Type.DO)) {
+            assertMatch(Token.Type.BRACES_LEFT);
+            statements(doWhileStatementNode);
+            assertMatch(Token.Type.BRACES_RIGHT);
+            assertMatch(Token.Type.WHILE);
+            assertMatch(Token.Type.PAREN_LEFT);
+            identifier(doWhileStatementNode);
+            assertMatch(Token.Type.PAREN_RIGHT);
+
+            parent.addChild(doWhileStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+    }
+
+    private boolean whileStatement(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode whileStatementNode = new TreeNode(TreeNode.Type.WHILE_STATEMENT, null);
+
+        if(match(Token.Type.WHILE)) {
+            assertMatch(Token.Type.PAREN_LEFT);
+            identifier(whileStatementNode);
+            assertMatch(Token.Type.PAREN_RIGHT);
+            assertMatch(Token.Type.BRACES_LEFT);
+            statements(whileStatementNode);
+            assertMatch(Token.Type.BRACES_RIGHT);
+
+            parent.addChild(whileStatementNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+    }
+
+    private boolean dataType(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode dataTypeNode = new TreeNode(TreeNode.Type.DATA_TYPE, null);
+
+        // Attempt to match a data type keyword
+        if(match(Token.Type.INT) ||
+           match(Token.Type.FLOAT) ||
+           match(Token.Type.STRING) ||
+           match(Token.Type.BOOL)) {
+            // If matched, get the token
+            tokenListIterator.previous();
+            Token token = tokenListIterator.next();
+            // Set the node value to "DATATYPE INT" for example
+            dataTypeNode.setValue(token.lexeme());
+            // Add to parent
+            parent.addChild(dataTypeNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
+    }
+
+    private boolean identifier(TreeNode parent) {
+        int backtrackIndex = tokenListIterator.nextIndex();
+        TreeNode identifierNode = new TreeNode(TreeNode.Type.IDENTIFIER, null);
+
+        // Get the next token
+        Token currentToken = tokenListIterator.next();
+
+        // If token is identifier
+        if(currentToken.type() == Token.Type.IDENTIFIER) {
+            // Get the lexeme and attach to node string value
+            identifierNode.setValue(currentToken.lexeme());
+            // Add to parent
+            parent.addChild(identifierNode);
+            return true;
+        } else {
+            // Reset the iterator to the backtrack index
+            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            return false;
+        }
     }
 
     /**
@@ -165,10 +493,11 @@ public class MulParser {
             Token currentToken = tokenListIterator.next();
             // Output a syntax error message (PANIC MODE STILL)
             System.out.printf(
-                    "In line %d:%d: syntax error, expected %s but encountered %s.",
+                    "In line %d:%d: syntax error, expected %s but encountered %s.\n",
                     currentToken.lineNumber(),
                     currentToken.columnNumber(),
-                    tokenListIterator.next().lexeme());
+                    expectedType.lexeme(),
+                    currentToken.lexeme());
             // Exit the program for now
             // TODO: transform into non-panic mode
             System.exit(1);
@@ -196,6 +525,7 @@ public class MulParser {
         // Create parser
         MulParser mulParser = new MulParser(fileSymbolTable, fileSyntaxTree);
         mulParser.initializeSymbols();
+        mulParser.parse();
     }
 
 }
