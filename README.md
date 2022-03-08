@@ -22,8 +22,9 @@ java MulParser
 ```
 ### To run this project the lazy way on Linux
 
-file.mul => the corresponding file name for your source code.
 Just use our makefile program!
+
+file.mul => the corresponding file name for your source code.
 ```shell
 make run_program FILENAME=<file.mul>
 ```
