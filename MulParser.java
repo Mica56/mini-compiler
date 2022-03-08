@@ -1,5 +1,3 @@
-import com.sun.source.tree.Tree;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -8,9 +6,6 @@ import java.util.ListIterator;
 import java.util.Scanner;
 import java.util.Stack;
 
-/**
- * A parser for the MUL programming language.
- */
 public class MulParser {
 
     // Root of the syntax tree
@@ -18,37 +13,38 @@ public class MulParser {
 
     /**
      * Creates a parser, with the given files to operate on.
-     * @param fileSymbolTable the symbol table file
-     * @param fileSyntaxTree the syntax tree file
+     * @param neededFiles the needed files, where:
+     *                    (0) - the symbol table file
+     *                    (1) - the syntax tree file
      */
-    public MulParser(File fileSymbolTable, File fileSyntaxTree) {
+    public MulParser(File[] neededFiles) {
         // Attempt to create a Scanner for the symbol table file
         try {
-            scannerSymbolTable = new Scanner(fileSymbolTable);
+            scannerSymbolTable = new Scanner(neededFiles[0]);
         } catch (FileNotFoundException e) {
             // Output a cannot open file message if not opened
             System.out.println(
                     "Error: cannot open file with name: " +
-                            fileSymbolTable.getName());
+                            neededFiles[0].getName());
             System.exit(1);
         }
         // Attempt to create a PrintWriter for the syntax tree file
         try {
-            printerSyntaxTree = new PrintWriter(fileSyntaxTree);
+            printerSyntaxTree = new PrintWriter(neededFiles[1]);
         } catch (FileNotFoundException e) {
             // Output a cannot open file message if not opened
             System.out.println(
                     "Error: cannot open syntax tree file with name: " +
-                            fileSyntaxTree.getName());
+                            neededFiles[1].getName());
             System.exit(1);
         }
 
         // Initialize linked list of tokens
-        tokenLinkedList = new LinkedList<>();
+        tokens = new LinkedList<>();
     }
 
-    LinkedList<Token> tokenLinkedList;
-    ListIterator<Token> tokenListIterator;
+    LinkedList<Token> tokens;
+    ListIterator<Token> tokenPointer;
     // Scanner for the symbol table file
     Scanner scannerSymbolTable;
     // PrintWriter for the syntax tree file
@@ -62,7 +58,7 @@ public class MulParser {
         Token.Type[] tokenTypeValues = Token.Type.values();
 
         // Clear the token list
-        tokenLinkedList.clear();
+        tokens.clear();
 
         // Read each line of the symbol table file
         while(scannerSymbolTable.hasNextLine()) {
@@ -82,20 +78,20 @@ public class MulParser {
                     columnNumber,
                     lexeme,
                     tokenTypeValues[type]);
-
-            // If invalid, disregard
-            if(token.type() != Token.Type.INVALID)
-                tokenLinkedList.add(token);
+            tokens.add(token);
         }
 
         // Start iterator at first symbol
-        tokenListIterator = tokenLinkedList.listIterator();
+        tokenPointer = tokens.listIterator();
     }
 
-    public void parse() {
+    /**
+     * Starts the syntax analyzer phase with the given files.
+     */
+    public void start() {
         mulProg();
 
-        // Output to console TODO: temp
+        // Output to console
         System.out.println(TreeNode.recursiveStringify(root, 0, true));
         // Output to syntax tree file
         printerSyntaxTree.print(TreeNode.recursiveStringify(root, 0, false));
@@ -117,17 +113,19 @@ public class MulParser {
         body(root);
         assertMatch(Token.Type.BRACES_RIGHT);
         assertMatch(Token.Type.RETURN);
+        assertMatch(Token.Type.INTEGER_LITERAL);
         assertMatch(Token.Type.SEMICOLON);
 
         return true;
     }
 
     private boolean body(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode bodyNode = new TreeNode(TreeNode.Type.BODY, "BODY");
 
         // Attempt to parse a statement
         if(statements(bodyNode)) {
+            while(statements(bodyNode));
             parent.addChild(bodyNode);
             return true;
         }
@@ -135,13 +133,13 @@ public class MulParser {
         // If parsing a statement failed, backtrack then return false
         else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean statements(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode statementsNode = new TreeNode(TreeNode.Type.STATEMENTS, "STATEMENTS");
 
         if(decStatement(statementsNode) ||
@@ -150,23 +148,50 @@ public class MulParser {
                 outStatement(statementsNode) ||
                 conStatement(statementsNode) ||
                 iteStatement(statementsNode)) {
-            while(decStatement(statementsNode) ||
+            /* while(decStatement(statementsNode) ||
                     inStatement(statementsNode) ||
                     assStatement(statementsNode, true) ||
                     outStatement(statementsNode) ||
                     conStatement(statementsNode) ||
-                    iteStatement(statementsNode));
+                    iteStatement(statementsNode)); */
             parent.addChild(statementsNode);
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
+
+            // EXTRA CHECKS that did not proceed in the recursive descent
+            // If identifier, expect input statement or assignment (both with = operator)
+            if (match(Token.Type.IDENTIFIER)) {
+                if (!match(Token.Type.ASSIGNMENT)) {
+                    Token currentToken = tokenPointer.next();
+                    System.out.printf(
+                            "In line %d:%d: syntax error, expected an input or assignment statement.\n",
+                            currentToken.lineNumber(),
+                            currentToken.columnNumber(),
+                            currentToken.lexeme());
+                    System.exit(1);
+                }
+            }
+            // If not curly brace
+            // Fallback, no valid statements were found
+            else if(!match(Token.Type.BRACES_RIGHT)) {
+                Token currentToken = tokenPointer.next();
+                System.out.printf(
+                        "In line %d:%d: syntax error, expected start of a statement.\n",
+                        currentToken.lineNumber(),
+                        currentToken.columnNumber());
+                System.exit(1);
+            }
+
+            // Reset the iterator to the backtrack index
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean decStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode decStatementNode = new TreeNode(TreeNode.Type.DEC_STATEMENT, "DEC_STATEMENT");
 
         if(dataType(decStatementNode) &&
@@ -181,13 +206,13 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean assStatement(TreeNode parent, boolean hasSemicolon) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode assStatementNode = new TreeNode(TreeNode.Type.ASS_STATEMENT, "ASS_STATEMENT");
 
         if(identifier(assStatementNode) &&
@@ -202,19 +227,18 @@ public class MulParser {
                 return true;
             } else {
                 // Get the token
-                Token currentToken = tokenListIterator.next();
+                Token currentToken = tokenPointer.next();
                 // Output syntax error message
                 System.out.printf(
-                        "In line %d:%d: syntax error, expected identifier but encountered %s.\n",
+                        "In line %d:%d: syntax error, invalid input statement. Expected expression but encountered %s.\n",
                         currentToken.lineNumber(),
                         currentToken.columnNumber(),
                         currentToken.lexeme());
-                // TODO: transform into non-panic mode
                 System.exit(1);
             }
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
 
@@ -222,7 +246,7 @@ public class MulParser {
     }
 
     private boolean inStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode inStatementNode = new TreeNode(TreeNode.Type.IN_STATEMENT, null);
 
         // Attempt to match input statement
@@ -236,13 +260,13 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean outStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode outStatementNode = new TreeNode(TreeNode.Type.OUT_STATEMENT, null);
 
         // Attempt to match output statement
@@ -256,13 +280,13 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean out(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode outNode = new TreeNode(TreeNode.Type.OUT, null);
 
         // Attempt to match output
@@ -272,13 +296,13 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean conStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode conStatementNode = new TreeNode(TreeNode.Type.CON_STATEMENT, null);
 
         if(ifStatement(conStatementNode) && elseIfStatements(conStatementNode) &&
@@ -287,13 +311,13 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean ifStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode ifStatementNode = new TreeNode(TreeNode.Type.IF_STATEMENT, null);
 
         if(match(Token.Type.IF)) {
@@ -303,19 +327,19 @@ public class MulParser {
             assertMatch(Token.Type.PAREN_RIGHT);
             assertMatch(Token.Type.BRACES_LEFT);
             // TODO: Handle errors for statements inside if
-            statements(ifStatementNode);
+            body(ifStatementNode);
             assertMatch(Token.Type.BRACES_RIGHT);
             parent.addChild(ifStatementNode);
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean elseIfStatements(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode elseIfStatementsNode = new TreeNode(TreeNode.Type.ELSEIF_STATEMENTS, null);
 
         if(elseIfStatement(elseIfStatementsNode)) {
@@ -324,13 +348,13 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return true;
         }
     }
 
     private boolean elseIfStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode elseIfStatementNode = new TreeNode(TreeNode.Type.ELSEIF_STATEMENT, null);
 
         if(match(Token.Type.ELSE) && match(Token.Type.IF)) {
@@ -339,37 +363,37 @@ public class MulParser {
             assertMatch(Token.Type.PAREN_RIGHT);
             assertMatch(Token.Type.BRACES_LEFT);
             // TODO: Handle errors for statements inside else if
-            statements(elseIfStatementNode);
+            body(elseIfStatementNode);
             assertMatch(Token.Type.BRACES_RIGHT);
             parent.addChild(elseIfStatementNode);
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean elseStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode elseStatementNode = new TreeNode(TreeNode.Type.ELSE_STATEMENT, null);
 
         if(match(Token.Type.ELSE)) {
             assertMatch(Token.Type.BRACES_LEFT);
             // TODO: Handle errors for statements inside else
-            statements(elseStatementNode);
+            body(elseStatementNode);
             assertMatch(Token.Type.BRACES_RIGHT);
             parent.addChild(elseStatementNode);
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return true;
         }
     }
 
     private boolean iteStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode iteStatementNode = new TreeNode(TreeNode.Type.ITE_STATEMENT, null);
 
         if(doWhileStatement(iteStatementNode) || whileStatement(iteStatementNode)) {
@@ -377,18 +401,18 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean doWhileStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode doWhileStatementNode = new TreeNode(TreeNode.Type.DO_WHILE_STATEMENT, null);
 
         if(match(Token.Type.DO)) {
             assertMatch(Token.Type.BRACES_LEFT);
-            statements(doWhileStatementNode);
+            body(doWhileStatementNode);
             assertMatch(Token.Type.BRACES_RIGHT);
             assertMatch(Token.Type.WHILE);
             assertMatch(Token.Type.PAREN_LEFT);
@@ -400,13 +424,13 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean whileStatement(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode whileStatementNode = new TreeNode(TreeNode.Type.WHILE_STATEMENT, null);
 
         if(match(Token.Type.WHILE)) {
@@ -414,20 +438,20 @@ public class MulParser {
             expr(whileStatementNode);
             assertMatch(Token.Type.PAREN_RIGHT);
             assertMatch(Token.Type.BRACES_LEFT);
-            statements(whileStatementNode);
+            body(whileStatementNode);
             assertMatch(Token.Type.BRACES_RIGHT);
 
             parent.addChild(whileStatementNode);
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean expr(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode exprNode = new TreeNode(TreeNode.Type.EXPR, null);
 
         Stack<TreeNode> operators = new Stack<>(),
@@ -441,7 +465,7 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
@@ -451,15 +475,15 @@ public class MulParser {
         // Parse a single value
         singleVal(operators, operands);
         // Get next token
-        Token currentToken = tokenListIterator.next();
+        Token currentToken = tokenPointer.next();
         while(currentToken.type().isBinary()) {
             TreeNode binaryNode = TreeNode.toBinary(currentToken.type());
             pushOperator(binaryNode, operators, operands);
             singleVal(operators, operands);
-            currentToken = tokenListIterator.next();
+            currentToken = tokenPointer.next();
         }
         // Retract by one
-        tokenListIterator.previous();
+        tokenPointer.previous();
 
         while(operators.peek().getType() != TreeNode.Type.SENTINEL)
             popOperator(operators, operands);
@@ -523,7 +547,7 @@ public class MulParser {
             postfixUnary(operators, operands);
             return true;
         } else {
-            Token currentToken = tokenListIterator.next();
+            Token currentToken = tokenPointer.next();
             if(currentToken.type().isUnary()) {
                 TreeNode unaryNode = TreeNode.toUnary(currentToken.type());
                 pushOperator(unaryNode, operators, operands);
@@ -545,23 +569,23 @@ public class MulParser {
 
     private boolean postfixUnary(Stack<TreeNode> operators,
                                  Stack<TreeNode> operands) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
 
-        Token currentToken = tokenListIterator.next();
+        Token currentToken = tokenPointer.next();
         if(currentToken.type() == Token.Type.INCREMENT ||
                 currentToken.type() == Token.Type.DECREMENT) {
             TreeNode unaryNode = TreeNode.toPostfixUnary(currentToken.type());
             pushOperator(unaryNode, operators, operands);
             postfixUnary(operators, operands);
         } else {
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
         }
 
         return true;
     }
 
     private boolean dataType(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode dataTypeNode = new TreeNode(TreeNode.Type.DATA_TYPE, null);
 
         // Attempt to match a data type keyword
@@ -570,8 +594,8 @@ public class MulParser {
            match(Token.Type.STRING) ||
            match(Token.Type.BOOL)) {
             // If matched, get the token
-            tokenListIterator.previous();
-            Token token = tokenListIterator.next();
+            tokenPointer.previous();
+            Token token = tokenPointer.next();
             // Set the node value to "DATATYPE INT" for example
             dataTypeNode.setValue(token.lexeme());
             // Add to parent
@@ -579,17 +603,17 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean identifier(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
+        int backtrackIndex = tokenPointer.nextIndex();
         TreeNode identifierNode = new TreeNode(TreeNode.Type.IDENTIFIER, null);
 
         // Get the next token
-        Token currentToken = tokenListIterator.next();
+        Token currentToken = tokenPointer.next();
 
         // If token is identifier
         if(currentToken.type() == Token.Type.IDENTIFIER) {
@@ -600,14 +624,14 @@ public class MulParser {
             return true;
         } else {
             // Reset the iterator to the backtrack index
-            tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+            tokenPointer = tokens.listIterator(backtrackIndex);
             return false;
         }
     }
 
     private boolean literal(TreeNode parent) {
-        int backtrackIndex = tokenListIterator.nextIndex();
-        Token currentToken = tokenListIterator.next();
+        int backtrackIndex = tokenPointer.nextIndex();
+        Token currentToken = tokenPointer.next();
 
         TreeNode literalNode = null;
 
@@ -638,7 +662,7 @@ public class MulParser {
                 break;
             default:
                 // Reset the iterator to the backtrack index
-                tokenListIterator = tokenLinkedList.listIterator(backtrackIndex);
+                tokenPointer = tokens.listIterator(backtrackIndex);
                 return false;
         }
 
@@ -653,14 +677,25 @@ public class MulParser {
      */
     private boolean match(Token.Type expectedType) {
         // Get the current token
-        Token currentToken = tokenListIterator.next();
+        Token currentToken = tokenPointer.next();
         // If it is the expected token, return true
         if(currentToken.type() == expectedType)
             return true;
+
+        // If invalid, output syntax error
+        else if(currentToken.type() == Token.Type.INVALID) {
+            System.out.printf(
+                    "In line %d:%d: syntax error, invalid token %s.\n",
+                    currentToken.lineNumber(),
+                    currentToken.columnNumber(),
+                    currentToken.lexeme());
+            System.exit(1);
+            return false;
+        }
         // Else, backtrack then return false
         else {
             // If not matched, backtrack the pointer
-            tokenListIterator.previous();
+            tokenPointer.previous();
             return false;
         }
     }
@@ -675,7 +710,7 @@ public class MulParser {
         // If the expected type did not match the current token
         if(!match(expectedType)) {
             // Get the token
-            Token currentToken = tokenListIterator.next();
+            Token currentToken = tokenPointer.next();
             // Output a syntax error message (PANIC MODE STILL)
             System.out.printf(
                     "In line %d:%d: syntax error, expected %s but encountered %s.\n",
@@ -696,21 +731,15 @@ public class MulParser {
     private static File fileSyntaxTree;
 
     public static void main(String[] args) {
-        scannerStdin = new Scanner(System.in);
-
-        // Prompt for symbol table file name
-        System.out.print("Enter symbol table file name >> ");
-        String symbolTableFilename = scannerStdin.next();
-
         // File instance for symbol table file
-        fileSymbolTable = new File(symbolTableFilename);
+        fileSymbolTable = new File("output.mul");
         // File instance for syntax tree file
-        fileSyntaxTree = new File(symbolTableFilename.split("\\.")[0] + ".multree");
+        fileSyntaxTree = new File("output.multree");
 
         // Create parser
-        MulParser mulParser = new MulParser(fileSymbolTable, fileSyntaxTree);
+        MulParser mulParser = new MulParser(new File[] { fileSymbolTable, fileSyntaxTree });
         mulParser.initializeSymbols();
-        mulParser.parse();
+        mulParser.start();
     }
 
 }

@@ -1,5 +1,5 @@
 INT MAIN () {
-    FLOAT d;
+    FLOAT a;
     STRING t = a;
     INT a, b, c = s + 324;
 
@@ -14,13 +14,24 @@ INT MAIN () {
     PRINTF("asdd");
     PRINTF(b, b + 1, "asd" + as / 2147 - 735 == 325 && 325 - 435 >= 324 || a + b == c);
 
+    a = b;
+    a = 123;
+    a = "asd";
+    a = a - sad + sad / 44 - 5468 * 485 % (32 + 354 ** 34);
+
+    IF(a == b) {
+        PRINTF(b + a);
+    }
+
+    IF(a == b) {
+    	PRINTF("Helloworld");
+    } ELSE {
+        PRINTF(a + b);
+    }
+
     IF(asd + 32 * 34 / 5 == 34) {
     	PRINTF(a);
-    	IF(regj + 835 - 25 * 325 >= 325 || 325.43 + "asd" - 345 <= 324) {
-    		a = SCANF();
-    		PRINTF(a);
-    	}
-    } ELSE IF(whatthehell - 3 == 34) {
+    } ELSE IF(a + whatthehell - 3 == 34) {
     	PRINTF(b);
     	PRINTF(c);
     	PRINTF(d, asd, asd + sad);
@@ -34,6 +45,14 @@ INT MAIN () {
     	PRINTF(gdfg + asdh);
     }
 
+    IF(a + s == b) {
+        IF(hello) {
+            PRINTF(a);
+        } ELSE {
+            PRINTF(b);
+        }
+    }
+
     WHILE(i < 5) {
     	PRINTF(i);
     	i = i + 1;
@@ -41,6 +60,9 @@ INT MAIN () {
 
     WHILE(i < 5) {
     	WHILE(j < 5) {
+    	    IF(a) {
+    	        PRINTF("hello");
+    	    }
     	    PRINTF(j);
     		j = j + 1;
     	}
@@ -54,4 +76,4 @@ INT MAIN () {
     	sum = a + b;
     	PRINTF("Sum", sum);
     } WHILE(++asd--++ - --++asd++ == 0);
-} RETURN;
+} RETURN 0;
