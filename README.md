@@ -5,7 +5,7 @@ Needed Dependencies
 - gcc (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0
 
 ## Usage
-To run this project on Linux Manually
+### To run this project on Linux Manually
 
 Compile the lexical compiler and generate the symbol table.
 ```shell
@@ -20,7 +20,13 @@ This program will detect for any "output.mul" in the current directory.
 javac MulParser.java
 java MulParser
 ```
+### To run this project the lazy way on Linux
 
+file.mul => the corresponding file name for your source code.
+Just use our makefile program!
+```shell
+make run_program FILENAME=<file.mul>
+```
 
 
 ## References for Documentation
