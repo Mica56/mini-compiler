@@ -24,5 +24,5 @@ java MulParser
 
 
 ## References for Documentation
-![Documentation Used](https://docs.google.com/document/d/1jL--KCBrAb3tdpe1NQFmuw6aDuBinwDqdtXAIhM-xTw/edit?usp=sharing)
+- Checkout our [Documentation](https://docs.google.com/document/d/1jL--KCBrAb3tdpe1NQFmuw6aDuBinwDqdtXAIhM-xTw/edit?usp=sharing)
 
